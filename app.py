@@ -273,8 +273,10 @@ with st.sidebar:
     )
     
     st.divider()
+    st.markdown("**🔗 Portal Resmi Rupiah & BI:**")
+    st.link_button("💵 Lihat Gambar Uang Rupiah (BI)", "https://www.bi.go.id/id/rupiah/gambar-uang/default.aspx", use_container_width=True)
+    st.link_button("🛡️ Panduan Pelindungan Konsumen", "https://www.bi.go.id/id/Pelindungan-Konsumen/Panduan-Dasar/Default.aspx#peka", use_container_width=True)
     st.info("📌 **Sumber Materi:** Seluruh data indikator, pilar kebijakan, dan kampanye PeKA & CBP merujuk pada portal resmi Bank Indonesia (`bi.go.id`).")
-    st.link_button("🛡️ Panduan Pelindungan Konsumen BI", "https://www.bi.go.id/id/Pelindungan-Konsumen/Panduan-Dasar/Default.aspx#peka", use_container_width=True)
 
 # ==========================================
 # MODUL 1: TIGA FUNGSI UTAMA & INDIKATOR BI
@@ -687,6 +689,7 @@ elif menu == "❤️ 4. Cinta, Bangga, Paham Rupiah":
         * **Merawat:** Menjaga kualitas fisik uang layak edar dengan menerapkan **5 Jangan**: *Jangan Dilipat, Jangan Dicoret, Jangan Distapler, Jangan Diremas, dan Jangan Dibasahi*.
         * **Menjaga:** Melindungi diri dan lingkungan sekitar dari peredaran uang palsu serta segera melaporkan temuan mencurigakan kepada bank atau pihak berwenang.
         """)
+        st.link_button("💵 Lihat Gambar & Ciri Keaslian Uang Rupiah di Website BI", "https://www.bi.go.id/id/rupiah/gambar-uang/default.aspx")
 
     with t_bangga:
         st.markdown("""
