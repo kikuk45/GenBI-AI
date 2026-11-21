@@ -13,176 +13,283 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-st.markdown("""
-<style>
-.stApp { background-color: #F4F7FB; }
-.hero-banner {
-    background: linear-gradient(135deg, #002D72 0%, #00509E 100%);
-    padding: 24px 28px;
-    border-radius: 16px;
-    color: white;
-    margin-bottom: 20px;
-    border-bottom: 5px solid #D4AF37;
-}
-.hero-banner h1 { color: #FFFFFF; margin-bottom: 6px; font-size: 1.85rem; }
-.hero-banner p { color: #E2E8F0; font-size: 1rem; margin: 0; }
-.bi-card {
-    background-color: #FFFFFF;
-    padding: 20px;
-    border-radius: 14px;
-    border-top: 5px solid #002D72;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-    height: 100%;
-}
-.bi-card-gold { border-top: 5px solid #D4AF37; }
-.bi-card-teal { border-top: 5px solid #0D9488; }
-.bi-title { color: #002D72; font-weight: 700; font-size: 1.15rem; margin-bottom: 8px; }
-.badge-bi {
-    background-color: #D4AF37;
-    color: #002D72;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-weight: 700;
-    font-size: 0.76rem;
-    display: inline-block;
-    margin-bottom: 8px;
-}
+# ==========================================
+# PENGATURAN MODE TERANG / GELAP (DEVICE & MANUAL)
+# ==========================================
+if "theme_mode" not in st.session_state:
+    st.session_state.theme_mode = "Otomatis (Ikuti Device)"
 
-/* Kartu Modern Khusus PeKA (Peduli, Kenali, Adukan) */
-.peka-card {
-    background: #FFFFFF;
-    border-radius: 20px;
-    padding: 24px 20px;
-    text-align: center;
-    box-shadow: 0 10px 26px rgba(0, 45, 114, 0.08);
-    height: 100%;
-    transition: transform 0.2s ease;
-}
-.peka-peduli { border-top: 7px solid #0284C7; }
-.peka-kenali { border-top: 7px solid #D97706; }
-.peka-adukan { border-top: 7px solid #0D9488; }
-.peka-tag {
-    display: inline-block;
-    padding: 4px 14px;
-    border-radius: 999px;
-    font-size: 0.76rem;
-    font-weight: 800;
-    letter-spacing: 0.6px;
-    margin-bottom: 12px;
-}
-.tag-peduli { background: #E0F2FE; color: #0369A1; }
-.tag-kenali { background: #FEF3C7; color: #B45309; }
-.tag-adukan { background: #CCFBF1; color: #0F766E; }
-.peka-heading {
-    color: #002D72;
-    font-size: 1.45rem;
-    font-weight: 900;
-    margin: 10px 0 8px 0;
-}
-.peka-desc {
-    color: #334155;
-    font-size: 0.94rem;
-    line-height: 1.55;
-    margin-bottom: 14px;
-}
-.peka-checklist {
-    background: #F8FAFC;
-    border-radius: 12px;
-    padding: 12px 14px;
-    text-align: left;
-    font-size: 0.86rem;
-    color: #475569;
-    border: 1px solid #E2E8F0;
-}
+with st.sidebar:
+    st.markdown("<h2 style='text-align:center; color:#002D72; margin-bottom:0;'>🏛️ BANK SENTRAL RI</h2>", unsafe_allow_html=True)
+    st.caption("<p style='text-align:center;'>Edukasi Kebanksentralan & Pelindungan Konsumen</p>", unsafe_allow_html=True)
+    st.divider()
 
-/* Kartu Modern Khusus Pilar CBP Rupiah */
-.cbp-modern-card {
-    border-radius: 18px;
-    padding: 22px 20px;
-    color: #FFFFFF;
-    box-shadow: 0 10px 24px rgba(0, 45, 114, 0.12);
-    height: 100%;
-}
-.cbp-cinta {
-    background: linear-gradient(145deg, #991B1B 0%, #DC2626 100%);
-    border-bottom: 5px solid #FCA5A5;
-}
-.cbp-bangga {
-    background: linear-gradient(145deg, #92400E 0%, #D97706 100%);
-    border-bottom: 5px solid #FDE68A;
-}
-.cbp-paham {
-    background: linear-gradient(145deg, #002D72 0%, #0284C7 100%);
-    border-bottom: 5px solid #7DD3FC;
-}
-.cbp-pill {
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(6px);
-    padding: 4px 12px;
-    border-radius: 999px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    display: inline-block;
-    margin-bottom: 10px;
-}
-.cbp-modern-title {
-    font-size: 1.35rem;
-    font-weight: 800;
-    margin-bottom: 8px;
-    color: #FFFFFF;
-}
-.cbp-sublist {
-    background: rgba(0, 0, 0, 0.16);
-    border-radius: 12px;
-    padding: 12px 14px;
-    margin-top: 12px;
-    font-size: 0.88rem;
-}
+    st.session_state.theme_mode = st.selectbox(
+        "🌓 Tampilan Tema:",
+        ["Otomatis (Ikuti Device)", "Mode Terang", "Mode Gelap"],
+        index=["Otomatis (Ikuti Device)", "Mode Terang", "Mode Gelap"].index(st.session_state.theme_mode)
+    )
 
-/* Kartu Visual Edukasi 5 Jangan - Rupiah Keren */
-.rk-banner {
-    background: linear-gradient(135deg, #002D72 0%, #004E92 60%, #0284C7 100%);
-    border-radius: 20px;
-    padding: 26px 30px;
-    color: #FFFFFF;
-    border: 2px solid #D4AF37;
-    box-shadow: 0 12px 28px rgba(0, 45, 114, 0.14);
-    margin-bottom: 22px;
-}
-.jangan-visual-card {
-    background: #FFFFFF;
-    border-radius: 18px;
-    padding: 20px 16px;
-    text-align: center;
-    border-top: 6px solid #C8102E;
-    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.07);
-    height: 100%;
-}
-.jangan-badge-num {
-    background: #FEE2E2;
-    color: #C8102E;
-    font-weight: 800;
-    font-size: 0.82rem;
-    padding: 4px 12px;
-    border-radius: 999px;
-    display: inline-block;
-    margin-bottom: 10px;
-}
-.jangan-card-title {
-    color: #002D72;
-    font-weight: 800;
-    font-size: 1.08rem;
-    margin: 10px 0 6px 0;
-}
-.jangan-card-desc {
-    color: #475569;
-    font-size: 0.86rem;
-    line-height: 1.45;
-    margin: 0;
-}
-</style>
-""", unsafe_allow_html=True)
+    menu = st.radio(
+        "🧭 Modul Edukasi Publik:",
+        [
+            "📊 1. Tiga Fungsi Utama & Indikator BI",
+            "💳 2. Inovasi Sistem Pembayaran & Digital Rupiah",
+            "🛡️ 3. Pelindungan Konsumen: PeKA",
+            "❤️ 4. Cinta, Bangga, Paham Rupiah",
+            "✨ 5. Cara Merawat Rupiah (5 Jangan)",
+            "🏆 6. Kuis Literasi Kebanksentralan"
+        ]
+    )
+
+    st.divider()
+    st.markdown("**🔗 Portal Resmi Rupiah & BI:**")
+    st.link_button("💵 Lihat Gambar Rupiah", "https://www.bi.go.id/id/rupiah/gambar-uang/default.aspx", use_container_width=True)
+    st.link_button("🛡️ Panduan Pelindungan Konsumen", "https://www.bi.go.id/id/Pelindungan-Konsumen/Panduan-Dasar/Default.aspx#peka", use_container_width=True)
+    st.info("📌 **Sumber Materi:** Seluruh data indikator, pilar kebijakan, dan kampanye PeKA & CBP merujuk pada portal resmi Bank Indonesia (`bi.go.id`).")
+
+
+def build_theme_css(mode: str) -> str:
+    light_vars = """
+        --bg-app: #F4F7FB;
+        --bg-surface: #FFFFFF;
+        --bg-subtle: #F8FAFC;
+        --border-subtle: #E2E8F0;
+        --text-primary: #0F172A;
+        --text-secondary: #334155;
+        --text-muted: #475569;
+        --heading-accent: #002D72;
+        --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.06);
+        --shadow-elevated: 0 10px 26px rgba(0, 45, 114, 0.08);
+        --jangan-svg-bg: #FFF5F5;
+        --jangan-svg-border: #FECACA;
+        --jangan-badge-bg: #FEE2E2;
+    """
+    dark_vars = """
+        --bg-app: #0B1120;
+        --bg-surface: #111827;
+        --bg-subtle: #1E293B;
+        --border-subtle: #334155;
+        --text-primary: #F8FAFC;
+        --text-secondary: #E2E8F0;
+        --text-muted: #CBD5E1;
+        --heading-accent: #60A5FA;
+        --shadow-card: 0 6px 16px rgba(0, 0, 0, 0.35);
+        --shadow-elevated: 0 12px 28px rgba(0, 0, 0, 0.45);
+        --jangan-svg-bg: #2A1215;
+        --jangan-svg-border: #7F1D1D;
+        --jangan-badge-bg: #450A0A;
+    """
+
+    if mode == "Mode Gelap":
+        vars_block = f":root {{ {dark_vars} }}"
+        plotly_font_color = "#E2E8F0"
+    elif mode == "Mode Terang":
+        vars_block = f":root {{ {light_vars} }}"
+        plotly_font_color = "#1E293B"
+    else:
+        vars_block = f"""
+        :root {{ {light_vars} }}
+        @media (prefers-color-scheme: dark) {{
+            :root {{ {dark_vars} }}
+        }}
+        """
+        plotly_font_color = "#64748B"
+
+    return f"""
+    <style>
+    {vars_block}
+
+    .stApp, [data-testid="stAppViewContainer"] {{
+        background-color: var(--bg-app) !important;
+        color: var(--text-primary) !important;
+    }}
+
+    [data-testid="stSidebar"] {{
+        background-color: var(--bg-surface) !important;
+        border-right: 1px solid var(--border-subtle);
+    }}
+
+    [data-testid="stSidebar"] h2 {{
+        color: var(--heading-accent) !important;
+    }}
+
+    .hero-banner {{
+        background: linear-gradient(135deg, #002D72 0%, #00509E 100%);
+        padding: 24px 28px;
+        border-radius: 16px;
+        color: white;
+        margin-bottom: 20px;
+        border-bottom: 5px solid #D4AF37;
+    }}
+    .hero-banner h1 {{ color: #FFFFFF; margin-bottom: 6px; font-size: 1.85rem; }}
+    .hero-banner p {{ color: #E2E8F0; font-size: 1rem; margin: 0; }}
+
+    .bi-card {{
+        background-color: var(--bg-surface);
+        padding: 20px;
+        border-radius: 14px;
+        border-top: 5px solid #002D72;
+        box-shadow: var(--shadow-card);
+        height: 100%;
+    }}
+    .bi-card-gold {{ border-top: 5px solid #D4AF37; }}
+    .bi-card-teal {{ border-top: 5px solid #0D9488; }}
+    .bi-title {{ color: var(--heading-accent); font-weight: 700; font-size: 1.15rem; margin-bottom: 8px; }}
+    .bi-text {{ color: var(--text-secondary); font-size: 0.93rem; }}
+    .bi-list {{ color: var(--text-muted); font-size: 0.88rem; padding-left: 18px; margin-bottom: 0; }}
+    .bi-list-lg {{ color: var(--text-secondary); font-size: 0.92rem; padding-left: 18px; margin-bottom: 0; }}
+
+    .badge-bi {{
+        background-color: #D4AF37;
+        color: #002D72;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-weight: 700;
+        font-size: 0.76rem;
+        display: inline-block;
+        margin-bottom: 8px;
+    }}
+
+    /* Kartu Modern Khusus PeKA (Peduli, Kenali, Adukan) */
+    .peka-card {{
+        background: var(--bg-surface);
+        border-radius: 20px;
+        padding: 24px 20px;
+        text-align: center;
+        box-shadow: var(--shadow-elevated);
+        height: 100%;
+        transition: transform 0.2s ease;
+    }}
+    .peka-peduli {{ border-top: 7px solid #0284C7; }}
+    .peka-kenali {{ border-top: 7px solid #D97706; }}
+    .peka-adukan {{ border-top: 7px solid #0D9488; }}
+    .peka-tag {{
+        display: inline-block;
+        padding: 4px 14px;
+        border-radius: 999px;
+        font-size: 0.76rem;
+        font-weight: 800;
+        letter-spacing: 0.6px;
+        margin-bottom: 12px;
+    }}
+    .tag-peduli {{ background: #E0F2FE; color: #0369A1; }}
+    .tag-kenali {{ background: #FEF3C7; color: #B45309; }}
+    .tag-adukan {{ background: #CCFBF1; color: #0F766E; }}
+    .peka-heading {{
+        color: var(--heading-accent);
+        font-size: 1.45rem;
+        font-weight: 900;
+        margin: 10px 0 8px 0;
+    }}
+    .peka-desc {{
+        color: var(--text-secondary);
+        font-size: 0.94rem;
+        line-height: 1.55;
+        margin-bottom: 14px;
+    }}
+    .peka-checklist {{
+        background: var(--bg-subtle);
+        border-radius: 12px;
+        padding: 12px 14px;
+        text-align: left;
+        font-size: 0.86rem;
+        color: var(--text-muted);
+        border: 1px solid var(--border-subtle);
+    }}
+
+    /* Kartu Modern Khusus Pilar CBP Rupiah */
+    .cbp-modern-card {{
+        border-radius: 18px;
+        padding: 22px 20px;
+        color: #FFFFFF;
+        box-shadow: var(--shadow-elevated);
+        height: 100%;
+    }}
+    .cbp-cinta {{
+        background: linear-gradient(145deg, #991B1B 0%, #DC2626 100%);
+        border-bottom: 5px solid #FCA5A5;
+    }}
+    .cbp-bangga {{
+        background: linear-gradient(145deg, #92400E 0%, #D97706 100%);
+        border-bottom: 5px solid #FDE68A;
+    }}
+    .cbp-paham {{
+        background: linear-gradient(145deg, #002D72 0%, #0284C7 100%);
+        border-bottom: 5px solid #7DD3FC;
+    }}
+    .cbp-pill {{
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(6px);
+        padding: 4px 12px;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        display: inline-block;
+        margin-bottom: 10px;
+    }}
+    .cbp-modern-title {{
+        font-size: 1.35rem;
+        font-weight: 800;
+        margin-bottom: 8px;
+        color: #FFFFFF;
+    }}
+    .cbp-sublist {{
+        background: rgba(0, 0, 0, 0.22);
+        border-radius: 12px;
+        padding: 12px 14px;
+        margin-top: 12px;
+        font-size: 0.88rem;
+    }}
+
+    /* Kartu Visual Edukasi 5 Jangan - Rupiah Keren */
+    .rk-banner {{
+        background: linear-gradient(135deg, #002D72 0%, #004E92 60%, #0284C7 100%);
+        border-radius: 20px;
+        padding: 26px 30px;
+        color: #FFFFFF;
+        border: 2px solid #D4AF37;
+        box-shadow: var(--shadow-elevated);
+        margin-bottom: 22px;
+    }}
+    .jangan-visual-card {{
+        background: var(--bg-surface);
+        border-radius: 18px;
+        padding: 20px 16px;
+        text-align: center;
+        border-top: 6px solid #C8102E;
+        box-shadow: var(--shadow-card);
+        height: 100%;
+    }}
+    .jangan-badge-num {{
+        background: var(--jangan-badge-bg);
+        color: #F87171;
+        font-weight: 800;
+        font-size: 0.82rem;
+        padding: 4px 12px;
+        border-radius: 999px;
+        display: inline-block;
+        margin-bottom: 10px;
+    }}
+    .jangan-card-title {{
+        color: var(--heading-accent);
+        font-weight: 800;
+        font-size: 1.08rem;
+        margin: 10px 0 6px 0;
+    }}
+    .jangan-card-desc {{
+        color: var(--text-muted);
+        font-size: 0.86rem;
+        line-height: 1.45;
+        margin: 0;
+    }}
+    </style>
+    """, plotly_font_color
+
+
+css_code, chart_text_color = build_theme_css(st.session_state.theme_mode)
+st.markdown(css_code, unsafe_allow_html=True)
 
 # ==========================================
 # ILUSTRASI VEKTOR KEKINIAN: PeKA (SVG)
@@ -253,32 +360,6 @@ def svg_5_jangan(jenis):
     return bingkai_awal + isi + bingkai_larangan
 
 # ==========================================
-# SIDEBAR NAVIGASI
-# ==========================================
-with st.sidebar:
-    st.markdown("<h2 style='text-align:center; color:#002D72; margin-bottom:0;'>🏛️ BANK SENTRAL RI</h2>", unsafe_allow_html=True)
-    st.caption("<p style='text-align:center;'>Edukasi Kebanksentralan & Pelindungan Konsumen</p>", unsafe_allow_html=True)
-    st.divider()
-    
-    menu = st.radio(
-        "🧭 Modul Edukasi Publik:",
-        [
-            "📊 1. Tiga Fungsi Utama & Indikator BI",
-            "💳 2. Inovasi Sistem Pembayaran & Digital Rupiah",
-            "🛡️ 3. Pelindungan Konsumen: PeKA",
-            "❤️ 4. Cinta, Bangga, Paham Rupiah",
-            "✨ 5. Cara Merawat Rupiah (5 Jangan)",
-            "🏆 6. Kuis Literasi Kebanksentralan"
-        ]
-    )
-    
-    st.divider()
-    st.markdown("**🔗 Portal Resmi Rupiah & BI:**")
-    st.link_button("💵 Lihat Gambar Rupiah", "https://www.bi.go.id/id/rupiah/gambar-uang/default.aspx", use_container_width=True)
-    st.link_button("🛡️ Panduan Pelindungan Konsumen", "https://www.bi.go.id/id/Pelindungan-Konsumen/Panduan-Dasar/Default.aspx#peka", use_container_width=True)
-    st.info("📌 **Sumber Materi:** Seluruh data indikator, pilar kebijakan, dan kampanye PeKA & CBP merujuk pada portal resmi Bank Indonesia (`bi.go.id`).")
-
-# ==========================================
 # MODUL 1: TIGA FUNGSI UTAMA & INDIKATOR BI
 # ==========================================
 if menu == "📊 1. Tiga Fungsi Utama & Indikator BI":
@@ -306,10 +387,10 @@ if menu == "📊 1. Tiga Fungsi Utama & Indikator BI":
         st.markdown("""
         <div class="bi-card">
             <div class="bi-title">1. Kebijakan Moneter</div>
-            <p style="color:#334155; font-size:0.93rem;">
+            <p class="bi-text">
             Menjaga kestabilan nilai Rupiah terhadap barang dan jasa (<b>inflasi</b>) serta terhadap mata uang negara lain (<b>nilai tukar</b>).
             </p>
-            <ul style="color:#475569; font-size:0.88rem; padding-left:18px;">
+            <ul class="bi-list">
                 <li><b>Instrumen Utama:</b> BI-Rate (Suku Bunga Acuan), Operasi Moneter, Deposit Facility (5,25%), dan Lending Facility (6,75%).</li>
                 <li><b>Indikator Acuan:</b> INDONIA, JISDOR, dan Kurs Transaksi BI.</li>
             </ul>
@@ -320,10 +401,10 @@ if menu == "📊 1. Tiga Fungsi Utama & Indikator BI":
         st.markdown("""
         <div class="bi-card bi-card-gold">
             <div class="bi-title">2. Stabilitas Sistem Keuangan</div>
-            <p style="color:#334155; font-size:0.93rem;">
+            <p class="bi-text">
             Menjaga ketahanan sistem keuangan nasional agar mampu bertahan terhadap gejolak ekonomi melalui <b>Kebijakan Makroprudensial</b>.
             </p>
-            <ul style="color:#475569; font-size:0.88rem; padding-left:18px;">
+            <ul class="bi-list">
                 <li><b>Fokus Kebijakan:</b> Intermediasi perbankan yang seimbang, mitigasi risiko sistemik, dan protokol manajemen krisis.</li>
                 <li><b>Program Pendukung:</b> Pengembangan UMKM, Keuangan Inklusif, Ekonomi & Keuangan Syariah, serta Keuangan Berkelanjutan.</li>
             </ul>
@@ -334,10 +415,10 @@ if menu == "📊 1. Tiga Fungsi Utama & Indikator BI":
         st.markdown("""
         <div class="bi-card bi-card-teal">
             <div class="bi-title">3. Sistem Pembayaran & Pengelolaan Rupiah</div>
-            <p style="color:#334155; font-size:0.93rem;">
+            <p class="bi-text">
             Memastikan sistem pembayaran berjalan aman, efisien, lancar, dan andal, serta menjamin ketersediaan Rupiah berkualitas di seluruh NKRI.
             </p>
-            <ul style="color:#475569; font-size:0.88rem; padding-left:18px;">
+            <ul class="bi-list">
                 <li><b>Infrastruktur:</b> Sistem Pembayaran Nilai Besar (BI-RTGS) dan Ritel (BI-FAST, QRIS, Kartu Kredit Indonesia).</li>
                 <li><b>Edukasi & Pengelolaan:</b> Gerakan Cinta, Bangga, Paham (CBP) Rupiah dan Proyek Garuda (Digital Rupiah).</li>
             </ul>
@@ -374,6 +455,7 @@ if menu == "📊 1. Tiga Fungsi Utama & Indikator BI":
         fig_rate.update_layout(
             yaxis_range=[0, 8], height=260, showlegend=False,
             margin=dict(l=10, r=10, t=15, b=10),
+            font=dict(color=chart_text_color),
             paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)"
         )
         st.plotly_chart(fig_rate, use_container_width=True)
@@ -406,10 +488,10 @@ elif menu == "💳 2. Inovasi Sistem Pembayaran & Digital Rupiah":
             **BI-FAST** adalah infrastruktur sistem pembayaran ritel nasional yang dikembangkan Bank Indonesia untuk memfasilitasi transaksi pembayaran ritel secara **seketika (*real-time*), aman, efisien, dan tersedia setiap saat (24 jam sehari, 7 hari seminggu)**.
             
             **Keunggulan Utama BI-FAST bagi Masyarakat & Pelaku Usaha:**
-            * **Real-Time 24/7:** Dana langsung diterima oleh penerima detik itu juga tanpa mengenal hari libur.
-            * **Biaya Transaksi Murah:** Tarif transfer antarbank ditetapkan maksimal **Rp2.500 per transaksi** (jauh lebih hemat dibanding transfer *online* konvensional Rp6.500).
-            * **Fitur Proxy Address:** Memungkinkan pengguna menerima dana cukup menggunakan **nomor ponsel atau alamat email** sebagai pengganti nomor rekening yang panjang.
-            * **Batas Nominal Tinggi:** Mendukung transaksi mulai dari Rp1 hingga maksimal **Rp250 juta per transaksi**.
+- **Real-Time 24/7:** Dana langsung diterima oleh penerima detik itu juga tanpa mengenal hari libur.
+- **Biaya Transaksi Murah:** Tarif transfer antarbank ditetapkan maksimal **Rp2.500 per transaksi** (jauh lebih hemat dibanding transfer *online* konvensional Rp6.500).
+- **Fitur Proxy Address:** Memungkinkan pengguna menerima dana cukup menggunakan **nomor ponsel atau alamat email** sebagai pengganti nomor rekening yang panjang.
+- **Batas Nominal Tinggi:** Mendukung transaksi mulai dari Rp1 hingga maksimal **Rp250 juta per transaksi**.
             """)
         with c_bf2:
             st.info("🚀 **Layanan BI-FAST Terkini:**\n\n1. **Individual Credit Transfer** (Transfer individu)\n2. **Bulk Credit** (Transfer massal/payroll)\n3. **Direct Debit** (Pendebitan otomatis tagihan)\n4. **Request for Payment** (Permintaan pembayaran)")
@@ -422,13 +504,13 @@ elif menu == "💳 2. Inovasi Sistem Pembayaran & Digital Rupiah":
             st.markdown("""
             **QRIS (*Quick Response Code Indonesian Standard*)** menyatukan berbagai macam QR dari berbagai Penyelenggara Jasa Pembayaran (PJP) sehingga cukup satu kode QR untuk semua aplikasi pembayaran.
             
-            * **QRIS TAP:** Inovasi pembayaran nirkontak (*contactless*) berbasis teknologi *Near Field Communication* (NFC) yang memungkinkan pengguna bertransaksi **cukup dengan menempelkan ponsel** ke mesin pemindai di gerbang transportasi umum atau kasir toko tanpa memindai kamera secara manual.
-            * **QRIS Antarnegara (*Cross-Border*):** Memudahkan wisatawan maupun pelaku UMKM bertransaksi lintas negara (seperti Thailand, Malaysia, Singapura, dan negara mitra lainnya) menggunakan mata uang lokal masing-masing secara otomatis.
+- **QRIS TAP:** Inovasi pembayaran nirkontak (*contactless*) berbasis teknologi *Near Field Communication* (NFC) yang memungkinkan pengguna bertransaksi **cukup dengan menempelkan ponsel** ke mesin pemindai di gerbang transportasi umum atau kasir toko tanpa memindai kamera secara manual.
+- **QRIS Antarnegara (*Cross-Border*):** Memudahkan wisatawan maupun pelaku UMKM bertransaksi lintas negara (seperti Thailand, Malaysia, Singapura, dan negara mitra lainnya) menggunakan mata uang lokal masing-masing secara otomatis.
             
             **Prosedur Verifikasi Aman Saat Bertransaksi QRIS:**
-            1. **Periksa Identitas Merchant:** Pastikan nama toko/merchant yang tampil di layar ponsel sesuai dengan tempat bertransaksi.
-            2. **Cek Nominal Transaksi:** Pastikan angka tagihan sudah tepat sebelum otorisasi PIN/biometrik.
-            3. **Konfirmasi Status Berhasil:** Bagi pedagang (*merchant*), selalu pastikan notifikasi pembayaran masuk ke aplikasi resmi sebelum menyerahkan barang.
+1. **Periksa Identitas Merchant:** Pastikan nama toko/merchant yang tampil di layar ponsel sesuai dengan tempat bertransaksi.
+2. **Cek Nominal Transaksi:** Pastikan angka tagihan sudah tepat sebelum otorisasi PIN/biometrik.
+3. **Konfirmasi Status Berhasil:** Bagi pedagang (*merchant*), selalu pastikan notifikasi pembayaran masuk ke aplikasi resmi sebelum menyerahkan barang.
             """)
         with c2:
             st.warning("🛡️ **Waspada Rekayasa QRIS & Struk Digital:** Jangan pernah hanya mengandalkan tangkapan layar (*screenshot*) bukti bayar dari pembeli. Gunakan notifikasi suara/aplikasi *merchant* resmi.")
@@ -451,7 +533,7 @@ elif menu == "💳 2. Inovasi Sistem Pembayaran & Digital Rupiah":
             st.markdown("""
             <div class="bi-card">
                 <div class="bi-title">🏛️ BI-RTGS & SKNBI</div>
-                <ul style="color:#334155; font-size:0.91rem; padding-left:18px;">
+                <ul class="bi-list-lg">
                     <li><b>BI-RTGS (Real Time Gross Settlement):</b> Infrastruktur transfer dana elektronik untuk transaksi bernilai besar (<b>di atas Rp100 juta</b>) dan bersifat mendesak (*Systemically Important Payment System*).</li>
                     <li><b>SKNBI (Sistem Kliring Nasional Bank Indonesia):</b> Infrastruktur pertukaran data keuangan elektronik untuk layanan kliring warkat debit (cek/bilyet giro) dan transfer dana reguler antarbank.</li>
                 </ul>
@@ -461,7 +543,7 @@ elif menu == "💳 2. Inovasi Sistem Pembayaran & Digital Rupiah":
             st.markdown("""
             <div class="bi-card bi-card-teal">
                 <div class="bi-title">🌐 GPN & SNAP</div>
-                <ul style="color:#334155; font-size:0.91rem; padding-left:18px;">
+                <ul class="bi-list-lg">
                     <li><b>GPN (Gerbang Pembayaran Nasional):</b> Sistem yang mengintegrasikan berbagai instrumen dan kanal pembayaran secara nasional (kartu ATM/Debit berlogo Garuda) agar saling terhubung (*interkoneksi & interoperabilitas*).</li>
                     <li><b>SNAP (Standar Nasional Open API Pembayaran):</b> Standar teknis dan keamanan terbuka yang menghubungkan aplikasi perbankan dengan *fintech* maupun *e-commerce* secara aman.</li>
                 </ul>
@@ -484,9 +566,9 @@ elif menu == "💳 2. Inovasi Sistem Pembayaran & Digital Rupiah":
         **Proyek Garuda** adalah inisiatif Bank Indonesia dalam mengeksplorasi desain **Digital Rupiah** (*Central Bank Digital Currency* / CBDC) sebagai satu-satunya alat pembayaran digital yang sah dan diterbitkan langsung oleh Bank Sentral di masa depan.
         
         **Tiga Pilar Desain Digital Rupiah:**
-        * **Wholesale Digital Rupiah (w-Digital Rupiah):** Digunakan untuk transaksi nilai besar antar lembaga keuangan dan operasi moneter.
-        * **Retail Digital Rupiah (r-Digital Rupiah):** Digunakan oleh masyarakat luas untuk transaksi sehari-hari layaknya uang kertas dan logam dalam bentuk digital.
-        * **Keamanan & Interoperabilitas:** Dirancang agar terintegrasi dengan infrastruktur sistem pembayaran nasional serta mematuhi prinsip Anti Pencucian Uang dan Pencegahan Pendanaan Terorisme (APU-PPT).
+- **Wholesale Digital Rupiah (w-Digital Rupiah):** Digunakan untuk transaksi nilai besar antar lembaga keuangan dan operasi moneter.
+- **Retail Digital Rupiah (r-Digital Rupiah):** Digunakan oleh masyarakat luas untuk transaksi sehari-hari layaknya uang kertas dan logam dalam bentuk digital.
+- **Keamanan & Interoperabilitas:** Dirancang agar terintegrasi dengan infrastruktur sistem pembayaran nasional serta mematuhi prinsip Anti Pencucian Uang dan Pencegahan Pendanaan Terorisme (APU-PPT).
         """)
 
 # ==========================================
@@ -568,7 +650,7 @@ elif menu == "🛡️ 3. Pelindungan Konsumen: PeKA":
             st.markdown("""
             <div class="bi-card">
                 <div class="bi-title">⚖️ Hak Kamu sebagai Konsumen</div>
-                <ul style="color:#334155; font-size:0.92rem; padding-left:18px;">
+                <ul class="bi-list-lg">
                     <li>Mendapatkan informasi produk/jasa sistem pembayaran yang jelas, akurat, jujur, dan tidak menyesatkan.</li>
                     <li>Mendapatkan keamanan dan perlindungan atas kerahasiaan data pribadi dalam bertransaksi.</li>
                     <li>Memperoleh layanan pengaduan dan penyelesaian sengketa sesuai ketentuan yang berlaku.</li>
@@ -580,7 +662,7 @@ elif menu == "🛡️ 3. Pelindungan Konsumen: PeKA":
             st.markdown("""
             <div class="bi-card bi-card-gold">
                 <div class="bi-title">📌 Kewajiban Kamu sebagai Konsumen</div>
-                <ul style="color:#334155; font-size:0.92rem; padding-left:18px;">
+                <ul class="bi-list-lg">
                     <li>Membaca dan memahami dengan saksama informasi, syarat, dan ketentuan produk sebelum bertransaksi.</li>
                     <li>Beritikad baik dalam melakukan transaksi pembayaran dan tidak menyalahgunakan layanan.</li>
                     <li>Menjaga keamanan perangkat, akun, PIN, password, dan kode OTP secara mandiri.</li>
@@ -592,8 +674,8 @@ elif menu == "🛡️ 3. Pelindungan Konsumen: PeKA":
     with tab_pk2:
         st.markdown("""
         **Tahapan Penyampaian Pengaduan Konsumen Sistem Pembayaran:**
-        1. **Tahap 1 — Lapor ke Penyelenggara Jasa Pembayaran (PJP):** Hubungi *call center* atau layanan pengaduan resmi bank/dompet digital tempat kamu bertransaksi dengan melampirkan bukti transaksi.
-        2. **Tahap 2 — Eskalasi ke Bank Indonesia:** Jika pengaduan belum terselesaikan sesuai jangka waktu ketentuan atau kamu membutuhkan informasi/konsultasi pelindungan konsumen, hubungi kanal resmi Bank Indonesia berikut:
+1. **Tahap 1 — Lapor ke Penyelenggara Jasa Pembayaran (PJP):** Hubungi *call center* atau layanan pengaduan resmi bank/dompet digital tempat kamu bertransaksi dengan melampirkan bukti transaksi.
+2. **Tahap 2 — Eskalasi ke Bank Indonesia:** Jika pengaduan belum terselesaikan sesuai jangka waktu ketentuan atau kamu membutuhkan informasi/konsultasi pelindungan konsumen, hubungi kanal resmi Bank Indonesia berikut:
         """)
         k_bi1, k_bi2, k_bi3 = st.columns(3)
         k_bi1.info("☎️ **Contact Center BICARA:**\n\nHubungi **131** (pulsa lokal) atau **1500131** (dari luar negeri) pada hari kerja Senin–Jumat pukul 08.00–16.00 WIB.")
@@ -638,9 +720,9 @@ elif menu == "❤️ 4. Cinta, Bangga, Paham Rupiah":
             </p>
             <div class="cbp-sublist">
                 <b>3 Cinta Diwujudkan Dengan:</b><br>
-                1. <b>Mengenali</b> (Unsur pengaman 3D)<br>
-                2. <b>Merawat</b> (Prinsip 5 Jangan)<br>
-                3. <b>Menjaga</b> (Waspada uang palsu)
+1. <b>Mengenali</b> (Unsur pengaman 3D)<br>
+2. <b>Merawat</b> (Prinsip 5 Jangan)<br>
+3. <b>Menjaga</b> (Waspada uang palsu)
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -655,9 +737,9 @@ elif menu == "❤️ 4. Cinta, Bangga, Paham Rupiah":
             </p>
             <div class="cbp-sublist">
                 <b>3 Bangga Rupiah Sebagai:</b><br>
-                1. <b>Simbol Kedaulatan</b> NKRI<br>
-                2. <b>Alat Pembayaran yang SAH</b><br>
-                3. <b>Pemersatu Bangsa</b> Indonesia
+1. <b>Simbol Kedaulatan</b> NKRI<br>
+2. <b>Alat Pembayaran yang SAH</b><br>
+3. <b>Pemersatu Bangsa</b> Indonesia
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -672,9 +754,9 @@ elif menu == "❤️ 4. Cinta, Bangga, Paham Rupiah":
             </p>
             <div class="cbp-sublist">
                 <b>3 Paham Rupiah Dalam:</b><br>
-                1. <b>Bertransaksi</b> (Tunai & Non-Tunai)<br>
-                2. <b>Berbelanja</b> (Bijak & produk lokal)<br>
-                3. <b>Berhemat</b> (Menabung & investasi)
+1. <b>Bertransaksi</b> (Tunai & Non-Tunai)<br>
+2. <b>Berbelanja</b> (Bijak & produk lokal)<br>
+3. <b>Berhemat</b> (Menabung & investasi)
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -685,24 +767,24 @@ elif menu == "❤️ 4. Cinta, Bangga, Paham Rupiah":
 
     with t_cinta:
         st.markdown("""
-        * **Mengenali:** Memahami karakteristik desain dan unsur pengaman Rupiah melalui metode **3D** (**Dilihat** perubahan warna benang/tinta, **Diraba** tekstur cetak intaglio yang kasar, **Diterawang** tanda air *watermark* dan *rectoverso* logo BI).
-        * **Merawat:** Menjaga kualitas fisik uang layak edar dengan menerapkan **5 Jangan**: *Jangan Dilipat, Jangan Dicoret, Jangan Distapler, Jangan Diremas, dan Jangan Dibasahi*.
-        * **Menjaga:** Melindungi diri dan lingkungan sekitar dari peredaran uang palsu serta segera melaporkan temuan mencurigakan kepada bank atau pihak berwenang.
+- **Mengenali:** Memahami karakteristik desain dan unsur pengaman Rupiah melalui metode **3D** (**Dilihat** perubahan warna benang/tinta, **Diraba** tekstur cetak intaglio yang kasar, **Diterawang** tanda air *watermark* dan *rectoverso* logo BI).
+- **Merawat:** Menjaga kualitas fisik uang layak edar dengan menerapkan **5 Jangan**: *Jangan Dilipat, Jangan Dicoret, Jangan Distapler, Jangan Diremas, dan Jangan Dibasahi*.
+- **Menjaga:** Melindungi diri dan lingkungan sekitar dari peredaran uang palsu serta segera melaporkan temuan mencurigakan kepada bank atau pihak berwenang.
         """)
         st.link_button("💵 Lihat Gambar & Ciri Keaslian Uang Rupiah di Website BI", "https://www.bi.go.id/id/rupiah/gambar-uang/default.aspx")
 
     with t_bangga:
         st.markdown("""
-        * **Simbol Kedaulatan:** Setiap lembar dan keping Rupiah memuat gambar pahlawan nasional, kekayaan alam, serta ragam budaya Nusantara sebagai representasi identitas bangsa merdeka.
-        * **Pembayaran yang SAH:** Berdasarkan Undang-Undang Mata Uang, Rupiah wajib digunakan dalam setiap transaksi pembayaran di seluruh wilayah Negara Kesatuan Republik Indonesia (NKRI).
-        * **Pemersatu Bangsa:** Menjadi satu-satunya alat tukar yang menyatukan aktivitas ekonomi masyarakat di seluruh pulau, dari perkotaan hingga wilayah 3T (Terdepan, Terluar, Tertinggal).
+- **Simbol Kedaulatan:** Setiap lembar dan keping Rupiah memuat gambar pahlawan nasional, kekayaan alam, serta ragam budaya Nusantara sebagai representasi identitas bangsa merdeka.
+- **Pembayaran yang SAH:** Berdasarkan Undang-Undang Mata Uang, Rupiah wajib digunakan dalam setiap transaksi pembayaran di seluruh wilayah Negara Kesatuan Republik Indonesia (NKRI).
+- **Pemersatu Bangsa:** Menjadi satu-satunya alat tukar yang menyatukan aktivitas ekonomi masyarakat di seluruh pulau, dari perkotaan hingga wilayah 3T (Terdepan, Terluar, Tertinggal).
         """)
 
     with t_paham:
         st.markdown("""
-        * **Bertransaksi:** Menggunakan instrumen pembayaran tunai maupun digital (seperti QRIS dan BI-FAST) secara bijak, aman, dan sesuai peruntukan.
-        * **Berbelanja:** Berbelanja secara rasional sesuai kebutuhan (tidak *panic buying* agar inflasi tetap terjaga) serta mengutamakan produk dalam negeri/UMKM.
-        * **Berhemat:** Mengelola keuangan pribadi dengan menyisihkan pendapatan untuk menabung dan berinvestasi pada instrumen keuangan yang legal dan diawasi otoritas.
+- **Bertransaksi:** Menggunakan instrumen pembayaran tunai maupun digital (seperti QRIS dan BI-FAST) secara bijak, aman, dan sesuai peruntukan.
+- **Berbelanja:** Berbelanja secara rasional sesuai kebutuhan (tidak *panic buying* agar inflasi tetap terjaga) serta mengutamakan produk dalam negeri/UMKM.
+- **Berhemat:** Mengelola keuangan pribadi dengan menyisihkan pendapatan untuk menabung dan berinvestasi pada instrumen keuangan yang legal dan diawasi otoritas.
         """)
 
     st.info("🎬 **Seri Kampanye Edukasi CBP Bank Indonesia:** *Rupiah Itu Kita* • *Cinta-Bangga-Paham Rupiah: Dimulai dari Kita* • *Kenali Rupiah, Jelajahi Indonesia dalam Genggamanmu*")
