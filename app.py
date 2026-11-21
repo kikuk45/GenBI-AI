@@ -56,7 +56,6 @@ st.markdown("""
     color: #FFFFFF;
     box-shadow: 0 10px 24px rgba(0, 45, 114, 0.12);
     height: 100%;
-    transition: transform 0.2s ease;
 }
 .cbp-cinta {
     background: linear-gradient(145deg, #991B1B 0%, #DC2626 100%);
@@ -94,6 +93,35 @@ st.markdown("""
     margin-top: 12px;
     font-size: 0.88rem;
 }
+
+/* Kartu Modern 5 Jangan - Rupiah Keren */
+.rupiah-keren-badge {
+    background: linear-gradient(135deg, #002D72 0%, #0369A1 100%);
+    color: #FFFFFF;
+    border-radius: 20px;
+    padding: 28px 24px;
+    text-align: center;
+    border: 3px solid #D4AF37;
+    box-shadow: 0 10px 25px rgba(0, 45, 114, 0.15);
+    height: 100%;
+}
+.jangan-card {
+    background-color: #FFFFFF;
+    border-radius: 14px;
+    padding: 16px 18px;
+    border-left: 6px solid #C8102E;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    margin-bottom: 12px;
+}
+.jangan-num {
+    background-color: #FEE2E2;
+    color: #C8102E;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    margin-right: 8px;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -112,13 +140,14 @@ with st.sidebar:
             "💳 2. Inovasi Sistem Pembayaran & Digital Rupiah",
             "🛡️ 3. Pelindungan Konsumen & Audit Hoaks AI",
             "❤️ 4. Cinta, Bangga, Paham Rupiah",
-            "🏆 5. Kuis Literasi Kebanksentralan"
+            "✨ 5. Cara Merawat Rupiah (5 Jangan)",
+            "🏆 6. Kuis Literasi Kebanksentralan"
         ]
     )
     
     st.divider()
     st.info("📌 **Sumber Materi:** Seluruh data indikator, pilar kebijakan, dan kampanye CBP merujuk pada portal resmi Bank Indonesia (`bi.go.id`).")
-    st.link_button("🌐 Portal CBP Rupiah BI", "https://www.bi.go.id/id/rupiah/cinta-bangga-paham-rupiah/default.aspx", use_container_width=True)
+    st.link_button("🌐 Portal Merawat Rupiah BI", "https://www.bi.go.id/id/rupiah/komunikasi-merawat-rupiah/default.aspx", use_container_width=True)
 
 # ==========================================
 # MODUL 1: TIGA FUNGSI UTAMA & INDIKATOR BI
@@ -368,7 +397,7 @@ elif menu == "🛡️ 3. Pelindungan Konsumen & Audit Hoaks AI":
             st.success(gov_txt)
 
 # ==========================================
-# MODUL 4: CINTA, BANGGA, PAHAM RUPIAH (VISUAL MODERN)
+# MODUL 4: CINTA, BANGGA, PAHAM RUPIAH (TANPA RADAR CHART)
 # ==========================================
 elif menu == "❤️ 4. Cinta, Bangga, Paham Rupiah":
     st.markdown("""
@@ -379,7 +408,6 @@ elif menu == "❤️ 4. Cinta, Bangga, Paham Rupiah":
     </div>
     """, unsafe_allow_html=True)
 
-    # 3 Kartu Gradien Modern Berdasarkan 3x3 Pilar Resmi BI
     c1, c2, c3 = st.columns(3)
 
     with c1:
@@ -434,150 +462,36 @@ elif menu == "❤️ 4. Cinta, Bangga, Paham Rupiah":
         """, unsafe_allow_html=True)
 
     st.write("")
-    st.write("")
+    st.subheader("🧭 Eksplorasi Praktik Nyata 3x3 Pilar CBP Rupiah")
+    t_cinta, t_bangga, t_paham = st.tabs(["❤️ Detail 3 Cinta", "🇮🇩 Detail 3 Bangga", "🧠 Detail 3 Paham"])
 
-    # Eksplorasi Interaktif & Radar Self-Assessment
-    col_exp, col_radar = st.columns([1.25, 1])
+    with t_cinta:
+        st.markdown("""
+        * **Mengenali:** Memahami karakteristik desain dan unsur pengaman Rupiah melalui metode **3D** (**Dilihat** perubahan warna benang/tinta, **Diraba** tekstur cetak intaglio yang kasar, **Diterawang** tanda air *watermark* dan *rectoverso* logo BI).
+        * **Merawat:** Menjaga kualitas fisik uang layak edar dengan menerapkan **5 Jangan**: *Jangan Dilipat, Jangan Dicoret, Jangan Distapler, Jangan Diremas, dan Jangan Dibasahi*.
+        * **Menjaga:** Melindungi diri dan lingkungan sekitar dari peredaran uang palsu serta segera melaporkan temuan mencurigakan kepada bank atau pihak berwenang.
+        """)
 
-    with col_exp:
-        st.subheader("🧭 Eksplorasi Praktik Nyata 3x3 Pilar CBP")
-        t_cinta, t_bangga, t_paham = st.tabs(["❤️ Detail 3 Cinta", "🇮🇩 Detail 3 Bangga", "🧠 Detail 3 Paham"])
+    with t_bangga:
+        st.markdown("""
+        * **Simbol Kedaulatan:** Setiap lembar dan keping Rupiah memuat gambar pahlawan nasional, kekayaan alam, serta ragam budaya Nusantara sebagai representasi identitas bangsa merdeka.
+        * **Pembayaran yang SAH:** Berdasarkan Undang-Undang Mata Uang, Rupiah wajib digunakan dalam setiap transaksi pembayaran di seluruh wilayah Negara Kesatuan Republik Indonesia (NKRI).
+        * **Pemersatu Bangsa:** Menjadi satu-satunya alat tukar yang menyatukan aktivitas ekonomi masyarakat di seluruh pulau, dari perkotaan hingga wilayah 3T (Terdepan, Terluar, Tertinggal).
+        """)
 
-        with t_cinta:
-            st.markdown("""
-            * **Mengenali:** Memahami karakteristik desain dan unsur pengaman Rupiah melalui metode **3D** (**Dilihat** perubahan warna benang/tinta, **Diraba** tekstur cetak intaglio yang kasar, **Diterawang** tanda air *watermark* dan *rectoverso* logo BI).
-            * **Merawat:** Menjaga kualitas fisik uang layak edar dengan menerapkan **5 Jangan**: *Jangan Dilipat, Jangan Dicoret, Jangan Distapler, Jangan Diremas, dan Jangan Dibasahi*.
-            * **Menjaga:** Melindungi diri dan lingkungan sekitar dari peredaran uang palsu serta segera melaporkan temuan mencurigakan kepada bank atau pihak berwenang.
-            """)
+    with t_paham:
+        st.markdown("""
+        * **Bertransaksi:** Menggunakan instrumen pembayaran tunai maupun digital (seperti QRIS dan BI-FAST) secara bijak, aman, dan sesuai peruntukan.
+        * **Berbelanja:** Berbelanja secara rasional sesuai kebutuhan (tidak *panic buying* agar inflasi tetap terjaga) serta mengutamakan produk dalam negeri/UMKM.
+        * **Berhemat:** Mengelola keuangan pribadi dengan menyisihkan pendapatan untuk menabung dan berinvestasi pada instrumen keuangan yang legal dan diawasi otoritas.
+        """)
 
-        with t_bangga:
-            st.markdown("""
-            * **Simbol Kedaulatan:** Setiap lembar dan keping Rupiah memuat gambar pahlawan nasional, kekayaan alam, serta ragam budaya Nusantara sebagai representasi identitas bangsa merdeka.
-            * **Pembayaran yang SAH:** Berdasarkan Undang-Undang Mata Uang, Rupiah wajib digunakan dalam setiap transaksi pembayaran di seluruh wilayah Negara Kesatuan Republik Indonesia (NKRI).
-            * **Pemersatu Bangsa:** Menjadi satu-satunya alat tukar yang menyatukan aktivitas ekonomi masyarakat di seluruh pulau, dari perkotaan hingga wilayah 3T (Terdepan, Terluar, Tertinggal).
-            """)
-
-        with t_paham:
-            st.markdown("""
-            * **Bertransaksi:** Menggunakan instrumen pembayaran tunai maupun digital (seperti QRIS dan BI-FAST) secara bijak, aman, dan sesuai peruntukan.
-            * **Berbelanja:** Berbelanja secara rasional sesuai kebutuhan (tidak *panic buying* agar inflasi tetap terjaga) serta mengutamakan produk dalam negeri/UMKM.
-            * **Berhemat:** Mengelola keuangan pribadi dengan menyisihkan pendapatan untuk menabung dan berinvestasi pada instrumen keuangan yang legal dan diawasi otoritas.
-            """)
-
-        st.info("🎬 **Seri Kampanye Edukasi CBP Bank Indonesia:** *Rupiah Itu Kita* • *Cinta-Bangga-Paham Rupiah: Dimulai dari Kita* • *Kenali Rupiah, Jelajahi Indonesia dalam Genggamanmu*")
-
-    with col_radar:
-        st.subheader("📊 Cek Skor Penerapan CBP Anda")
-        s_cinta = st.slider("Skor Cinta Rupiah (Mengenali, Merawat, Menjaga):", 0, 100, 85)
-        s_bangga = st.slider("Skor Bangga Rupiah (Kedaulatan, Alat Sah, Pemersatu):", 0, 100, 90)
-        s_paham = st.slider("Skor Paham Rupiah (Bertransaksi, Berbelanja, Berhemat):", 0, 100, 80)
-
-        fig_radar = go.Figure(data=go.Scatterpolar(
-            r=[s_cinta, s_bangga, s_paham, s_cinta],
-            theta=["Cinta Rupiah", "Bangga Rupiah", "Paham Rupiah", "Cinta Rupiah"],
-            fill="toself",
-            fillcolor="rgba(2, 132, 199, 0.25)",
-            line=dict(color="#002D72", width=3)
-        ))
-        fig_radar.update_layout(
-            polar=dict(radialaxis=dict(visible=True, range=[0, 100])),
-            showlegend=False,
-            height=265,
-            margin=dict(l=35, r=35, t=20, b=20),
-            paper_bgcolor="rgba(0,0,0,0)"
-        )
-        st.plotly_chart(fig_radar, use_container_width=True)
+    st.info("🎬 **Seri Kampanye Edukasi CBP Bank Indonesia:** *Rupiah Itu Kita* • *Cinta-Bangga-Paham Rupiah: Dimulai dari Kita* • *Kenali Rupiah, Jelajahi Indonesia dalam Genggamanmu*")
 
 # ==========================================
-# MODUL 5: KUIS LITERASI KEBANKSENTRALAN
+# MODUL 5: CARA MERAWAT RUPIAH - 5 JANGAN (BARU)
 # ==========================================
-elif menu == "🏆 5. Kuis Literasi Kebanksentralan":
+elif menu == "✨ 5. Cara Merawat Rupiah (5 Jangan)":
     st.markdown("""
     <div class="hero-banner">
-        <span class="badge-bi">EVALUASI PEMAHAMAN PUBLIK</span>
-        <h1>Kuis Literasi Bank Sentral, CBP Rupiah & Sistem Pembayaran</h1>
-        <p>Uji pemahaman Anda mengenai fungsi utama Bank Indonesia, pilar Cinta Bangga Paham Rupiah, inovasi QRIS TAP, dan kanal resmi pelindungan konsumen.</p>
-    </div>
-    """, unsafe_allow_html=True)
-
-    skor = 0
-
-    st.markdown("#### 1. Apa tujuan tunggal Bank Indonesia sebagaimana tercantum dalam mandatnya?")
-    q1 = st.radio(
-        "Pilih jawaban:",
-        [
-            "Menghimpun simpanan masyarakat dan menyalurkan kredit komersial.",
-            "Mencapai dan memelihara kestabilan nilai Rupiah (terhadap barang/jasa dan mata uang asing).",
-            "Mengatur seluruh kegiatan perdagangan saham di bursa efek."
-        ],
-        key="q_bi_1"
-    )
-    if q1 == "Mencapai dan memelihara kestabilan nilai Rupiah (terhadap barang/jasa dan mata uang asing).":
-        skor += 20
-
-    st.divider()
-    st.markdown("#### 2. Dalam kampanye CBP Rupiah Bank Indonesia, pilar '3 Cinta' diwujudkan melalui tindakan...")
-    q2 = st.radio(
-        "Pilih jawaban:",
-        [
-            "Mengenali, Merawat, dan Menjaga Rupiah.",
-            "Bertransaksi, Berbelanja, dan Berhemat.",
-            "Simbol Kedaulatan, Pembayaran yang Sah, dan Pemersatu Bangsa."
-        ],
-        key="q_bi_2"
-    )
-    if q2 == "Mengenali, Merawat, dan Menjaga Rupiah.":
-        skor += 20
-
-    st.divider()
-    st.markdown("#### 3. Teknologi apa yang digunakan pada fitur QRIS TAP untuk melakukan pembayaran?")
-    q3 = st.radio(
-        "Pilih jawaban:",
-        [
-            "Pembayaran nirkontak (contactless) cukup dengan menempelkan ponsel berbasis NFC ke mesin pemindai.",
-            "Pengiriman kode rahasia melalui pesan singkat SMS.",
-            "Penukaran uang logam di mesin kasir."
-        ],
-        key="q_bi_3"
-    )
-    if q3 == "Pembayaran nirkontak (contactless) cukup dengan menempelkan ponsel berbasis NFC ke mesin pemindai.":
-        skor += 20
-
-    st.divider()
-    st.markdown("#### 4. Apa nama inisiatif Bank Indonesia dalam mengeksplorasi pengembangan Digital Rupiah (CBDC)?")
-    q4 = st.radio(
-        "Pilih jawaban:",
-        [
-            "Proyek Nusantara",
-            "Proyek Garuda",
-            "Proyek Khatulistiwa"
-        ],
-        key="q_bi_4"
-    )
-    if q4 == "Proyek Garuda":
-        skor += 20
-
-    st.divider()
-    st.markdown("#### 5. Berapa nomor layanan resmi Contact Center Bank Indonesia (BICARA) untuk informasi dan pengaduan konsumen?")
-    q5 = st.radio(
-        "Pilih jawaban:",
-        [
-            "131",
-            "112",
-            "147"
-        ],
-        key="q_bi_5"
-    )
-    if q5 == "131":
-        skor += 20
-
-    st.write("")
-    if st.button("🎯 Periksa Skor Literasi Saya", type="primary"):
-        st.subheader(f"Skor Akhir Anda: {skor} / 100")
-        if skor == 100:
-            st.balloons()
-            st.success("🏅 **SEMPURNA (100/100)!** Anda memahami fungsi utama Bank Indonesia, pilar Cinta Bangga Paham Rupiah, serta inovasi sistem pembayaran.")
-        elif skor >= 80:
-            st.info("🥈 **SANGAT BAIK!** Sebagian besar konsep kebanksentralan dan CBP Rupiah telah Anda kuasai dengan tepat.")
-        else:
-            st.warning("📘 **TERUS BELAJAR!** Silakan tinjau kembali ringkasan materi pada modul sebelumnya sebelum mengulang kuis.")
+        <span class="badge-bi">KOMUNIKASI MERAWAT RUPIAH •
