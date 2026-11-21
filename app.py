@@ -142,48 +142,20 @@ st.markdown("""
 # ILUSTRASI VEKTOR EDUKASI 5 JANGAN (SVG)
 # ==========================================
 def svg_5_jangan(jenis):
-    bingkai_awal = """
-    <svg width="115" height="115" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="60" cy="60" r="54" fill="#FFF5F5" stroke="#FECACA" stroke-width="2"/>
-    """
-    bingkai_larangan = """
-        <circle cx="60" cy="60" r="46" fill="none" stroke="#DC2626" stroke-width="6.5"/>
-        <line x1="28" y1="28" x2="92" y2="92" stroke="#DC2626" stroke-width="6.5" stroke-linecap="round"/>
-    </svg>
-    """
+    bingkai_awal = '<svg width="115" height="115" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg"><circle cx="60" cy="60" r="54" fill="#FFF5F5" stroke="#FECACA" stroke-width="2"/>'
+    bingkai_larangan = '<circle cx="60" cy="60" r="46" fill="none" stroke="#DC2626" stroke-width="6.5"/><line x1="28" y1="28" x2="92" y2="92" stroke="#DC2626" stroke-width="6.5" stroke-linecap="round"/></svg>'
+
     if jenis == "lipat":
-        isi = """
-        <polygon points="30,44 60,36 60,78 30,84" fill="#DBEAFE" stroke="#1E40AF" stroke-width="2.5"/>
-        <polygon points="60,36 90,46 90,86 60,78" fill="#93C5FD" stroke="#1E40AF" stroke-width="2.5"/>
-        <line x1="60" y1="36" x2="60" y2="78" stroke="#1E3A8A" stroke-width="2.5" stroke-dasharray="4,3"/>
-        <circle cx="45" cy="60" r="5" fill="#2563EB"/>
-        <circle cx="75" cy="62" r="5" fill="#2563EB"/>
-        """
+        isi = '<polygon points="30,44 60,36 60,78 30,84" fill="#DBEAFE" stroke="#1E40AF" stroke-width="2.5"/><polygon points="60,36 90,46 90,86 60,78" fill="#93C5FD" stroke="#1E40AF" stroke-width="2.5"/><line x1="60" y1="36" x2="60" y2="78" stroke="#1E3A8A" stroke-width="2.5" stroke-dasharray="4,3"/><circle cx="45" cy="60" r="5" fill="#2563EB"/><circle cx="75" cy="62" r="5" fill="#2563EB"/>'
     elif jenis == "coret":
-        isi = """
-        <rect x="28" y="42" width="64" height="36" rx="4" fill="#E0F2FE" stroke="#0369A1" stroke-width="2.5"/>
-        <path d="M35 65 Q48 48, 58 63 T82 56" fill="none" stroke="#1E293B" stroke-width="2.5" stroke-linecap="round"/>
-        <polygon points="72,30 82,36 63,65 55,67 57,58" fill="#F59E0B" stroke="#92400E" stroke-width="2"/>
-        """
+        isi = '<rect x="28" y="42" width="64" height="36" rx="4" fill="#E0F2FE" stroke="#0369A1" stroke-width="2.5"/><path d="M35 65 Q48 48, 58 63 T82 56" fill="none" stroke="#1E293B" stroke-width="2.5" stroke-linecap="round"/><polygon points="72,30 82,36 63,65 55,67 57,58" fill="#F59E0B" stroke="#92400E" stroke-width="2"/>'
     elif jenis == "stapler":
-        isi = """
-        <rect x="28" y="42" width="64" height="36" rx="4" fill="#DCFCE7" stroke="#15803D" stroke-width="2.5"/>
-        <rect x="44" y="54" width="32" height="12" rx="2" fill="#94A3B8" stroke="#334155" stroke-width="2.5"/>
-        <line x1="48" y1="54" x2="48" y2="66" stroke="#1E293B" stroke-width="2.5"/>
-        <line x1="72" y1="54" x2="72" y2="66" stroke="#1E293B" stroke-width="2.5"/>
-        """
+        isi = '<rect x="28" y="42" width="64" height="36" rx="4" fill="#DCFCE7" stroke="#15803D" stroke-width="2.5"/><rect x="44" y="54" width="32" height="12" rx="2" fill="#94A3B8" stroke="#334155" stroke-width="2.5"/><line x1="48" y1="54" x2="48" y2="66" stroke="#1E293B" stroke-width="2.5"/><line x1="72" y1="54" x2="72" y2="66" stroke="#1E293B" stroke-width="2.5"/>'
     elif jenis == "remas":
-        isi = """
-        <polygon points="36,44 50,34 68,38 84,48 80,72 64,84 42,80 32,62" fill="#FEF3C7" stroke="#B45309" stroke-width="2.5"/>
-        <polyline points="42,46 56,58 48,74" fill="none" stroke="#92400E" stroke-width="2"/>
-        <polyline points="72,46 60,60 74,72" fill="none" stroke="#92400E" stroke-width="2"/>
-        """
-    else:  # basah
-        isi = """
-        <rect x="28" y="44" width="64" height="34" rx="4" fill="#E0F2FE" stroke="#0284C7" stroke-width="2.5"/>
-        <path d="M46 32 C46 32, 38 44, 38 49 A8 8 0 0 0 54 49 C54 44, 46 32, 46 32 Z" fill="#38BDF8" stroke="#0369A1" stroke-width="2"/>
-        <path d="M72 48 C72 48, 65 58, 65 63 A7 7 0 0 0 79 63 C79 58, 72 48, 72 48 Z" fill="#0EA5E9" stroke="#0369A1" stroke-width="2"/>
-        """
+        isi = '<polygon points="36,44 50,34 68,38 84,48 80,72 64,84 42,80 32,62" fill="#FEF3C7" stroke="#B45309" stroke-width="2.5"/><polyline points="42,46 56,58 48,74" fill="none" stroke="#92400E" stroke-width="2"/><polyline points="72,46 60,60 74,72" fill="none" stroke="#92400E" stroke-width="2"/>'
+    else:
+        isi = '<rect x="28" y="44" width="64" height="34" rx="4" fill="#E0F2FE" stroke="#0284C7" stroke-width="2.5"/><path d="M46 32 C46 32, 38 44, 38 49 A8 8 0 0 0 54 49 C54 44, 46 32, 46 32 Z" fill="#38BDF8" stroke="#0369A1" stroke-width="2"/><path d="M72 48 C72 48, 65 58, 65 63 A7 7 0 0 0 79 63 C79 58, 72 48, 72 48 Z" fill="#0EA5E9" stroke="#0369A1" stroke-width="2"/>'
+
     return bingkai_awal + isi + bingkai_larangan
 
 # ==========================================
@@ -603,14 +575,15 @@ elif menu == "✨ 5. Cara Merawat Rupiah (5 Jangan)":
     cols_5j = st.columns(5)
     for col, item in zip(cols_5j, data_5j):
         with col:
-            st.markdown(f"""
-            <div class="jangan-visual-card">
-                <span class="jangan-badge-num">{item['no']}</span>
-                <div>{svg_5_jangan(item['kode'])}</div>
-                <div class="jangan-card-title">{item['judul']}</div>
-                <p class="jangan-card-desc">{item['desc']}</p>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown(
+                f'<div class="jangan-visual-card">'
+                f'<span class="jangan-badge-num">{item["no"]}</span>'
+                f'<div>{svg_5_jangan(item["kode"])}</div>'
+                f'<div class="jangan-card-title">{item["judul"]}</div>'
+                f'<p class="jangan-card-desc">{item["desc"]}</p>'
+                f'</div>',
+                unsafe_allow_html=True
+            )
 
     st.write("")
     st.divider()
