@@ -1,5 +1,3 @@
-import re
-import time
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
@@ -9,7 +7,7 @@ import plotly.express as px
 # KONFIGURASI HALAMAN & TEMA VISUAL RESMI BI
 # ==========================================
 st.set_page_config(
-    page_title="Portal Edukasi Kebanksentralan & AI Governance",
+    page_title="Portal Edukasi Kebanksentralan & Pelindungan Konsumen",
     page_icon="🏛️",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -48,6 +46,53 @@ st.markdown("""
     font-size: 0.76rem;
     display: inline-block;
     margin-bottom: 8px;
+}
+
+/* Kartu Modern Khusus PeKA (Peduli, Kenali, Adukan) */
+.peka-card {
+    background: #FFFFFF;
+    border-radius: 20px;
+    padding: 24px 20px;
+    text-align: center;
+    box-shadow: 0 10px 26px rgba(0, 45, 114, 0.08);
+    height: 100%;
+    transition: transform 0.2s ease;
+}
+.peka-peduli { border-top: 7px solid #0284C7; }
+.peka-kenali { border-top: 7px solid #D97706; }
+.peka-adukan { border-top: 7px solid #0D9488; }
+.peka-tag {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 999px;
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+    margin-bottom: 12px;
+}
+.tag-peduli { background: #E0F2FE; color: #0369A1; }
+.tag-kenali { background: #FEF3C7; color: #B45309; }
+.tag-adukan { background: #CCFBF1; color: #0F766E; }
+.peka-heading {
+    color: #002D72;
+    font-size: 1.45rem;
+    font-weight: 900;
+    margin: 10px 0 8px 0;
+}
+.peka-desc {
+    color: #334155;
+    font-size: 0.94rem;
+    line-height: 1.55;
+    margin-bottom: 14px;
+}
+.peka-checklist {
+    background: #F8FAFC;
+    border-radius: 12px;
+    padding: 12px 14px;
+    text-align: left;
+    font-size: 0.86rem;
+    color: #475569;
+    border: 1px solid #E2E8F0;
 }
 
 /* Kartu Modern Khusus Pilar CBP Rupiah */
@@ -140,6 +185,54 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ==========================================
+# ILUSTRASI VEKTOR KEKINIAN: PeKA (SVG)
+# ==========================================
+def svg_peka(pilar):
+    if pilar == "peduli":
+        return (
+            '<svg width="135" height="135" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">'
+            '<defs><linearGradient id="gPeduli" x1="0" y1="0" x2="1" y2="1">'
+            '<stop offset="0%" stop-color="#E0F2FE"/><stop offset="100%" stop-color="#BAE6FD"/></linearGradient></defs>'
+            '<circle cx="70" cy="70" r="62" fill="url(#gPeduli)"/>'
+            '<rect x="44" y="28" width="52" height="84" rx="10" fill="#002D72" stroke="#FFFFFF" stroke-width="3"/>'
+            '<rect x="50" y="38" width="40" height="60" rx="5" fill="#F8FAFC"/>'
+            '<path d="M70 46 L86 53 V67 C86 78 79 86 70 90 C61 86 54 78 54 67 V53 Z" fill="#0284C7"/>'
+            '<polyline points="63,68 68,73 78,62" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>'
+            '<circle cx="102" cy="40" r="10" fill="#D4AF37"/><text x="102" y="44" text-anchor="middle" fill="#002D72" font-size="11" font-weight="bold">✓</text>'
+            '</svg>'
+        )
+    elif pilar == "kenali":
+        return (
+            '<svg width="135" height="135" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">'
+            '<defs><linearGradient id="gKenali" x1="0" y1="0" x2="1" y2="1">'
+            '<stop offset="0%" stop-color="#FEF3C7"/><stop offset="100%" stop-color="#FDE68A"/></linearGradient></defs>'
+            '<circle cx="70" cy="70" r="62" fill="url(#gKenali)"/>'
+            '<rect x="34" y="36" width="56" height="68" rx="8" fill="#FFFFFF" stroke="#002D72" stroke-width="2.5"/>'
+            '<rect x="42" y="46" width="40" height="8" rx="4" fill="#002D72"/>'
+            '<rect x="42" y="60" width="28" height="6" rx="3" fill="#94A3B8"/>'
+            '<rect x="42" y="71" width="34" height="6" rx="3" fill="#94A3B8"/>'
+            '<circle cx="84" cy="82" r="20" fill="#FFFBEB" stroke="#D97706" stroke-width="4.5"/>'
+            '<line x1="98" y1="96" x2="112" y2="110" stroke="#002D72" stroke-width="6" stroke-linecap="round"/>'
+            '<polyline points="76,82 82,88 93,76" fill="none" stroke="#0D9488" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>'
+            '</svg>'
+        )
+    else:
+        return (
+            '<svg width="135" height="135" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">'
+            '<defs><linearGradient id="gAdukan" x1="0" y1="0" x2="1" y2="1">'
+            '<stop offset="0%" stop-color="#CCFBF1"/><stop offset="100%" stop-color="#99F6E4"/></linearGradient></defs>'
+            '<circle cx="70" cy="70" r="62" fill="url(#gAdukan)"/>'
+            '<path d="M38 64 L78 44 V92 L38 74 Z" fill="#002D72" stroke="#FFFFFF" stroke-width="2"/>'
+            '<rect x="30" y="62" width="12" height="16" rx="4" fill="#0D9488"/>'
+            '<path d="M44 76 L50 94 H58 L52 78 Z" fill="#D4AF37"/>'
+            '<path d="M88 54 Q98 68 88 82" fill="none" stroke="#0F766E" stroke-width="3.5" stroke-linecap="round"/>'
+            '<path d="M96 46 Q110 68 96 90" fill="none" stroke="#0284C7" stroke-width="3.5" stroke-linecap="round"/>'
+            '<rect x="68" y="26" width="44" height="20" rx="10" fill="#002D72"/>'
+            '<text x="90" y="39" text-anchor="middle" fill="#D4AF37" font-size="10" font-weight="bold">BI 131</text>'
+            '</svg>'
+        )
+
+# ==========================================
 # ILUSTRASI VEKTOR EDUKASI 5 JANGAN (SVG)
 # ==========================================
 def svg_5_jangan(jenis):
@@ -160,77 +253,11 @@ def svg_5_jangan(jenis):
     return bingkai_awal + isi + bingkai_larangan
 
 # ==========================================
-# FUNGSI ANALISIS PENIPUAN ONLINE & HOAKS KOMPREHENSIF
-# ==========================================
-def analisis_penipuan_komprehensif(teks):
-    low = teks.lower()
-    temuan = []
-    skor_risiko = 0
-
-    # 1. Deteksi Tautan / URL / Domain Mencurigakan (termasuk tanpa http)
-    pola_url = re.findall(r'(?:https?://|www\.)[^\s]+|\b[a-z0-9-]+\.(?:info|xyz|top|site|online|icu|vip|club|click|link|apk|ly|id|my\.id|biz\.id|web\.id|com|net|org)/[^\s]*', low)
-    domain_resmi = ("bi.go.id", "ojk.go.id", "kemkes.go.id", "pajak.go.id", "go.id")
-    tautan_asing = [u for u in pola_url if not any(dr in u for dr in domain_resmi)]
-
-    if tautan_asing or any(k in low for k in ["klik link", "klik tautan", "bit.ly", "tinyurl", "s.id", "cutt.ly", ".apk", "unduh aplikasi", "install aplikasi"]):
-        daftar_link = ", ".join(set(tautan_asing)) if tautan_asing else "tautan/file eksternal"
-        temuan.append(f"🔗 **Tautan Asing / Phishing / Malware (`.apk`):** Terdeteksi rujukan ke `{daftar_link}`. Jangan mengklik tautan acak atau memasang file `.apk` dari pesan singkat karena berisiko mencuri data m-banking dan SMS OTP.")
-        skor_risiko += 35
-
-    # 2. Modus Kurir Paket, Resi, Tilang, Pajak & Undangan Digital (Smishing)
-    if any(k in low for k in ["paket", "fedex", "jne", "j&t", "sicepat", "pos indonesia", "resi", "pelacakan", "pengiriman", "kurir", "undangan pernikahan", "surat tilang", "e-tilang", "tagihan pajak"]):
-        temuan.append("📦 **Modus Smishing Kurir / Dokumen Palsu:** Penipu sering menyamar sebagai jasa ekspedisi (FedEx, JNE, dll.) dengan kode pelacakan palsu atau mengirim berkas undangan/tilang agar korban mengklik tautan phishing.")
-        skor_risiko += 30
-
-    # 3. Pencurian Kredensial & Data Pribadi Sensitif
-    if any(k in low for k in ["otp", "pin", "password", "kata sandi", "cvv", "kode verifikasi", "nama ibu kandung", "nomor kartu", "token", "user id"]):
-        temuan.append("🔐 **Pencurian Kredensial Perbankan:** Meminta OTP, PIN, password, atau CVV adalah ciri mutlak kejahatan siber. Bank maupun otoritas resmi tidak pernah memintanya.")
-        skor_risiko += 40
-
-    # 4. Rekayasa Sosial Darurat & Ancaman Pemblokiran Rekening
-    if any(k in low for k in ["blokir", "diblokir", "suspend", "ditangguhkan", "dalam 24 jam", "segera konfirmasi", "tarif transaksi", "biaya admin baru", "perubahan tarif", "akun anda dibatasi"]):
-        temuan.append("⏳ **Rekayasa Sosial Berbasis Kepanikan (Urgency):** Pelaku menciptakan tekanan waktu atau ancaman pemblokiran rekening/perubahan tarif bank agar korban panik dan mengisi formulir palsu.")
-        skor_risiko += 25
-
-    # 5. Iming-Iming Hadiah, Hibah, Undian, Bansos & Giveaway
-    if any(k in low for k in ["hibah", "hadiah", "undian", "bantuan", "bansos", "giveaway", "terpilih menerima", "pemenang", "dana cair", "gratis"]):
-        temuan.append("🎁 **Iming-Iming Hadiah / Hibah Fiktif:** Institusi resmi maupun Bank Indonesia tidak pernah menyalurkan dana hibah atau hadiah undian melalui pesan pribadi/tautan pendaftaran.")
-        skor_risiko += 25
-
-    # 6. Investasi Bodong, Titip Dana & Pinjol Ilegal
-    if any(k in low for k in ["profit pasti", "tanpa risiko", "cuan instan", "titip dana", "investasi bodong", "trading profit", "pinjaman tanpa syarat", "langsung cair", "bunga 0%", "slot", "gacor"]):
-        temuan.append("💸 **Indikasi Investasi Ilegal / Pinjol Bodong:** Janji keuntungan pasti dalam waktu singkat tanpa risiko atau penawaran pinjaman instan tanpa verifikasi resmi merupakan ciri skema penipuan finansial.")
-        skor_risiko += 30
-
-    # 7. Penipuan Lowongan Kerja Paruh Waktu / Misi Like & Subscribe
-    if any(k in low for k in ["kerja paruh waktu", "misi like", "subscribe dapat uang", "komisi harian", "deposit tugas", "freelance online"]):
-        temuan.append("💼 **Modus Lowongan Kerja / Misi Deposit:** Pelaku menjanjikan komisi mudah dari tugas sederhana, lalu meminta korban menyetor sejumlah uang (*top-up/deposit*) yang akhirnya dibawa kabur.")
-        skor_risiko += 25
-
-    # 8. Pencatutan Nama Bank Indonesia / Otoritas Negara
-    if any(k in low for k in ["bank indonesia", "atas nama bi", "petugas bi", "ojk", "kementerian"]) and any(k in low for k in ["transfer", "biaya", "klik", "pin", "otp", "hibah", "bekukan"]):
-        temuan.append("🏛️ **Pencatutan Nama Otoritas Resmi:** Mengatasnamakan Bank Indonesia atau regulator keuangan untuk memungut biaya atau meminta data nasabah.")
-        skor_risiko += 25
-
-    # 9. Disinformasi Kebijakan Moneter & Uang Rupiah
-    if any(k in low for k in ["dibekukan", "hangus", "ditarik besok", "tidak laku lagi", "redenominasi mendadak", "bi-rate naik menjadi 25%"]):
-        temuan.append("📢 **Disinformasi / Hoaks Kebanksentralan:** Kebijakan moneter dan masa edar Rupiah selalu diumumkan secara resmi melalui portal `bi.go.id` dengan masa transisi yang jelas.")
-        skor_risiko += 25
-
-    # 10. Sengketa QRIS & Rekayasa Bukti Transfer
-    if any(k in low for k in ["salah transfer", "membatalkan transaksi", "bukti transfer", "struk palsu", "qris palsu"]):
-        temuan.append("💳 **Risiko Transaksi Digital & QRIS:** Pengaduan transaksi diproses melalui Penyedia Jasa Pembayaran (PJP) penerbit aplikasi dengan bukti sah, bukan melalui perantara pribadi.")
-        skor_risiko += 20
-
-    skor_risiko = min(100, skor_risiko)
-    return temuan, skor_risiko
-
-# ==========================================
 # SIDEBAR NAVIGASI
 # ==========================================
 with st.sidebar:
     st.markdown("<h2 style='text-align:center; color:#002D72; margin-bottom:0;'>🏛️ BANK SENTRAL RI</h2>", unsafe_allow_html=True)
-    st.caption("<p style='text-align:center;'>Edukasi Kebanksentralan & AI Risk Governance</p>", unsafe_allow_html=True)
+    st.caption("<p style='text-align:center;'>Edukasi Kebanksentralan & Pelindungan Konsumen</p>", unsafe_allow_html=True)
     st.divider()
     
     menu = st.radio(
@@ -238,7 +265,7 @@ with st.sidebar:
         [
             "📊 1. Tiga Fungsi Utama & Indikator BI",
             "💳 2. Inovasi Sistem Pembayaran & Digital Rupiah",
-            "🛡️ 3. Pelindungan Konsumen & Audit Hoaks AI",
+            "🛡️ 3. Pelindungan Konsumen: PeKA",
             "❤️ 4. Cinta, Bangga, Paham Rupiah",
             "✨ 5. Cara Merawat Rupiah (5 Jangan)",
             "🏆 6. Kuis Literasi Kebanksentralan"
@@ -246,8 +273,8 @@ with st.sidebar:
     )
     
     st.divider()
-    st.info("📌 **Sumber Materi:** Seluruh data indikator, pilar kebijakan, dan kampanye CBP merujuk pada portal resmi Bank Indonesia (`bi.go.id`).")
-    st.link_button("🌐 Portal Merawat Rupiah BI", "https://www.bi.go.id/id/rupiah/komunikasi-merawat-rupiah/default.aspx", use_container_width=True)
+    st.info("📌 **Sumber Materi:** Seluruh data indikator, pilar kebijakan, dan kampanye PeKA & CBP merujuk pada portal resmi Bank Indonesia (`bi.go.id`).")
+    st.link_button("🛡️ Panduan Pelindungan Konsumen BI", "https://www.bi.go.id/id/Pelindungan-Konsumen/Panduan-Dasar/Default.aspx#peka", use_container_width=True)
 
 # ==========================================
 # MODUL 1: TIGA FUNGSI UTAMA & INDIKATOR BI
@@ -405,110 +432,129 @@ elif menu == "💳 2. Inovasi Sistem Pembayaran & Digital Rupiah":
         """)
 
 # ==========================================
-# MODUL 3: PELINDUNGAN KONSUMEN & AUDIT HOAKS AI
+# MODUL 3: PELINDUNGAN KONSUMEN - PeKA (PEDULI, KENALI, ADUKAN)
 # ==========================================
-elif menu == "🛡️ 3. Pelindungan Konsumen & Audit Hoaks AI":
+elif menu == "🛡️ 3. Pelindungan Konsumen: PeKA":
     st.markdown("""
     <div class="hero-banner">
-        <span class="badge-bi">PELINDUNGAN KONSUMEN & AI RISK GOVERNANCE</span>
-        <h1>Detektor Pola Penipuan Online & Audit Respons AI</h1>
-        <p>Pelindungan konsumen menjadi kunci ekonomi keuangan digital terpercaya. Uji berbagai modus pesan penipuan siber (smishing, phishing, investasi bodong, hoaks BI) atau audit perilaku AI.</p>
+        <span class="badge-bi">PANDUAN DASAR PELINDUNGAN KONSUMEN • BANK INDONESIA</span>
+        <h1>Ayo Jadi Konsumen Cerdas dengan Prinsip PeKA!</h1>
+        <p>Kamu jadi konsumen cerdas yang bisa buat keputusan keuangan dengan tepat melalui tiga langkah utama: <b>Peduli, Kenali, dan Adukan (PeKA)</b>.</p>
     </div>
     """, unsafe_allow_html=True)
 
-    sub_tab1, sub_tab2 = st.tabs([
-        "🔍 Pemindai Indikator Penipuan Online & Hoaks",
-        "🤖 Sandbox Audit Halusinasi AI (AI Governance)"
+    st.subheader("🌟 Tiga Pilar Utama PeKA (Peduli, Kenali, Adukan)")
+    col_p, col_k, col_a = st.columns(3)
+
+    with col_p:
+        st.markdown(
+            f'<div class="peka-card peka-peduli">'
+            f'<span class="peka-tag tag-peduli">LANGKAH 01</span>'
+            f'<div>{svg_peka("peduli")}</div>'
+            f'<div class="peka-heading">PEDULI</div>'
+            f'<p class="peka-desc"><b>Peduli manfaat, risiko, dan keamanan</b> transaksi pembayaran kamu sebelum memutuskan menggunakan suatu produk atau jasa keuangan.</p>'
+            f'<div class="peka-checklist">'
+            f'<b>Praktik Nyata Peduli:</b><br>'
+            f'• Pahami fitur, biaya, serta syarat & ketentuan layanan.<br>'
+            f'• Jaga kerahasiaan data pribadi, PIN, password, dan kode OTP.<br>'
+            f'• Waspada terhadap tautan mencurigakan & tawaran tidak wajar.'
+            f'</div></div>',
+            unsafe_allow_html=True
+        )
+
+    with col_k:
+        st.markdown(
+            f'<div class="peka-card peka-kenali">'
+            f'<span class="peka-tag tag-kenali">LANGKAH 02</span>'
+            f'<div>{svg_peka("kenali")}</div>'
+            f'<div class="peka-heading">KENALI</div>'
+            f'<p class="peka-desc"><b>Kenali penyelenggara dan regulatornya.</b> Pastikan kamu hanya bertransaksi melalui penyelenggara yang <b>resmi, berizin, dan diawasi</b>.</p>'
+            f'<div class="peka-checklist">'
+            f'<b>Praktik Nyata Kenali:</b><br>'
+            f'• Cek daftar Penyelenggara Jasa Pembayaran (PJP) berizin di <code>bi.go.id</code>.<br>'
+            f'• Pastikan kanal komunikasi & aplikasi berasal dari sumber resmi.<br>'
+            f'• Pahami hak serta kewajibanmu sebagai konsumen jasa pembayaran.'
+            f'</div></div>',
+            unsafe_allow_html=True
+        )
+
+    with col_a:
+        st.markdown(
+            f'<div class="peka-card peka-adukan">'
+            f'<span class="peka-tag tag-adukan">LANGKAH 03</span>'
+            f'<div>{svg_peka("adukan")}</div>'
+            f'<div class="peka-heading">ADUKAN</div>'
+            f'<p class="peka-desc"><b>Adukan masalah ke Bank Indonesia</b> untuk ditindaklanjuti apabila kamu mengalami kendala atau dirugikan dalam transaksi sistem pembayaran.</p>'
+            f'<div class="peka-checklist">'
+            f'<b>Praktik Nyata Adukan:</b><br>'
+            f'• Simpan bukti transaksi, kronologi kejadian, dan identitas pihak terkait.<br>'
+            f'• Sampaikan pengaduan pertama kali ke penyelenggara terkait.<br>'
+            f'• Eskalasikan ke layanan resmi <b>Bank Indonesia (BICARA 131)</b>.'
+            f'</div></div>',
+            unsafe_allow_html=True
+        )
+
+    st.write("")
+    st.divider()
+
+    st.subheader("🧭 Eksplorasi Hak, Kewajiban & Alur Pengaduan Konsumen BI")
+    tab_pk1, tab_pk2, tab_pk3 = st.tabs([
+        "📋 Hak & Kewajiban Konsumen",
+        "📞 Alur & Kanal Pengaduan Resmi BI",
+        "✅ Cek Kesiapan Konsumen PeKA"
     ])
 
-    with sub_tab1:
-        contoh_pesan = st.selectbox(
-            "Pilih contoh kasus penipuan online / hoaks (atau ketik pesan apa saja di bawah):",
-            [
-                "-- Ketik Manual --",
-                "Halo, paket FEDEX Anda dengan kode pelacakan DZ-8342-FY34 sedang menunggu Anda untuk mengatur preferensi pengiriman: c4lrs.info/Gm08s43zs1",
-                "PERINGATAN BANK: Rekening Anda akan diblokir dalam 24 jam karena perubahan tarif transaksi baru. Segera konfirmasi PIN dan kode OTP Anda di bit.ly/konfirmasi-akun",
-                "Selamat! Anda mendapat dana hibah resmi Bank Indonesia Rp25.000.000. Klik link berikut untuk pencairan dana.",
-                "Kerja paruh waktu online cukup misi like & subscribe dapat komisi harian Rp500.000! Deposit tugas awal Rp100.000 langsung cair.",
-                "Info darurat: Mulai besok uang Rupiah lama hangus dan seluruh tabungan masyarakat akan dibekukan sementara.",
-                "Saya salah transfer QRIS ke warung sebelah, petugas BI minta kode OTP untuk membatalkan transaksi saya."
-            ]
-        )
+    with tab_pk1:
+        c_hk1, c_hk2 = st.columns(2)
+        with c_hk1:
+            st.markdown("""
+            <div class="bi-card">
+                <div class="bi-title">⚖️ Hak Kamu sebagai Konsumen</div>
+                <ul style="color:#334155; font-size:0.92rem; padding-left:18px;">
+                    <li>Mendapatkan informasi produk/jasa sistem pembayaran yang jelas, akurat, jujur, dan tidak menyesatkan.</li>
+                    <li>Mendapatkan keamanan dan perlindungan atas kerahasiaan data pribadi dalam bertransaksi.</li>
+                    <li>Memperoleh layanan pengaduan dan penyelesaian sengketa sesuai ketentuan yang berlaku.</li>
+                    <li>Mendapatkan edukasi serta literasi terkait produk dan risiko sistem pembayaran.</li>
+                </ul>
+            </div>
+            """, unsafe_allow_html=True)
+        with c_hk2:
+            st.markdown("""
+            <div class="bi-card bi-card-gold">
+                <div class="bi-title">📌 Kewajiban Kamu sebagai Konsumen</div>
+                <ul style="color:#334155; font-size:0.92rem; padding-left:18px;">
+                    <li>Membaca dan memahami dengan saksama informasi, syarat, dan ketentuan produk sebelum bertransaksi.</li>
+                    <li>Beritikad baik dalam melakukan transaksi pembayaran dan tidak menyalahgunakan layanan.</li>
+                    <li>Menjaga keamanan perangkat, akun, PIN, password, dan kode OTP secara mandiri.</li>
+                    <li>Memberikan data dan informasi yang benar serta lengkap saat menggunakan layanan maupun mengajukan pengaduan.</li>
+                </ul>
+            </div>
+            """, unsafe_allow_html=True)
 
-        teks_uji = st.text_area(
-            "Masukkan teks pesan, SMS, WhatsApp, email, atau informasi yang ingin diverifikasi:",
-            value="" if contoh_pesan == "-- Ketik Manual --" else contoh_pesan,
-            height=115,
-            placeholder="Tempelkan pesan mencurigakan di sini (contoh: link paket kurir, undangan .apk, tawaran investasi/pinjol, permintaan OTP, atau hoaks BI)..."
-        )
+    with tab_pk2:
+        st.markdown("""
+        **Tahapan Penyampaian Pengaduan Konsumen Sistem Pembayaran:**
+        1. **Tahap 1 — Lapor ke Penyelenggara Jasa Pembayaran (PJP):** Hubungi *call center* atau layanan pengaduan resmi bank/dompet digital tempat kamu bertransaksi dengan melampirkan bukti transaksi.
+        2. **Tahap 2 — Eskalasi ke Bank Indonesia:** Jika pengaduan belum terselesaikan sesuai jangka waktu ketentuan atau kamu membutuhkan informasi/konsultasi pelindungan konsumen, hubungi kanal resmi Bank Indonesia berikut:
+        """)
+        k_bi1, k_bi2, k_bi3 = st.columns(3)
+        k_bi1.info("☎️ **Contact Center BICARA:**\n\nHubungi **131** (pulsa lokal) atau **1500131** (dari luar negeri) pada hari kerja Senin–Jumat pukul 08.00–16.00 WIB.")
+        k_bi2.info("💬 **Layanan Informasi Digital (LISA):**\n\nChat WhatsApp resmi Bank Indonesia di nomor **081 131 131 131** (terverifikasi centang biru/hijau).")
+        k_bi3.info("📧 **Email & Portal Resmi:**\n\nKirim pengaduan ke **bicara@bi.go.id** atau kunjungi **bi.go.id/id/Pelindungan-Konsumen**.")
 
-        if st.button("🔎 Analisis & Verifikasi Indikator Risiko", type="primary"):
-            if not teks_uji.strip():
-                st.warning("Silakan masukkan teks pesan atau informasi terlebih dahulu.")
-            else:
-                with st.spinner("Memindai pola phishing, smishing, rekayasa sosial, dan risiko perlindungan konsumen..."):
-                    time.sleep(0.4)
+    with tab_pk3:
+        st.markdown("Centang kebiasaan transaksi digital yang sudah kamu terapkan sehari-hari:")
+        p1 = st.checkbox("Saya selalu membaca biaya admin, manfaat, dan risiko sebelum memakai fitur pembayaran baru (Peduli).")
+        p2 = st.checkbox("Saya tidak pernah membagikan PIN, password, atau kode OTP kepada siapa pun (Peduli).")
+        p3 = st.checkbox("Saya memastikan penyedia layanan pembayaran sudah berizin dan diawasi Bank Indonesia (Kenali).")
+        p4 = st.checkbox("Saya menyimpan bukti transaksi dan tahu bahwa layanan pengaduan resmi BI adalah BICARA 131 (Adukan).")
 
-                temuan, skor_risiko = analisis_penipuan_komprehensif(teks_uji)
-
-                st.subheader("📊 Hasil Pemindaian Risiko Keamanan Digital:")
-                st.progress(skor_risiko / 100)
-
-                if temuan:
-                    st.error(f"🚨 **TERDETEKSI {len(temuan)} INDIKATOR PENIPUAN / HOAKS (Tingkat Risiko: {skor_risiko}%)**")
-                    for item in temuan:
-                        st.markdown(f"- {item}")
-                else:
-                    st.success("✅ **TIDAK DITEMUKAN POLA PENIPUAN UMUM (Tingkat Risiko: 0%)**")
-                    st.caption("Tetap waspada: jangan pernah membagikan data pribadi atau mengklik tautan dari pengirim yang tidak dikenal.")
-
-                with st.expander("📚 Panduan Mengenali 6 Ciri Utama Penipuan Online Modern (PeKA)"):
-                    st.markdown("""
-                    1. **Tautan Domain Aneh / Pemendek URL:** Menggunakan akhiran domain tidak resmi seperti `.info`, `.xyz`, `.top`, `.click`, atau tautan pendek (`bit.ly`) yang menyamarkan alamat asli.
-                    2. **Modus Kurir Paket & File `.apk`:** Mengaku dari ekspedisi (FedEx, JNE, J&T) atau mengirim file undangan/surat tilang berekstensi `.apk` untuk mencuri data ponsel.
-                    3. **Menciptakan Kepanikan (Urgency):** Mengancam rekening akan diblokir dalam 24 jam atau kenaikan biaya admin mendadak agar korban terburu-buru.
-                    4. **Meminta Kredensial Rahasia:** Meminta **OTP, PIN, Password, CVV, atau Nama Ibu Kandung**.
-                    5. **Janji Keuntungan Instan / Komisi Mudah:** Penawaran investasi profit pasti tanpa risiko, pinjol cair tanpa syarat, atau misi *like/subscribe* berbayar.
-                    6. **Pencatutan Nama Institusi Resmi:** Mengatasnamakan Bank Indonesia, OJK, atau bank tertentu untuk menawarkan hibah/hadiah langsung.
-                    """)
-
-                st.info("""
-                **Kanal Resmi Layanan & Pengaduan Bank Indonesia:**
-                * **Contact Center BICARA:** `131` (atau `1500131` dari luar negeri)
-                * **Layanan Informasi Digital (LISA):** WhatsApp `081 131 131 131`
-                * **Email Resmi:** `bicara@bi.go.id` | **Kanal Aspirasi:** `LAPOR!` & `Whistleblowing System BI`
-                """)
-
-    with sub_tab2:
-        st.subheader("Perbandingan Tata Kelola AI (AI Governance) dalam Informasi Publik")
-        topik_audit = st.selectbox(
-            "Pilih skenario pertanyaan publik kepada sistem AI:",
-            [
-                "Skenario 1: Pertanyaan seputar Suku Bunga Acuan (BI-Rate) & Inflasi",
-                "Skenario 2: Pertanyaan seputar Penukaran Uang Rusak / Tidak Layak Edar",
-                "Skenario 3: Pertanyaan seputar Keamanan Transaksi Digital & Pelindungan Konsumen"
-            ]
-        )
-
-        col_a, col_b = st.columns(2)
-        if "Skenario 1" in topik_audit:
-            raw_txt = "BI-Rate ditetapkan oleh Kementerian Keuangan setiap hari Senin dan saat ini berada di angka 12% untuk menaikkan harga pangan."
-            gov_txt = "Berdasarkan Rapat Dewan Gubernur (RDG) Bank Indonesia tanggal 17–18 November 2026, **BI-Rate ditetapkan sebesar 6,00%** (Deposit Facility 5,25% dan Lending Facility 6,75%) untuk menjaga stabilitas nilai Rupiah dan mengarahkan inflasi tetap dalam sasaran **2,5±1%**."
-        elif "Skenario 2" in topik_audit:
-            raw_txt = "Uang kertas yang terbakar separuh atau robek kecil sudah tidak laku sama sekali dan harus dibuang."
-            gov_txt = "Masyarakat dapat menukarkan uang Rupiah rusak/cacat di kantor Bank Indonesia atau bank yang ditunjuk. Penggantian diberikan sebesar **nilai nominal penuh** apabila fisik uang kertas masih **lebih besar dari 2/3 ukuran aslinya** dan ciri keasliannya masih dapat dikenali."
+        skor_peka = sum([p1, p2, p3, p4]) * 25
+        st.progress(skor_peka / 100)
+        if skor_peka == 100:
+            st.success("🌟 **100% KONSUMEN CERDAS PeKA!** Kamu sudah menerapkan seluruh prinsip Peduli, Kenali, dan Adukan.")
         else:
-            raw_txt = "Jika mengalami penipuan online, segera kirimkan foto KTP, nomor kartu ATM, dan kode OTP ke akun media sosial yang mengaku admin BI."
-            gov_txt = "Terapkan prinsip **PeKA (Peduli, Kenali, Adukan)**. Jangan pernah membagikan data pribadi maupun kredensial (PIN/OTP) kepada pihak mana pun. Laporkan kendala transaksi ke Penyedia Jasa Pembayaran terkait atau hubungi saluran resmi **BICARA 131** / **LISA (081 131 131 131)**."
-
-        with col_a:
-            st.markdown("<div class='bi-card'><b>❌ AI Tanpa Guardrails (Berisiko Halusinasi)</b></div>", unsafe_allow_html=True)
-            st.write("")
-            st.error(raw_txt)
-        with col_b:
-            st.markdown("<div class='bi-card bi-card-teal'><b>✅ Governed AI (Terverifikasi Data Resmi BI)</b></div>", unsafe_allow_html=True)
-            st.write("")
-            st.success(gov_txt)
+            st.info(f"📊 Tingkat Kesiapan PeKA Anda: **{skor_peka}%**. Lengkapi keempat kebiasaan di atas agar transaksimu makin aman.")
 
 # ==========================================
 # MODUL 4: CINTA, BANGGA, PAHAM RUPIAH
@@ -696,8 +742,8 @@ elif menu == "🏆 6. Kuis Literasi Kebanksentralan":
     st.markdown("""
     <div class="hero-banner">
         <span class="badge-bi">EVALUASI PEMAHAMAN PUBLIK</span>
-        <h1>Kuis Literasi Bank Sentral, CBP Rupiah & Sistem Pembayaran</h1>
-        <p>Uji pemahaman Anda mengenai fungsi utama Bank Indonesia, pilar Cinta Bangga Paham Rupiah, prinsip 5 Jangan, serta inovasi QRIS TAP.</p>
+        <h1>Kuis Literasi Bank Sentral, PeKA & CBP Rupiah</h1>
+        <p>Uji pemahaman Anda mengenai fungsi utama Bank Indonesia, prinsip PeKA (Peduli, Kenali, Adukan), pilar CBP Rupiah, serta prinsip 5 Jangan.</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -717,17 +763,17 @@ elif menu == "🏆 6. Kuis Literasi Kebanksentralan":
         skor += 20
 
     st.divider()
-    st.markdown("#### 2. Dalam kampanye CBP Rupiah Bank Indonesia, pilar '3 Cinta' diwujudkan melalui tindakan...")
+    st.markdown("#### 2. Apa kepanjangan dari gerakan edukasi Pelindungan Konsumen Bank Indonesia 'PeKA'?")
     q2 = st.radio(
         "Pilih jawaban:",
         [
-            "Mengenali, Merawat, dan Menjaga Rupiah.",
-            "Bertransaksi, Berbelanja, dan Berhemat.",
-            "Simbol Kedaulatan, Pembayaran yang Sah, dan Pemersatu Bangsa."
+            "Peduli, Kenali, Adukan.",
+            "Periksa, Kelola, Amankan.",
+            "Pahami, Kendalikan, Awasi."
         ],
         key="q_bi_2"
     )
-    if q2 == "Mengenali, Merawat, dan Menjaga Rupiah.":
+    if q2 == "Peduli, Kenali, Adukan.":
         skor += 20
 
     st.divider()
@@ -777,8 +823,8 @@ elif menu == "🏆 6. Kuis Literasi Kebanksentralan":
         st.subheader(f"Skor Akhir Anda: {skor} / 100")
         if skor == 100:
             st.balloons()
-            st.success("🏅 **SEMPURNA (100/100)!** Anda memahami fungsi utama Bank Indonesia, pilar Cinta Bangga Paham Rupiah, prinsip 5 Jangan, serta inovasi sistem pembayaran.")
+            st.success("🏅 **SEMPURNA (100/100)!** Anda memahami fungsi utama Bank Indonesia, prinsip PeKA, CBP Rupiah, serta inovasi sistem pembayaran.")
         elif skor >= 80:
-            st.info("🥈 **SANGAT BAIK!** Sebagian besar konsep kebanksentralan dan CBP Rupiah telah Anda kuasai dengan tepat.")
+            st.info("🥈 **SANGAT BAIK!** Sebagian besar konsep kebanksentralan dan pelindungan konsumen telah Anda kuasai dengan tepat.")
         else:
             st.warning("📘 **TERUS BELAJAR!** Silakan tinjau kembali ringkasan materi pada modul sebelumnya sebelum mengulang kuis.")
