@@ -649,7 +649,7 @@ elif menu == "❤️ 4. Cinta, Bangga, Paham Rupiah":
         st.markdown("""
         <div class="cbp-modern-card cbp-bangga">
             <span class="cbp-pill">PILAR 02 • IDENTITAS & SIMBOL BANGSA</span>
-            <div class="cbp-modern-title">🇮🇩 BANGGA RUPIAH</div>
+            <div class="cbp-modern-title">🥇 BANGGA RUPIAH</div>
             <p style="font-size:0.92rem; line-height:1.5; margin-bottom:0;">
             Perwujudan kemampuan masyarakat memahami Rupiah sebagai alat pembayaran yang sah, simbol kedaulatan NKRI, dan alat pemersatu bangsa dari Sabang sampai Merauke.
             </p>
@@ -681,7 +681,7 @@ elif menu == "❤️ 4. Cinta, Bangga, Paham Rupiah":
 
     st.write("")
     st.subheader("🧭 Eksplorasi Praktik Nyata 3x3 Pilar CBP Rupiah")
-    t_cinta, t_bangga, t_paham = st.tabs(["❤️ Detail 3 Cinta", "🇮🇩 Detail 3 Bangga", "🧠 Detail 3 Paham"])
+    t_cinta, t_bangga, t_paham = st.tabs(["❤️ Detail 3 Cinta", "🥇 Detail 3 Bangga", "🧠 Detail 3 Paham"])
 
     with t_cinta:
         st.markdown("""
