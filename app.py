@@ -114,6 +114,17 @@ def build_theme_css(mode: str) -> str:
         color: var(--heading-accent) !important;
     }}
 
+    [data-testid="stMetricValue"] {{
+        font-size: 1.35rem !important;
+        line-height: 1.25 !important;
+        white-space: normal !important;
+    }}
+
+    [data-testid="stMetricDelta"] {{
+        font-size: 0.78rem !important;
+        white-space: normal !important;
+    }}
+
     .hero-banner {{
         background: linear-gradient(135deg, #002D72 0%, #00509E 100%);
         padding: 24px 28px;
@@ -147,6 +158,7 @@ def build_theme_css(mode: str) -> str:
         border-radius: 12px;
         padding: 14px 16px;
         margin-top: 10px;
+        margin-bottom: 12px;
         color: var(--text-secondary);
         font-size: 0.92rem;
     }}
@@ -457,34 +469,34 @@ if menu == "📊 1. Tiga Fungsi Utama & Indikator BI":
                 "<b>Saat Suku Bunga Turun:</b> Cicilan/kredit cenderung lebih ringan sehingga UMKM dan warga lebih mudah "
                 "meminjam untuk usaha atau kebutuhan. Namun, bunga tabungan/deposito juga berpeluang ikut menyesuaikan."
             )
-            dampak_tabungan = "Cenderung lebih rendah"
-            dampak_cicilan = "Cenderung lebih ringan"
-            dampak_harga = "Dorongan belanja naik"
+            dampak_tabungan = ("Lebih rendah", "Bunga simpanan menyesuaikan")
+            dampak_cicilan = ("Lebih ringan", "Akses pinjaman lebih longgar")
+            dampak_harga = ("Dorongan naik", "Belanja & usaha meningkat")
         elif "Tetap" in pilihan_warga:
             rate_val = 6.00
             ringkasan_warga = (
                 "<b>Saat Suku Bunga Tetap:</b> Kondisi bunga acuan berada di posisi seimbang agar biaya pinjaman, "
                 "imbal hasil simpanan, dan laju kenaikan harga barang tetap dapat diperkirakan."
             )
-            dampak_tabungan = "Relatif stabil"
-            dampak_cicilan = "Relatif stabil"
-            dampak_harga = "Terjaga bertahap"
+            dampak_tabungan = ("Relatif stabil", "Imbal hasil terjaga")
+            dampak_cicilan = ("Relatif stabil", "Biaya pinjaman terukur")
+            dampak_harga = ("Terjaga", "Laju harga bertahap")
         else:
             rate_val = 6.25
             ringkasan_warga = (
                 "<b>Saat Suku Bunga Naik:</b> Langkah ini membantu menjaga nilai Rupiah tetap kuat dan menahan laju "
                 "kenaikan harga barang (inflasi). Menabung/deposito bisa lebih menarik, sementara cicilan baru perlu dihitung lebih cermat."
             )
-            dampak_tabungan = "Lebih menarik"
-            dampak_cicilan = "Lebih selektif / ketat"
-            dampak_harga = "Diredam agar tidak melonjak"
+            dampak_tabungan = ("Lebih menarik", "Imbal hasil berpotensi naik")
+            dampak_cicilan = ("Lebih ketat", "Hitung cicilan lebih cermat")
+            dampak_harga = ("Teredam", "Menahan lonjakan harga")
 
         st.markdown(f'<div class="impact-box">{ringkasan_warga}</div>', unsafe_allow_html=True)
 
         k_w1, k_w2, k_w3 = st.columns(3)
-        k_w1.metric("💰 Tabungan / Deposito", dampak_tabungan)
-        k_w2.metric("🏠 Cicilan / Pinjaman", dampak_cicilan)
-        k_w3.metric("🛍️ Harga Barang", dampak_harga)
+        k_w1.metric("💰 Tabungan / Deposito", dampak_tabungan[0], dampak_tabungan[1])
+        k_w2.metric("🏠 Cicilan / Pinjaman", dampak_cicilan[0], dampak_cicilan[1])
+        k_w3.metric("🛍️ Harga Barang", dampak_harga[0], dampak_harga[1])
 
     with c_sim2:
         df_suku_bunga = pd.DataFrame({
@@ -534,10 +546,10 @@ elif menu == "💳 2. Inovasi Sistem Pembayaran & Digital Rupiah":
             **BI-FAST** adalah infrastruktur sistem pembayaran ritel nasional yang dikembangkan Bank Indonesia untuk memfasilitasi transaksi pembayaran ritel secara **seketika (*real-time*), aman, efisien, dan tersedia setiap saat (24 jam sehari, 7 hari seminggu)**.
             
             **Keunggulan Utama BI-FAST bagi Masyarakat & Pelaku Usaha:**
-- **Real-Time 24/7:** Dana langsung diterima oleh penerima detik itu juga tanpa mengenal hari libur.
-- **Biaya Transaksi Murah:** Tarif transfer antarbank ditetapkan maksimal **Rp2.500 per transaksi** (jauh lebih hemat dibanding transfer *online* konvensional Rp6.500).
-- **Fitur Proxy Address:** Memungkinkan pengguna menerima dana cukup menggunakan **nomor ponsel atau alamat email** sebagai pengganti nomor rekening yang panjang.
-- **Batas Nominal Tinggi:** Mendukung transaksi mulai dari Rp1 hingga maksimal **Rp250 juta per transaksi**.
+            * **Real-Time 24/7:** Dana langsung diterima oleh penerima detik itu juga tanpa mengenal hari libur.
+            * **Biaya Transaksi Murah:** Tarif transfer antarbank ditetapkan maksimal **Rp2.500 per transaksi** (jauh lebih hemat dibanding transfer *online* konvensional Rp6.500).
+            * **Fitur Proxy Address:** Memungkinkan pengguna menerima dana cukup menggunakan **nomor ponsel atau alamat email** sebagai pengganti nomor rekening yang panjang.
+            * **Batas Nominal Tinggi:** Mendukung transaksi mulai dari Rp1 hingga maksimal **Rp250 juta per transaksi**.
             """)
         with c_bf2:
             st.info("🚀 **Layanan BI-FAST Terkini:**\n\n1. **Individual Credit Transfer** (Transfer individu)\n2. **Bulk Credit** (Transfer massal/payroll)\n3. **Direct Debit** (Pendebitan otomatis tagihan)\n4. **Request for Payment** (Permintaan pembayaran)")
@@ -550,13 +562,13 @@ elif menu == "💳 2. Inovasi Sistem Pembayaran & Digital Rupiah":
             st.markdown("""
             **QRIS (*Quick Response Code Indonesian Standard*)** menyatukan berbagai macam QR dari berbagai Penyelenggara Jasa Pembayaran (PJP) sehingga cukup satu kode QR untuk semua aplikasi pembayaran.
             
-- **QRIS TAP:** Inovasi pembayaran nirkontak (*contactless*) berbasis teknologi *Near Field Communication* (NFC) yang memungkinkan pengguna bertransaksi **cukup dengan menempelkan ponsel** ke mesin pemindai di gerbang transportasi umum atau kasir toko tanpa memindai kamera secara manual.
-- **QRIS Antarnegara (*Cross-Border*):** Memudahkan wisatawan maupun pelaku UMKM bertransaksi lintas negara (seperti Thailand, Malaysia, Singapura, dan negara mitra lainnya) menggunakan mata uang lokal masing-masing secara otomatis.
+            * **QRIS TAP:** Inovasi pembayaran nirkontak (*contactless*) berbasis teknologi *Near Field Communication* (NFC) yang memungkinkan pengguna bertransaksi **cukup dengan menempelkan ponsel** ke mesin pemindai di gerbang transportasi umum atau kasir toko tanpa memindai kamera secara manual.
+            * **QRIS Antarnegara (*Cross-Border*):** Memudahkan wisatawan maupun pelaku UMKM bertransaksi lintas negara (seperti Thailand, Malaysia, Singapura, dan negara mitra lainnya) menggunakan mata uang lokal masing-masing secara otomatis.
             
             **Prosedur Verifikasi Aman Saat Bertransaksi QRIS:**
-1. **Periksa Identitas Merchant:** Pastikan nama toko/merchant yang tampil di layar ponsel sesuai dengan tempat bertransaksi.
-2. **Cek Nominal Transaksi:** Pastikan angka tagihan sudah tepat sebelum otorisasi PIN/biometrik.
-3. **Konfirmasi Status Berhasil:** Bagi pedagang (*merchant*), selalu pastikan notifikasi pembayaran masuk ke aplikasi resmi sebelum menyerahkan barang.
+            1. **Periksa Identitas Merchant:** Pastikan nama toko/merchant yang tampil di layar ponsel sesuai dengan tempat bertransaksi.
+            2. **Cek Nominal Transaksi:** Pastikan angka tagihan sudah tepat sebelum otorisasi PIN/biometrik.
+            3. **Konfirmasi Status Berhasil:** Bagi pedagang (*merchant*), selalu pastikan notifikasi pembayaran masuk ke aplikasi resmi sebelum menyerahkan barang.
             """)
         with c2:
             st.warning("🛡️ **Waspada Rekayasa QRIS & Struk Digital:** Jangan pernah hanya mengandalkan tangkapan layar (*screenshot*) bukti bayar dari pembeli. Gunakan notifikasi suara/aplikasi *merchant* resmi.")
@@ -612,9 +624,9 @@ elif menu == "💳 2. Inovasi Sistem Pembayaran & Digital Rupiah":
         **Proyek Garuda** adalah inisiatif Bank Indonesia dalam mengeksplorasi desain **Digital Rupiah** (*Central Bank Digital Currency* / CBDC) sebagai satu-satunya alat pembayaran digital yang sah dan diterbitkan langsung oleh Bank Sentral di masa depan.
         
         **Tiga Pilar Desain Digital Rupiah:**
-- **Wholesale Digital Rupiah (w-Digital Rupiah):** Digunakan untuk transaksi nilai besar antar lembaga keuangan dan operasi moneter.
-- **Retail Digital Rupiah (r-Digital Rupiah):** Digunakan oleh masyarakat luas untuk transaksi sehari-hari layaknya uang kertas dan logam dalam bentuk digital.
-- **Keamanan & Interoperabilitas:** Dirancang agar terintegrasi dengan infrastruktur sistem pembayaran nasional serta mematuhi prinsip Anti Pencucian Uang dan Pencegahan Pendanaan Terorisme (APU-PPT).
+        * **Wholesale Digital Rupiah (w-Digital Rupiah):** Digunakan untuk transaksi nilai besar antar lembaga keuangan dan operasi moneter.
+        * **Retail Digital Rupiah (r-Digital Rupiah):** Digunakan oleh masyarakat luas untuk transaksi sehari-hari layaknya uang kertas dan logam dalam bentuk digital.
+        * **Keamanan & Interoperabilitas:** Dirancang agar terintegrasi dengan infrastruktur sistem pembayaran nasional serta mematuhi prinsip Anti Pencucian Uang dan Pencegahan Pendanaan Terorisme (APU-PPT).
         """)
 
 # ==========================================
@@ -720,8 +732,8 @@ elif menu == "🛡️ 3. Pelindungan Konsumen: PeKA":
     with tab_pk2:
         st.markdown("""
         **Tahapan Penyampaian Pengaduan Konsumen Sistem Pembayaran:**
-1. **Tahap 1 — Lapor ke Penyelenggara Jasa Pembayaran (PJP):** Hubungi *call center* atau layanan pengaduan resmi bank/dompet digital tempat kamu bertransaksi dengan melampirkan bukti transaksi.
-2. **Tahap 2 — Eskalasi ke Bank Indonesia:** Jika pengaduan belum terselesaikan sesuai jangka waktu ketentuan atau kamu membutuhkan informasi/konsultasi pelindungan konsumen, hubungi kanal resmi Bank Indonesia berikut:
+        1. **Tahap 1 — Lapor ke Penyelenggara Jasa Pembayaran (PJP):** Hubungi *call center* atau layanan pengaduan resmi bank/dompet digital tempat kamu bertransaksi dengan melampirkan bukti transaksi.
+        2. **Tahap 2 — Eskalasi ke Bank Indonesia:** Jika pengaduan belum terselesaikan sesuai jangka waktu ketentuan atau kamu membutuhkan informasi/konsultasi pelindungan konsumen, hubungi kanal resmi Bank Indonesia berikut:
         """)
         k_bi1, k_bi2, k_bi3 = st.columns(3)
         k_bi1.info("☎️ **Contact Center BICARA:**\n\nHubungi **131** (pulsa lokal) atau **1500131** (dari luar negeri) pada hari kerja Senin–Jumat pukul 08.00–16.00 WIB.")
@@ -766,9 +778,9 @@ elif menu == "❤️ 4. Cinta, Bangga, Paham Rupiah":
             </p>
             <div class="cbp-sublist">
                 <b>3 Cinta Diwujudkan Dengan:</b><br>
-1. <b>Mengenali</b> (Unsur pengaman 3D)<br>
-2. <b>Merawat</b> (Prinsip 5 Jangan)<br>
-3. <b>Menjaga</b> (Waspada uang palsu)
+                1. <b>Mengenali</b> (Unsur pengaman 3D)<br>
+                2. <b>Merawat</b> (Prinsip 5 Jangan)<br>
+                3. <b>Menjaga</b> (Waspada uang palsu)
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -783,9 +795,9 @@ elif menu == "❤️ 4. Cinta, Bangga, Paham Rupiah":
             </p>
             <div class="cbp-sublist">
                 <b>3 Bangga Rupiah Sebagai:</b><br>
-1. <b>Simbol Kedaulatan</b> NKRI<br>
-2. <b>Alat Pembayaran yang SAH</b><br>
-3. <b>Pemersatu Bangsa</b> Indonesia
+                1. <b>Simbol Kedaulatan</b> NKRI<br>
+                2. <b>Alat Pembayaran yang SAH</b><br>
+                3. <b>Pemersatu Bangsa</b> Indonesia
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -800,9 +812,9 @@ elif menu == "❤️ 4. Cinta, Bangga, Paham Rupiah":
             </p>
             <div class="cbp-sublist">
                 <b>3 Paham Rupiah Dalam:</b><br>
-1. <b>Bertransaksi</b> (Tunai & Non-Tunai)<br>
-2. <b>Berbelanja</b> (Bijak & produk lokal)<br>
-3. <b>Berhemat</b> (Menabung & investasi)
+                1. <b>Bertransaksi</b> (Tunai & Non-Tunai)<br>
+                2. <b>Berbelanja</b> (Bijak & produk lokal)<br>
+                3. <b>Berhemat</b> (Menabung & investasi)
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -813,24 +825,24 @@ elif menu == "❤️ 4. Cinta, Bangga, Paham Rupiah":
 
     with t_cinta:
         st.markdown("""
-- **Mengenali:** Memahami karakteristik desain dan unsur pengaman Rupiah melalui metode **3D** (**Dilihat** perubahan warna benang/tinta, **Diraba** tekstur cetak intaglio yang kasar, **Diterawang** tanda air *watermark* dan *rectoverso* logo BI).
-- **Merawat:** Menjaga kualitas fisik uang layak edar dengan menerapkan **5 Jangan**: *Jangan Dilipat, Jangan Dicoret, Jangan Distapler, Jangan Diremas, dan Jangan Dibasahi*.
-- **Menjaga:** Melindungi diri dan lingkungan sekitar dari peredaran uang palsu serta segera melaporkan temuan mencurigakan kepada bank atau pihak berwenang.
+        * **Mengenali:** Memahami karakteristik desain dan unsur pengaman Rupiah melalui metode **3D** (**Dilihat** perubahan warna benang/tinta, **Diraba** tekstur cetak intaglio yang kasar, **Diterawang** tanda air *watermark* dan *rectoverso* logo BI).
+        * **Merawat:** Menjaga kualitas fisik uang layak edar dengan menerapkan **5 Jangan**: *Jangan Dilipat, Jangan Dicoret, Jangan Distapler, Jangan Diremas, dan Jangan Dibasahi*.
+        * **Menjaga:** Melindungi diri dan lingkungan sekitar dari peredaran uang palsu serta segera melaporkan temuan mencurigakan kepada bank atau pihak berwenang.
         """)
         st.link_button("💵 Lihat Gambar & Ciri Keaslian Uang Rupiah di Website BI", "https://www.bi.go.id/id/rupiah/gambar-uang/default.aspx")
 
     with t_bangga:
         st.markdown("""
-- **Simbol Kedaulatan:** Setiap lembar dan keping Rupiah memuat gambar pahlawan nasional, kekayaan alam, serta ragam budaya Nusantara sebagai representasi identitas bangsa merdeka.
-- **Pembayaran yang SAH:** Berdasarkan Undang-Undang Mata Uang, Rupiah wajib digunakan dalam setiap transaksi pembayaran di seluruh wilayah Negara Kesatuan Republik Indonesia (NKRI).
-- **Pemersatu Bangsa:** Menjadi satu-satunya alat tukar yang menyatukan aktivitas ekonomi masyarakat di seluruh pulau, dari perkotaan hingga wilayah 3T (Terdepan, Terluar, Tertinggal).
+        * **Simbol Kedaulatan:** Setiap lembar dan keping Rupiah memuat gambar pahlawan nasional, kekayaan alam, serta ragam budaya Nusantara sebagai representasi identitas bangsa merdeka.
+        * **Pembayaran yang SAH:** Berdasarkan Undang-Undang Mata Uang, Rupiah wajib digunakan dalam setiap transaksi pembayaran di seluruh wilayah Negara Kesatuan Republik Indonesia (NKRI).
+        * **Pemersatu Bangsa:** Menjadi satu-satunya alat tukar yang menyatukan aktivitas ekonomi masyarakat di seluruh pulau, dari perkotaan hingga wilayah 3T (Terdepan, Terluar, Tertinggal).
         """)
 
     with t_paham:
         st.markdown("""
-- **Bertransaksi:** Menggunakan instrumen pembayaran tunai maupun digital (seperti QRIS dan BI-FAST) secara bijak, aman, dan sesuai peruntukan.
-- **Berbelanja:** Berbelanja secara rasional sesuai kebutuhan (tidak *panic buying* agar inflasi tetap terjaga) serta mengutamakan produk dalam negeri/UMKM.
-- **Berhemat:** Mengelola keuangan pribadi dengan menyisihkan pendapatan untuk menabung dan berinvestasi pada instrumen keuangan yang legal dan diawasi otoritas.
+        * **Bertransaksi:** Menggunakan instrumen pembayaran tunai maupun digital (seperti QRIS dan BI-FAST) secara bijak, aman, dan sesuai peruntukan.
+        * **Berbelanja:** Berbelanja secara rasional sesuai kebutuhan (tidak *panic buying* agar inflasi tetap terjaga) serta mengutamakan produk dalam negeri/UMKM.
+        * **Berhemat:** Mengelola keuangan pribadi dengan menyisihkan pendapatan untuk menabung dan berinvestasi pada instrumen keuangan yang legal dan diawasi otoritas.
         """)
 
     st.info("🎬 **Seri Kampanye Edukasi CBP Bank Indonesia:** *Rupiah Itu Kita* • *Cinta-Bangga-Paham Rupiah: Dimulai dari Kita* • *Kenali Rupiah, Jelajahi Indonesia dalam Genggamanmu*")
