@@ -1,11 +1,10 @@
+import os
+import time
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
-import requests
-from PIL import Image
-from io import BytesIO
-import time
+from PIL import Image, ImageOps
 
 # ==========================================
 # KONFIGURASI HALAMAN & TEMA VISUAL
@@ -55,54 +54,69 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ==========================================
-# FUNGSI MUAT GAMBAR RUPIAH ASLI (CACHED)
+# FUNGSI MUAT GAMBAR SESUAI FILE DI GITHUB
 # ==========================================
-@st.cache_data(show_spinner=False)
-def ambil_gambar_rupiah(url):
-    try:
-        headers = {"User-Agent": "Mozilla/5.0 (EducationalApp/1.0)"}
-        resp = requests.get(url, headers=headers, timeout=6)
-        resp.raise_for_status()
-        return Image.open(BytesIO(resp.content))
-    except Exception:
-        return None
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-def buat_visual_uang_asli(pecahan, mode_cahaya, c_lihat1, c_lihat2, c_raba1, c_raba2, c_terawang1, c_terawang2):
+def muat_foto_rupiah(nama_file):
+    jalur_utama = os.path.join(BASE_DIR, nama_file)
+    if os.path.exists(jalur_utama):
+        return Image.open(jalur_utama)
+    if os.path.exists(nama_file):
+        return Image.open(nama_file)
+    return None
+
+def buat_visual_uang_bi(pecahan, mode_cahaya, c_lihat1, c_lihat2, c_raba1, c_raba2, c_terawang1, c_terawang2):
     katalog_uang = {
         "Rp100.000 (TE 2022)": {
-            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/100000_Rupiah_2022_obverse.jpg/800px-100000_Rupiah_2022_obverse.jpg",
-            "warna_cadangan": "#B91C1C",
-            "label": "Rp100.000 - Soekarno & Mohammad Hatta"
+            "file": "TE-2022-100000-depan.jpg",
+            "tokoh": "Dr. (H.C.) Ir. Soekarno & Dr. (H.C.) Drs. Mohammad Hatta",
+            "warna_cadangan": "#B91C1C"
         },
         "Rp50.000 (TE 2022)": {
-            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/50000_Rupiah_2022_obverse.jpg/800px-50000_Rupiah_2022_obverse.jpg",
-            "warna_cadangan": "#1D4ED8",
-            "label": "Rp50.000 - Ir. H. Djuanda Kartawidjaja"
+            "file": "TE-2022-50000-depan.jpg",
+            "tokoh": "Ir. H. Djuanda Kartawidjaja",
+            "warna_cadangan": "#1D4ED8"
         },
         "Rp20.000 (TE 2022)": {
-            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/20000_Rupiah_2022_obverse.jpg/800px-20000_Rupiah_2022_obverse.jpg",
-            "warna_cadangan": "#15803D",
-            "label": "Rp20.000 - Dr. G.S.S.J. Ratulangi"
+            "file": "TE-2022-20000-depan.jpg",
+            "tokoh": "Dr. G.S.S.J. Ratulangi",
+            "warna_cadangan": "#15803D"
         },
         "Rp10.000 (TE 2022)": {
-            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/10000_Rupiah_2022_obverse.jpg/800px-10000_Rupiah_2022_obverse.jpg",
-            "warna_cadangan": "#6D28D9",
-            "label": "Rp10.000 - Frans Kaisiepo"
+            "file": "TE-2022-10000-depan.jpg",
+            "tokoh": "Frans Kaisiepo",
+            "warna_cadangan": "#6D28D9"
+        },
+        "Rp5.000 (TE 2022)": {
+            "file": "TE-2022-5000-depan.jpg",
+            "tokoh": "Dr. K.H. Idham Chalid",
+            "warna_cadangan": "#B45309"
+        },
+        "Rp2.000 (TE 2022)": {
+            "file": "TE-2022-2000-depan.jpg",
+            "tokoh": "Mohammad Hoesni Thamrin",
+            "warna_cadangan": "#475569"
+        },
+        "Rp1.000 (TE 2022)": {
+            "file": "TE-2022-1000-depan.jpg",
+            "tokoh": "Tjut Meutia",
+            "warna_cadangan": "#0F766E"
         }
     }
 
     info = katalog_uang[pecahan]
-    img = ambil_gambar_rupiah(info["url"])
+    img = muat_foto_rupiah(info["file"])
 
     fig = go.Figure()
 
     # Pengaturan efek pencahayaan (Normal / Diterawang / Sinar UV)
     if mode_cahaya == "🔦 Mode Sinar UV":
         opasitas_img = 0.45
-        warna_lapis = "rgba(10, 15, 45, 0.65)"
+        warna_lapis = "rgba(10, 15, 45, 0.62)"
     elif mode_cahaya == "☀️ Mode Diterawang":
-        opasitas_img = 0.65
-        warna_lapis = "rgba(255, 250, 210, 0.25)"
+        opasitas_img = 0.68
+        warna_lapis = "rgba(255, 250, 210, 0.22)"
     else:
         opasitas_img = 1.0
         warna_lapis = "rgba(0, 0, 0, 0)"
@@ -120,14 +134,13 @@ def buat_visual_uang_asli(pecahan, mode_cahaya, c_lihat1, c_lihat2, c_raba1, c_r
             )
         )
     else:
-        # Cadangan jika jaringan memblokir gambar eksternal
         fig.add_shape(
             type="rect", x0=0, y0=0, x1=100, y1=46,
             fillcolor=info["warna_cadangan"], line=dict(color="#D4AF37", width=3)
         )
         fig.add_annotation(
-            x=50, y=23, text=f"<b>{info['label']}</b>",
-            showarrow=False, font=dict(color="white", size=14)
+            x=50, y=23, text=f"<b>{pecahan} - {info['tokoh']}</b>",
+            showarrow=False, font=dict(color="white", size=13)
         )
 
     # Lapisan filter pencahayaan
@@ -138,10 +151,10 @@ def buat_visual_uang_asli(pecahan, mode_cahaya, c_lihat1, c_lihat2, c_raba1, c_r
         )
 
     # ==========================================================
-    # OVERLAY TITIK DETEKSI 3D DI ATAS GAMBAR RUPIAH ASLI
+    # OVERLAY TITIK DETEKSI 3D DI ATAS FOTO UANG RUPIAH ASLI
     # ==========================================================
 
-    # 1. Dilihat: Color Shifting Ink (Kanan Bawah / Ornamen Bunga)
+    # 1. Dilihat: Color Shifting Ink (Ornamen Bunga / Perisai Kanan Bawah)
     if c_lihat1:
         fig.add_shape(
             type="circle", x0=74, y0=6, x1=86, y1=18,
@@ -171,7 +184,7 @@ def buat_visual_uang_asli(pecahan, mode_cahaya, c_lihat1, c_lihat2, c_raba1, c_r
         fig.add_shape(
             type="rect", x0=42, y0=8, x1=68, y1=36,
             fillcolor="rgba(250, 204, 21, 0.15)",
-            line=dict(color="#FACC15", width=3, dash="solid")
+            line=dict(color="#FACC15", width=3)
         )
         fig.add_annotation(
             x=55, y=38, text="<b>Cetak Intaglio (Kasar)</b>", showarrow=False,
@@ -214,12 +227,12 @@ def buat_visual_uang_asli(pecahan, mode_cahaya, c_lihat1, c_lihat2, c_raba1, c_r
     fig.update_xaxes(visible=False, range=[0, 100])
     fig.update_yaxes(visible=False, range=[0, 46])
     fig.update_layout(
-        height=295,
+        height=310,
         margin=dict(l=2, r=2, t=2, b=2),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)"
     )
-    return fig
+    return fig, info["tokoh"]
 
 
 # ==========================================
@@ -242,6 +255,7 @@ with st.sidebar:
     
     st.divider()
     st.info("💡 **Integrasi AI Management:** Menggunakan sistem pemindaian berbasis aturan (*Rule-Based AI*) dan pemetaan visual interaktif untuk membantu masyarakat mengenali ciri keaslian Rupiah.")
+    st.link_button("🌐 Portal Resmi Gambar Uang BI", "https://www.bi.go.id/id/rupiah/gambar-uang/Default.aspx", use_container_width=True)
 
 # ==========================================
 # MODUL 1: BERANDA & PILAR CBP RUPIAH
@@ -319,9 +333,9 @@ if menu == "🏛️ Beranda & Pilar CBP Rupiah":
 elif menu == "🔍 Asisten Cek Keaslian (3D) & AI":
     st.markdown("""
     <div class="hero-banner">
-        <span class="badge-bi">PEMETAAN VISUAL RUPIAH ASLI & METODE 3D</span>
+        <span class="badge-bi">PEMETAAN VISUAL RUPIAH RESMI & METODE 3D</span>
         <h1>Simulator Inspeksi Keaslian Uang Rupiah (TE 2022)</h1>
-        <p>Pilih pecahan Rupiah dan centang ciri keaslian yang Anda temukan untuk melihat lokasi titik pengaman pada uang Rupiah asli.</p>
+        <p>Pilih salah satu dari 7 pecahan uang kertas Rupiah TE 2022 dan centang ciri keaslian yang ditemukan untuk memetakan lokasi unsur pengaman pada uang.</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -330,8 +344,16 @@ elif menu == "🔍 Asisten Cek Keaslian (3D) & AI":
     with col_input:
         st.subheader("📋 Checklist Pemeriksaan Fisik")
         pecahan = st.selectbox(
-            "Pilih Pecahan Uang Kertas:",
-            ["Rp100.000 (TE 2022)", "Rp50.000 (TE 2022)", "Rp20.000 (TE 2022)", "Rp10.000 (TE 2022)"]
+            "Pilih Pecahan Uang Kertas (7 Pecahan TE 2022):",
+            [
+                "Rp100.000 (TE 2022)",
+                "Rp50.000 (TE 2022)",
+                "Rp20.000 (TE 2022)",
+                "Rp10.000 (TE 2022)",
+                "Rp5.000 (TE 2022)",
+                "Rp2.000 (TE 2022)",
+                "Rp1.000 (TE 2022)"
+            ]
         )
 
         mode_cahaya = st.radio(
@@ -358,11 +380,12 @@ elif menu == "🔍 Asisten Cek Keaslian (3D) & AI":
     with col_visual:
         st.subheader("💵 Pemetaan Titik Pengaman Uang Rupiah")
         
-        fig_uang = buat_visual_uang_asli(
+        fig_uang, nama_pahlawan = buat_visual_uang_bi(
             pecahan, mode_cahaya,
             c_lihat1, c_lihat2, c_raba1, c_raba2, c_terawang1, c_terawang2
         )
         st.plotly_chart(fig_uang, use_container_width=True, config={'displayModeBar': False})
+        st.caption(f"Gambar Utama: **{nama_pahlawan}** | Sumber: Bank Indonesia ([bi.go.id](https://www.bi.go.id/id/rupiah/gambar-uang/Default.aspx))")
 
         fig_gauge = go.Figure(go.Indicator(
             mode="gauge+number",
