@@ -179,7 +179,7 @@ def buat_visual_uang_bi(pecahan, mode_cahaya, c_lihat1, c_lihat2, c_raba1, c_rab
             bgcolor="rgba(0,45,114,0.88)", font=dict(color="#FDE047", size=8.5)
         )
 
-    # 3. Dilihat: Color Shifting Ink (Ornamen Bunga Anggrek / Perisai di kiri bawah x=6.5..18.5, y=10..18.5)
+    # 3. Dilihat: Color Shifting Ink / OVMI (Ornamen Bunga Anggrek / Perisai di kiri bawah)
     if c_lihat1:
         fig.add_shape(
             type="circle", x0=6.5, y0=10, x1=18.5, y1=18.5,
@@ -187,19 +187,19 @@ def buat_visual_uang_bi(pecahan, mode_cahaya, c_lihat1, c_lihat2, c_raba1, c_rab
             line=dict(color="#22C55E", width=2.5)
         )
         fig.add_annotation(
-            x=12.5, y=8.2, text="<b>Color Shifting</b>", showarrow=False,
+            x=12.5, y=8.2, text="<b>OVMI / Color Shifting</b>", showarrow=False,
             bgcolor="#15803D", font=dict(color="white", size=8)
         )
 
-    # 4. Diterawang: Rectoverso Logo BI (Logo BI bertumpuk di atas bunga anggrek kiri bawah)
+    # 4. Diterawang: Rectoverso Logo BI (Sisi Kanan, di bawah peta Indonesia & di atas nominal kanan bawah)
     if c_terawang2 or mode_cahaya == "☀️ Mode Diterawang":
         fig.add_shape(
-            type="circle", x0=10.2, y0=11.5, x1=15.2, y1=16.8,
-            fillcolor="rgba(56, 189, 248, 0.25)",
+            type="circle", x0=84.5, y0=14.5, x1=91.5, y1=22.5,
+            fillcolor="rgba(56, 189, 248, 0.28)",
             line=dict(color="#38BDF8", width=2.5)
         )
         fig.add_annotation(
-            x=21.5, y=14.2, text="<b>Rectoverso BI</b>", showarrow=False,
+            x=88, y=24.8, text="<b>Rectoverso BI</b>", showarrow=False,
             bgcolor="#002D72", font=dict(color="#38BDF8", size=8)
         )
 
@@ -220,7 +220,7 @@ def buat_visual_uang_bi(pecahan, mode_cahaya, c_lihat1, c_lihat2, c_raba1, c_rab
         fig.add_shape(type="rect", x0=0.2, y0=10, x1=2.2, y1=35, fillcolor="rgba(250,204,21,0.55)", line=dict(color="#FACC15", width=1.5))
         fig.add_shape(type="rect", x0=97.8, y0=10, x1=99.8, y1=35, fillcolor="rgba(250,204,21,0.55)", line=dict(color="#FACC15", width=1.5))
         fig.add_annotation(
-            x=92, y=13, text="<b>Blind Code</b>", showarrow=False,
+            x=92, y=37, text="<b>Blind Code</b>", showarrow=False,
             bgcolor="#002D72", font=dict(color="white", size=8)
         )
 
@@ -363,7 +363,7 @@ elif menu == "🔍 Asisten Cek Keaslian (3D) & AI":
         )
 
         st.markdown("**1. Dilihat (Perubahan Warna & Benang Pengaman)**")
-        c_lihat1 = st.checkbox("Warna tinta bunga anggrek/perisai berubah saat dilihat dari sudut berbeda (Color Shifting).")
+        c_lihat1 = st.checkbox("Warna tinta bunga anggrek/perisai berubah saat dilihat dari sudut berbeda (OVMI / Color Shifting).")
         c_lihat2 = st.checkbox("Terdapat benang pengaman seperti dianyam yang berubah warna.")
 
         st.markdown("**2. Diraba (Tekstur Cetak Intaglio)**")
@@ -372,7 +372,7 @@ elif menu == "🔍 Asisten Cek Keaslian (3D) & AI":
 
         st.markdown("**3. Diterawang (Watermark & Rectoverso)**")
         c_terawang1 = st.checkbox("Terlihat tanda air (Watermark) gambar pahlawan saat diterawang ke cahaya.")
-        c_terawang2 = st.checkbox("Logo BI (Rectoverso) terlihat utuh dan saling mengisi sempurna dari depan & belakang.")
+        c_terawang2 = st.checkbox("Logo BI (Rectoverso) di sisi kanan terlihat utuh dan saling mengisi sempurna dari depan & belakang.")
 
         checks = [c_lihat1, c_lihat2, c_raba1, c_raba2, c_terawang1, c_terawang2]
         skor_persen = int((sum(checks) / len(checks)) * 100)
