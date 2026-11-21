@@ -94,36 +94,97 @@ st.markdown("""
     font-size: 0.88rem;
 }
 
-/* Kartu Modern 5 Jangan - Rupiah Keren */
-.rupiah-keren-badge {
-    background: linear-gradient(135deg, #002D72 0%, #0369A1 100%);
-    color: #FFFFFF;
+/* Kartu Visual Edukasi 5 Jangan - Rupiah Keren */
+.rk-banner {
+    background: linear-gradient(135deg, #002D72 0%, #004E92 60%, #0284C7 100%);
     border-radius: 20px;
-    padding: 28px 24px;
+    padding: 26px 30px;
+    color: #FFFFFF;
+    border: 2px solid #D4AF37;
+    box-shadow: 0 12px 28px rgba(0, 45, 114, 0.14);
+    margin-bottom: 22px;
+}
+.jangan-visual-card {
+    background: #FFFFFF;
+    border-radius: 18px;
+    padding: 20px 16px;
     text-align: center;
-    border: 3px solid #D4AF37;
-    box-shadow: 0 10px 25px rgba(0, 45, 114, 0.15);
+    border-top: 6px solid #C8102E;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.07);
     height: 100%;
 }
-.jangan-card {
-    background-color: #FFFFFF;
-    border-radius: 14px;
-    padding: 16px 18px;
-    border-left: 6px solid #C8102E;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    margin-bottom: 12px;
-}
-.jangan-num {
-    background-color: #FEE2E2;
+.jangan-badge-num {
+    background: #FEE2E2;
     color: #C8102E;
     font-weight: 800;
-    padding: 3px 10px;
-    border-radius: 8px;
-    font-size: 0.85rem;
-    margin-right: 8px;
+    font-size: 0.82rem;
+    padding: 4px 12px;
+    border-radius: 999px;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+.jangan-card-title {
+    color: #002D72;
+    font-weight: 800;
+    font-size: 1.08rem;
+    margin: 10px 0 6px 0;
+}
+.jangan-card-desc {
+    color: #475569;
+    font-size: 0.86rem;
+    line-height: 1.45;
+    margin: 0;
 }
 </style>
 """, unsafe_allow_html=True)
+
+# ==========================================
+# ILUSTRASI VEKTOR EDUKASI 5 JANGAN (SVG)
+# ==========================================
+def svg_5_jangan(jenis):
+    bingkai_awal = """
+    <svg width="115" height="115" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="60" cy="60" r="54" fill="#FFF5F5" stroke="#FECACA" stroke-width="2"/>
+    """
+    bingkai_larangan = """
+        <circle cx="60" cy="60" r="46" fill="none" stroke="#DC2626" stroke-width="6.5"/>
+        <line x1="28" y1="28" x2="92" y2="92" stroke="#DC2626" stroke-width="6.5" stroke-linecap="round"/>
+    </svg>
+    """
+    if jenis == "lipat":
+        isi = """
+        <polygon points="30,44 60,36 60,78 30,84" fill="#DBEAFE" stroke="#1E40AF" stroke-width="2.5"/>
+        <polygon points="60,36 90,46 90,86 60,78" fill="#93C5FD" stroke="#1E40AF" stroke-width="2.5"/>
+        <line x1="60" y1="36" x2="60" y2="78" stroke="#1E3A8A" stroke-width="2.5" stroke-dasharray="4,3"/>
+        <circle cx="45" cy="60" r="5" fill="#2563EB"/>
+        <circle cx="75" cy="62" r="5" fill="#2563EB"/>
+        """
+    elif jenis == "coret":
+        isi = """
+        <rect x="28" y="42" width="64" height="36" rx="4" fill="#E0F2FE" stroke="#0369A1" stroke-width="2.5"/>
+        <path d="M35 65 Q48 48, 58 63 T82 56" fill="none" stroke="#1E293B" stroke-width="2.5" stroke-linecap="round"/>
+        <polygon points="72,30 82,36 63,65 55,67 57,58" fill="#F59E0B" stroke="#92400E" stroke-width="2"/>
+        """
+    elif jenis == "stapler":
+        isi = """
+        <rect x="28" y="42" width="64" height="36" rx="4" fill="#DCFCE7" stroke="#15803D" stroke-width="2.5"/>
+        <rect x="44" y="54" width="32" height="12" rx="2" fill="#94A3B8" stroke="#334155" stroke-width="2.5"/>
+        <line x1="48" y1="54" x2="48" y2="66" stroke="#1E293B" stroke-width="2.5"/>
+        <line x1="72" y1="54" x2="72" y2="66" stroke="#1E293B" stroke-width="2.5"/>
+        """
+    elif jenis == "remas":
+        isi = """
+        <polygon points="36,44 50,34 68,38 84,48 80,72 64,84 42,80 32,62" fill="#FEF3C7" stroke="#B45309" stroke-width="2.5"/>
+        <polyline points="42,46 56,58 48,74" fill="none" stroke="#92400E" stroke-width="2"/>
+        <polyline points="72,46 60,60 74,72" fill="none" stroke="#92400E" stroke-width="2"/>
+        """
+    else:  # basah
+        isi = """
+        <rect x="28" y="44" width="64" height="34" rx="4" fill="#E0F2FE" stroke="#0284C7" stroke-width="2.5"/>
+        <path d="M46 32 C46 32, 38 44, 38 49 A8 8 0 0 0 54 49 C54 44, 46 32, 46 32 Z" fill="#38BDF8" stroke="#0369A1" stroke-width="2"/>
+        <path d="M72 48 C72 48, 65 58, 65 63 A7 7 0 0 0 79 63 C79 58, 72 48, 72 48 Z" fill="#0EA5E9" stroke="#0369A1" stroke-width="2"/>
+        """
+    return bingkai_awal + isi + bingkai_larangan
 
 # ==========================================
 # SIDEBAR NAVIGASI
@@ -397,7 +458,7 @@ elif menu == "🛡️ 3. Pelindungan Konsumen & Audit Hoaks AI":
             st.success(gov_txt)
 
 # ==========================================
-# MODUL 4: CINTA, BANGGA, PAHAM RUPIAH (TANPA RADAR CHART)
+# MODUL 4: CINTA, BANGGA, PAHAM RUPIAH
 # ==========================================
 elif menu == "❤️ 4. Cinta, Bangga, Paham Rupiah":
     st.markdown("""
@@ -489,72 +550,90 @@ elif menu == "❤️ 4. Cinta, Bangga, Paham Rupiah":
     st.info("🎬 **Seri Kampanye Edukasi CBP Bank Indonesia:** *Rupiah Itu Kita* • *Cinta-Bangga-Paham Rupiah: Dimulai dari Kita* • *Kenali Rupiah, Jelajahi Indonesia dalam Genggamanmu*")
 
 # ==========================================
-# MODUL 5: CARA MERAWAT RUPIAH - 5 JANGAN (BARU)
+# MODUL 5: CARA MERAWAT RUPIAH - 5 JANGAN (VISUAL EDUKASI)
 # ==========================================
 elif menu == "✨ 5. Cara Merawat Rupiah (5 Jangan)":
     st.markdown("""
-    <div class="hero-banner">
+    <div class="rk-banner">
         <span class="badge-bi">KOMUNIKASI MERAWAT RUPIAH • BANK INDONESIA</span>
-        <h1>Jaga dan Rawat Uang Rupiah Kertas dalam Kondisi yang Baik</h1>
-        <p>Wujudkan gerakan <b>RUPIAH KEREN</b> dengan memperlakukan uang Rupiah secara tepat melalui prinsip <b>5 Jangan</b> agar tetap layak edar.</p>
+        <h1 style="color:#FFFFFF; margin:4px 0 8px 0; font-size:1.95rem;">
+            Jaga dan Rawat Uang Rupiah Kertas dalam Kondisi yang Baik
+        </h1>
+        <p style="color:#E0F2FE; font-size:1.02rem; margin:0;">
+            Wujudkan gerakan <b style="color:#FDE047;">RUPIAH KEREN</b> dengan menerapkan <b>5 Jangan</b> agar uang Rupiah tetap bersih, mudah dikenali keasliannya, dan layak edar.
+        </p>
     </div>
     """, unsafe_allow_html=True)
 
-    col_left, col_right = st.columns([1, 1.6])
+    st.subheader("🖼️ Infografis Edukasi 5 Jangan Merawat Uang Rupiah")
 
-    with col_left:
-        st.markdown("""
-        <div class="rupiah-keren-badge">
-            <span class="cbp-pill">GERAKAN PEDULI FISIK RUPIAH</span>
-            <h1 style="color:#FFFFFF; font-size:2.4rem; font-weight:900; line-height:1.15; margin:14px 0;">
-                RUPIAH<br>KEREN
-            </h1>
-            <hr style="border-color:rgba(255,255,255,0.25);">
-            <p style="color:#E2E8F0; font-size:0.93rem; line-height:1.5;">
-                Uang Rupiah yang terawat dengan baik memudahkan masyarakat mengenali keasliannya (3D), memperlancar transaksi sehari-hari, serta menghemat biaya pencetakan uang baru.
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
+    data_5j = [
+        {
+            "no": "LARANGAN #1",
+            "kode": "lipat",
+            "judul": "1. Jangan Dilipat",
+            "desc": "Simpan uang kertas dalam posisi rapi memanjang di dompet agar serat kertas tidak patah dan benang pengaman tetap utuh."
+        },
+        {
+            "no": "LARANGAN #2",
+            "kode": "coret",
+            "judul": "2. Jangan Dicoret",
+            "desc": "Hindari menulis catatan atau mencoret uang kertas dengan tinta/spidol agar desain dan unsur pengaman tidak tertutup."
+        },
+        {
+            "no": "LARANGAN #3",
+            "kode": "stapler",
+            "judul": "3. Jangan Distapler",
+            "desc": "Gunakan pita pengikat uang (ban uang) atau karet, bukan kawat stapler yang melubangi dan merobek lembaran Rupiah."
+        },
+        {
+            "no": "LARANGAN #4",
+            "kode": "remas",
+            "judul": "4. Jangan Diremas",
+            "desc": "Meremas uang membuat permukaan cetak intaglio kusut sehingga tekstur kasarnya sulit diraba saat pengecekan 3D."
+        },
+        {
+            "no": "LARANGAN #5",
+            "kode": "basah",
+            "judul": "5. Jangan Dibasahi",
+            "desc": "Jauhkan uang dari air, cairan kimia, maupun tempat lembap agar kertas tidak lapuk, luntur, atau ditumbuhi jamur."
+        }
+    ]
 
-    with col_right:
-        st.subheader("🚫 Terapkan Prinsip 5 Jangan dalam Keseharian:")
+    cols_5j = st.columns(5)
+    for col, item in zip(cols_5j, data_5j):
+        with col:
+            st.markdown(f"""
+            <div class="jangan-visual-card">
+                <span class="jangan-badge-num">{item['no']}</span>
+                <div>{svg_5_jangan(item['kode'])}</div>
+                <div class="jangan-card-title">{item['judul']}</div>
+                <p class="jangan-card-desc">{item['desc']}</p>
+            </div>
+            """, unsafe_allow_html=True)
 
-        st.markdown("""
-        <div class="jangan-card">
-            <span class="jangan-num">1</span> <b>Jangan Dilipat</b>
-            <p style="margin:6px 0 0 0; color:#475569; font-size:0.9rem;">Simpan uang kertas dalam posisi memanjang/rapi di dalam dompet agar serat kertas tidak patah dan benang pengaman tidak rusak.</p>
-        </div>
-        <div class="jangan-card">
-            <span class="jangan-num">2</span> <b>Jangan Dicoret</b>
-            <p style="margin:6px 0 0 0; color:#475569; font-size:0.9rem;">Hindari menulis angka, catatan, atau coretan tinta pada permukaan uang karena dapat mengaburkan desain dan unsur pengaman.</p>
-        </div>
-        <div class="jangan-card">
-            <span class="jangan-num">3</span> <b>Jangan Distapler</b>
-            <p style="margin:6px 0 0 0; color:#475569; font-size:0.9rem;">Gunakan pita pengikat uang (*ban uang*) atau karet, bukan kawat stapler yang dapat melubangi dan merobek lembaran Rupiah.</p>
-        </div>
-        <div class="jangan-card">
-            <span class="jangan-num">4</span> <b>Jangan Diremas</b>
-            <p style="margin:6px 0 0 0; color:#475569; font-size:0.9rem;">Meremas uang membuat permukaan cetak intaglio menjadi kusut sehingga tekstur kasarnya sulit diraba saat pengecekan 3D.</p>
-        </div>
-        <div class="jangan-card">
-            <span class="jangan-num">5</span> <b>Jangan Dibasahi</b>
-            <p style="margin:6px 0 0 0; color:#475569; font-size:0.9rem;">Jauhkan uang dari air, cairan kimia, maupun kelembapan berlebih agar kertas tidak lapuk, luntur, atau berjamur.</p>
-        </div>
-        """, unsafe_allow_html=True)
-
+    st.write("")
     st.divider()
-    st.subheader("✅ Cek Kebiasaan Merawat Rupiah Anda (Self-Check)")
-    chk1 = st.checkbox("Saya menyimpan uang kertas secara rapi di dompet tanpa melipatnya berlapis-lapis.")
-    chk2 = st.checkbox("Saya tidak pernah mencoret atau menandai uang kertas dengan pulpen/spidol.")
-    chk3 = st.checkbox("Saya tidak menggunakan stapler untuk menyatukan bundel uang kertas.")
-    chk4 = st.checkbox("Saya tidak meremas uang kertas saat memasukkan ke saku.")
-    chk5 = st.checkbox("Saya selalu menjaga uang tetap kering sebelum menyimpannya.")
 
-    total_5j = sum([chk1, chk2, chk3, chk4, chk5])
-    if total_5j == 5:
-        st.success("🌟 **Luar Biasa! (5/5 Terpenuhi)** Anda sudah menerapkan seluruh prinsip **5 Jangan** dan turut menjaga **Rupiah Keren** tetap layak edar!")
-    elif total_5j > 0:
-        st.info(f"👍 **{total_5j}/5 Prinsip Terpenuhi.** Yuk lengkapi kebiasaan merawat Rupiah lainnya agar uang kita selalu dalam kondisi baik.")
+    c_chk1, c_chk2 = st.columns([1.3, 1])
+    with c_chk1:
+        st.subheader("✅ Tantangan Kebiasaan #RupiahKeren (Self-Check)")
+        chk1 = st.checkbox("1. Saya menyimpan uang kertas memanjang rapi di dompet tanpa melipatnya.")
+        chk2 = st.checkbox("2. Saya tidak pernah mencoret atau menulis di atas uang kertas.")
+        chk3 = st.checkbox("3. Saya tidak menstapler bundel uang kertas.")
+        chk4 = st.checkbox("4. Saya tidak meremas uang kertas saat menyimpannya di saku.")
+        chk5 = st.checkbox("5. Saya menjaga uang tetap kering dan jauh dari air.")
+
+    with c_chk2:
+        total_5j = sum([chk1, chk2, chk3, chk4, chk5])
+        persen_5j = int((total_5j / 5) * 100)
+        st.subheader("📊 Skor Kepedulian Fisik Rupiah")
+        st.progress(persen_5j / 100)
+        st.metric("Skor Komitmen 5 Jangan", f"{persen_5j}%", f"{total_5j} dari 5 kebiasaan diterapkan")
+        if total_5j == 5:
+            st.success("🌟 **DUTAKU RUPIAH KEREN!** Seluruh prinsip **5 Jangan** telah Anda terapkan dengan sempurna.")
+        else:
+            st.info("💡 Centang kelima kebiasaan di samping untuk mengukur komitmen Anda merawat Rupiah.")
 
 # ==========================================
 # MODUL 6: KUIS LITERASI KEBANKSENTRALAN
