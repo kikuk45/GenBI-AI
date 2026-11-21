@@ -274,7 +274,7 @@ with st.sidebar:
     
     st.divider()
     st.markdown("**🔗 Portal Resmi Rupiah & BI:**")
-    st.link_button("💵 Lihat Gambar Uang Rupiah (BI)", "https://www.bi.go.id/id/rupiah/gambar-uang/default.aspx", use_container_width=True)
+    st.link_button("💵 Lihat GambarRupiah", "https://www.bi.go.id/id/rupiah/gambar-uang/default.aspx", use_container_width=True)
     st.link_button("🛡️ Panduan Pelindungan Konsumen", "https://www.bi.go.id/id/Pelindungan-Konsumen/Panduan-Dasar/Default.aspx#peka", use_container_width=True)
     st.info("📌 **Sumber Materi:** Seluruh data indikator, pilar kebijakan, dan kampanye PeKA & CBP merujuk pada portal resmi Bank Indonesia (`bi.go.id`).")
 
