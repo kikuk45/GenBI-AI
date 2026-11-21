@@ -2,6 +2,9 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
+import requests
+from PIL import Image
+from io import BytesIO
 import time
 
 # ==========================================
@@ -52,143 +55,167 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ==========================================
-# GENERATOR VISUAL UANG RUPIAH (PLOTLY SHAPE)
+# FUNGSI MUAT GAMBAR RUPIAH ASLI (CACHED)
 # ==========================================
-def buat_visual_uang(pecahan, mode_cahaya, c_lihat1, c_lihat2, c_raba1, c_raba2, c_terawang1, c_terawang2):
-    data_uang = {
+@st.cache_data(show_spinner=False)
+def ambil_gambar_rupiah(url):
+    try:
+        headers = {"User-Agent": "Mozilla/5.0 (EducationalApp/1.0)"}
+        resp = requests.get(url, headers=headers, timeout=6)
+        resp.raise_for_status()
+        return Image.open(BytesIO(resp.content))
+    except Exception:
+        return None
+
+def buat_visual_uang_asli(pecahan, mode_cahaya, c_lihat1, c_lihat2, c_raba1, c_raba2, c_terawang1, c_terawang2):
+    katalog_uang = {
         "Rp100.000 (TE 2022)": {
-            "nominal": "Rp100.000",
-            "terbilang": "SERATUS RIBU RUPIAH",
-            "tokoh": "Ir. Soekarno & Drs. Mohammad Hatta",
-            "warna_dasar": "#B91C1C",
-            "warna_sekunder": "#991B1B"
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/100000_Rupiah_2022_obverse.jpg/800px-100000_Rupiah_2022_obverse.jpg",
+            "warna_cadangan": "#B91C1C",
+            "label": "Rp100.000 - Soekarno & Mohammad Hatta"
         },
         "Rp50.000 (TE 2022)": {
-            "nominal": "Rp50.000",
-            "terbilang": "LIMA PULUH RIBU RUPIAH",
-            "tokoh": "Ir. H. Djuanda Kartawidjaja",
-            "warna_dasar": "#1D4ED8",
-            "warna_sekunder": "#1E3A8A"
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/50000_Rupiah_2022_obverse.jpg/800px-50000_Rupiah_2022_obverse.jpg",
+            "warna_cadangan": "#1D4ED8",
+            "label": "Rp50.000 - Ir. H. Djuanda Kartawidjaja"
         },
         "Rp20.000 (TE 2022)": {
-            "nominal": "Rp20.000",
-            "terbilang": "DUA PULUH RIBU RUPIAH",
-            "tokoh": "Dr. G.S.S.J. Ratulangi",
-            "warna_dasar": "#15803D",
-            "warna_sekunder": "#14532D"
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/20000_Rupiah_2022_obverse.jpg/800px-20000_Rupiah_2022_obverse.jpg",
+            "warna_cadangan": "#15803D",
+            "label": "Rp20.000 - Dr. G.S.S.J. Ratulangi"
         },
         "Rp10.000 (TE 2022)": {
-            "nominal": "Rp10.000",
-            "terbilang": "SEPULUH RIBU RUPIAH",
-            "tokoh": "Frans Kaisiepo",
-            "warna_dasar": "#6D28D9",
-            "warna_sekunder": "#4C1D95"
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/10000_Rupiah_2022_obverse.jpg/800px-10000_Rupiah_2022_obverse.jpg",
+            "warna_cadangan": "#6D28D9",
+            "label": "Rp10.000 - Frans Kaisiepo"
         }
     }
 
-    info = data_uang[pecahan]
-
-    # Mode Pencahayaan
-    if mode_cahaya == "🔦 Mode Sinar UV":
-        bg_uang = "#0F172A"
-        garis_tepi = "#38BDF8"
-        opasitas_dasar = 0.95
-    elif mode_cahaya == "☀️ Mode Diterawang":
-        bg_uang = info["warna_dasar"]
-        garis_tepi = "#FACC15"
-        opasitas_dasar = 0.55
-    else:
-        bg_uang = info["warna_dasar"]
-        garis_tepi = "#D4AF37"
-        opasitas_dasar = 0.92
+    info = katalog_uang[pecahan]
+    img = ambil_gambar_rupiah(info["url"])
 
     fig = go.Figure()
 
-    # 1. Badan Utama Uang Kertas
-    fig.add_shape(
-        type="rect", x0=0, y0=0, x1=100, y1=46,
-        fillcolor=bg_uang, opacity=opasitas_dasar,
-        line=dict(color=garis_tepi, width=3)
-    )
-    fig.add_shape(
-        type="rect", x0=2, y0=2, x1=98, y1=44,
-        fillcolor="rgba(0,0,0,0)",
-        line=dict(color="rgba(255,255,255,0.4)", width=1, dash="dot")
-    )
+    # Pengaturan efek pencahayaan (Normal / Diterawang / Sinar UV)
+    if mode_cahaya == "🔦 Mode Sinar UV":
+        opasitas_img = 0.45
+        warna_lapis = "rgba(10, 15, 45, 0.65)"
+    elif mode_cahaya == "☀️ Mode Diterawang":
+        opasitas_img = 0.65
+        warna_lapis = "rgba(255, 250, 210, 0.25)"
+    else:
+        opasitas_img = 1.0
+        warna_lapis = "rgba(0, 0, 0, 0)"
 
-    # 2. Blind Code (Kode Tunanetra - Diraba)
-    warna_blind = "#FACC15" if c_raba2 else "rgba(255,255,255,0.25)"
-    for y_pos in [14, 19, 24, 29]:
-        fig.add_shape(type="rect", x0=2.5, y0=y_pos, x1=4, y1=y_pos+3, fillcolor=warna_blind, line_width=0)
-        fig.add_shape(type="rect", x0=96, y0=y_pos, x1=97.5, y1=y_pos+3, fillcolor=warna_blind, line_width=0)
+    if img is not None:
+        fig.add_layout_image(
+            dict(
+                source=img,
+                xref="x", yref="y",
+                x=0, y=46,
+                sizex=100, sizey=46,
+                sizing="stretch",
+                opacity=opasitas_img,
+                layer="below"
+            )
+        )
+    else:
+        # Cadangan jika jaringan memblokir gambar eksternal
+        fig.add_shape(
+            type="rect", x0=0, y0=0, x1=100, y1=46,
+            fillcolor=info["warna_cadangan"], line=dict(color="#D4AF37", width=3)
+        )
+        fig.add_annotation(
+            x=50, y=23, text=f"<b>{info['label']}</b>",
+            showarrow=False, font=dict(color="white", size=14)
+        )
 
-    # 3. Watermark / Tanda Air (Diterawang)
-    op_wm = 0.9 if (c_terawang1 or mode_cahaya == "☀️ Mode Diterawang") else 0.2
-    fig.add_shape(
-        type="circle", x0=10, y0=11, x1=28, y1=35,
-        fillcolor="rgba(255,255,255,0.25)", opacity=op_wm,
-        line=dict(color="#FDE047", width=2, dash="dash")
-    )
-    fig.add_annotation(
-        x=19, y=23, text="WATERMARK<br>PAHLAWAN", showarrow=False,
-        font=dict(color="white", size=9), opacity=op_wm
-    )
+    # Lapisan filter pencahayaan
+    if mode_cahaya != "Normal":
+        fig.add_shape(
+            type="rect", x0=0, y0=0, x1=100, y1=46,
+            fillcolor=warna_lapis, line_width=0
+        )
 
-    # 4. Rectoverso Logo BI (Diterawang)
-    op_rv = 1.0 if (c_terawang2 or mode_cahaya == "☀️ Mode Diterawang") else 0.25
-    fig.add_shape(
-        type="circle", x0=31, y0=33, x1=38, y1=41,
-        fillcolor="rgba(255,255,255,0.2)", opacity=op_rv,
-        line=dict(color="#FACC15", width=2)
-    )
-    fig.add_annotation(
-        x=34.5, y=37, text="<b>BI</b>", showarrow=False,
-        font=dict(color="#FACC15", size=11), opacity=op_rv
-    )
+    # ==========================================================
+    # OVERLAY TITIK DETEKSI 3D DI ATAS GAMBAR RUPIAH ASLI
+    # ==========================================================
 
-    # 5. Benang Pengaman (Dilihat)
-    warna_benang = "#38BDF8" if mode_cahaya == "🔦 Mode Sinar UV" else "#FACC15"
-    op_benang = 0.95 if c_lihat2 else 0.2
-    fig.add_shape(
-        type="rect", x0=43, y0=0, x1=45, y1=46,
-        fillcolor=warna_benang, opacity=op_benang, line_width=0
-    )
+    # 1. Dilihat: Color Shifting Ink (Kanan Bawah / Ornamen Bunga)
+    if c_lihat1:
+        fig.add_shape(
+            type="circle", x0=74, y0=6, x1=86, y1=18,
+            fillcolor="rgba(34, 197, 94, 0.35)",
+            line=dict(color="#22C55E", width=3)
+        )
+        fig.add_annotation(
+            x=80, y=20, text="<b>Color Shifting</b>", showarrow=False,
+            bgcolor="#15803D", font=dict(color="white", size=9)
+        )
 
-    # 6. Tinta Berubah Warna / Color Shifting (Dilihat)
-    warna_cs = "#22C55E" if (c_lihat1 and mode_cahaya != "Normal") else ("#F59E0B" if c_lihat1 else "rgba(255,255,255,0.2)")
-    fig.add_shape(
-        type="circle", x0=51, y0=12, x1=61, y1=24,
-        fillcolor=warna_cs,
-        line=dict(color="white", width=2)
-    )
-    fig.add_annotation(
-        x=56, y=18, text="COLOR<br>SHIFT", showarrow=False,
-        font=dict(color="white", size=8)
-    )
+    # 2. Dilihat: Benang Pengaman (Garis Vertikal Kiri-Tengah)
+    if c_lihat2:
+        warna_b = "#38BDF8" if mode_cahaya == "🔦 Mode Sinar UV" else "#FACC15"
+        fig.add_shape(
+            type="rect", x0=35, y0=0, x1=37.5, y1=46,
+            fillcolor=warna_b, opacity=0.75,
+            line=dict(color="white", width=1.5)
+        )
+        fig.add_annotation(
+            x=36.2, y=42, text="<b>Benang Pengaman</b>", showarrow=False,
+            bgcolor="#002D72", font=dict(color="#FACC15", size=9)
+        )
 
-    # 7. Area Cetak Intaglio / Gambar Utama (Diraba)
-    garis_intaglio = "#FDE047" if c_raba1 else "rgba(255,255,255,0.4)"
-    fig.add_shape(
-        type="rect", x0=65, y0=10, x1=93, y1=32,
-        fillcolor="rgba(255,255,255,0.12)",
-        line=dict(color=garis_intaglio, width=2.5)
-    )
-    fig.add_annotation(
-        x=79, y=21, text="<b>GAMBAR UTAMA</b><br>(Cetak Intaglio Kasar)", showarrow=False,
-        font=dict(color="#FDE047" if c_raba1 else "white", size=10)
-    )
+    # 3. Diraba: Cetak Intaglio (Area Gambar Utama Pahlawan)
+    if c_raba1:
+        fig.add_shape(
+            type="rect", x0=42, y0=8, x1=68, y1=36,
+            fillcolor="rgba(250, 204, 21, 0.15)",
+            line=dict(color="#FACC15", width=3, dash="solid")
+        )
+        fig.add_annotation(
+            x=55, y=38, text="<b>Cetak Intaglio (Kasar)</b>", showarrow=False,
+            bgcolor="#B45309", font=dict(color="white", size=9)
+        )
 
-    # Teks Identitas Uang Rupiah
-    fig.add_annotation(x=48, y=40, text="<b>BANK INDONESIA</b>", showarrow=False, xanchor="left", font=dict(color="white", size=13))
-    fig.add_annotation(x=94, y=39, text=f"<b>{info['nominal']}</b>", showarrow=False, xanchor="right", font=dict(color="#FDE047", size=18))
-    fig.add_annotation(x=6, y=6, text=f"<b>{info['terbilang']}</b>", showarrow=False, xanchor="left", font=dict(color="white", size=10))
-    fig.add_annotation(x=94, y=6, text=info["tokoh"], showarrow=False, xanchor="right", font=dict(color="#E2E8F0", size=9))
+    # 4. Diraba: Blind Code (Tepi Kiri & Kanan Uang)
+    if c_raba2:
+        fig.add_shape(type="rect", x0=0.5, y0=12, x1=3, y1=34, fillcolor="rgba(250,204,21,0.5)", line=dict(color="#FACC15", width=2))
+        fig.add_shape(type="rect", x0=97, y0=12, x1=99.5, y1=34, fillcolor="rgba(250,204,21,0.5)", line=dict(color="#FACC15", width=2))
+        fig.add_annotation(
+            x=9, y=36, text="<b>Blind Code</b>", showarrow=False,
+            bgcolor="#002D72", font=dict(color="white", size=8.5)
+        )
 
-    fig.update_xaxes(visible=False, range=[-1, 101])
-    fig.update_yaxes(visible=False, range=[-1, 47])
+    # 5. Diterawang: Watermark (Area Kosong Sebelah Kiri)
+    if c_terawang1 or mode_cahaya == "☀️ Mode Diterawang":
+        fig.add_shape(
+            type="circle", x0=10, y0=10, x1=28, y1=32,
+            fillcolor="rgba(255, 255, 255, 0.35)",
+            line=dict(color="#FDE047", width=3, dash="dash")
+        )
+        fig.add_annotation(
+            x=19, y=21, text="<b>WATERMARK</b>", showarrow=False,
+            bgcolor="rgba(0,45,114,0.85)", font=dict(color="#FDE047", size=9)
+        )
+
+    # 6. Diterawang: Rectoverso Logo BI (Kiri Atas)
+    if c_terawang2 or mode_cahaya == "☀️ Mode Diterawang":
+        fig.add_shape(
+            type="circle", x0=27, y0=32, x1=34, y1=40,
+            fillcolor="rgba(56, 189, 248, 0.35)",
+            line=dict(color="#38BDF8", width=3)
+        )
+        fig.add_annotation(
+            x=30.5, y=42.5, text="<b>Rectoverso BI</b>", showarrow=False,
+            bgcolor="#002D72", font=dict(color="#38BDF8", size=8.5)
+        )
+
+    fig.update_xaxes(visible=False, range=[0, 100])
+    fig.update_yaxes(visible=False, range=[0, 46])
     fig.update_layout(
-        height=270,
-        margin=dict(l=5, r=5, t=5, b=5),
+        height=295,
+        margin=dict(l=2, r=2, t=2, b=2),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)"
     )
@@ -214,7 +241,7 @@ with st.sidebar:
     )
     
     st.divider()
-    st.info("💡 **Integrasi AI Management:** Menggunakan sistem pemindaian berbasis aturan (*Rule-Based AI*) dan visualisasi interaktif untuk membantu masyarakat mengenali ciri keaslian uang dan mencegah kejahatan finansial digital.")
+    st.info("💡 **Integrasi AI Management:** Menggunakan sistem pemindaian berbasis aturan (*Rule-Based AI*) dan pemetaan visual interaktif untuk membantu masyarakat mengenali ciri keaslian Rupiah.")
 
 # ==========================================
 # MODUL 1: BERANDA & PILAR CBP RUPIAH
@@ -292,13 +319,13 @@ if menu == "🏛️ Beranda & Pilar CBP Rupiah":
 elif menu == "🔍 Asisten Cek Keaslian (3D) & AI":
     st.markdown("""
     <div class="hero-banner">
-        <span class="badge-bi">SISTEM PENDUKUNG KEPUTUSAN & VISUAL 3D</span>
-        <h1>Simulator Inspeksi Keaslian Uang Rupiah (Metode 3D)</h1>
-        <p>Amati ilustrasi fitur pengaman Rupiah Tahun Emisi 2022 secara interaktif dan centang indikator yang ditemukan untuk menghitung indeks keasliannya.</p>
+        <span class="badge-bi">PEMETAAN VISUAL RUPIAH ASLI & METODE 3D</span>
+        <h1>Simulator Inspeksi Keaslian Uang Rupiah (TE 2022)</h1>
+        <p>Pilih pecahan Rupiah dan centang ciri keaslian yang Anda temukan untuk melihat lokasi titik pengaman pada uang Rupiah asli.</p>
     </div>
     """, unsafe_allow_html=True)
 
-    col_input, col_visual = st.columns([1.15, 1.25])
+    col_input, col_visual = st.columns([1.1, 1.3])
 
     with col_input:
         st.subheader("📋 Checklist Pemeriksaan Fisik")
@@ -329,9 +356,9 @@ elif menu == "🔍 Asisten Cek Keaslian (3D) & AI":
         skor_persen = int((sum(checks) / len(checks)) * 100)
 
     with col_visual:
-        st.subheader("💵 Visualisasi Unsur Pengaman Uang")
+        st.subheader("💵 Pemetaan Titik Pengaman Uang Rupiah")
         
-        fig_uang = buat_visual_uang(
+        fig_uang = buat_visual_uang_asli(
             pecahan, mode_cahaya,
             c_lihat1, c_lihat2, c_raba1, c_raba2, c_terawang1, c_terawang2
         )
@@ -340,7 +367,7 @@ elif menu == "🔍 Asisten Cek Keaslian (3D) & AI":
         fig_gauge = go.Figure(go.Indicator(
             mode="gauge+number",
             value=skor_persen,
-            number={'suffix': "%", 'font': {'color': '#002D72', 'size': 36}},
+            number={'suffix': "%", 'font': {'color': '#002D72', 'size': 34}},
             title={'text': f"Indeks Keaslian Sistem ({pecahan.split()[0]})", 'font': {'size': 15, 'color': '#334155'}},
             gauge={
                 'axis': {'range': [0, 100], 'tickwidth': 1, 'tickcolor': "#002D72"},
@@ -354,7 +381,7 @@ elif menu == "🔍 Asisten Cek Keaslian (3D) & AI":
                 'threshold': {'line': {'color': "#C8102E", 'width': 4}, 'thickness': 0.75, 'value': 100}
             }
         ))
-        fig_gauge.update_layout(height=210, margin=dict(l=20, r=20, t=35, b=10), paper_bgcolor="rgba(0,0,0,0)")
+        fig_gauge.update_layout(height=205, margin=dict(l=20, r=20, t=35, b=10), paper_bgcolor="rgba(0,0,0,0)")
         st.plotly_chart(fig_gauge, use_container_width=True)
 
         if skor_persen == 100:
