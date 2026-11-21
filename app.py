@@ -1,3 +1,4 @@
+import re
 import time
 import streamlit as st
 import pandas as pd
@@ -157,6 +158,72 @@ def svg_5_jangan(jenis):
         isi = '<rect x="28" y="44" width="64" height="34" rx="4" fill="#E0F2FE" stroke="#0284C7" stroke-width="2.5"/><path d="M46 32 C46 32, 38 44, 38 49 A8 8 0 0 0 54 49 C54 44, 46 32, 46 32 Z" fill="#38BDF8" stroke="#0369A1" stroke-width="2"/><path d="M72 48 C72 48, 65 58, 65 63 A7 7 0 0 0 79 63 C79 58, 72 48, 72 48 Z" fill="#0EA5E9" stroke="#0369A1" stroke-width="2"/>'
 
     return bingkai_awal + isi + bingkai_larangan
+
+# ==========================================
+# FUNGSI ANALISIS PENIPUAN ONLINE & HOAKS KOMPREHENSIF
+# ==========================================
+def analisis_penipuan_komprehensif(teks):
+    low = teks.lower()
+    temuan = []
+    skor_risiko = 0
+
+    # 1. Deteksi Tautan / URL / Domain Mencurigakan (termasuk tanpa http)
+    pola_url = re.findall(r'(?:https?://|www\.)[^\s]+|\b[a-z0-9-]+\.(?:info|xyz|top|site|online|icu|vip|club|click|link|apk|ly|id|my\.id|biz\.id|web\.id|com|net|org)/[^\s]*', low)
+    domain_resmi = ("bi.go.id", "ojk.go.id", "kemkes.go.id", "pajak.go.id", "go.id")
+    tautan_asing = [u for u in pola_url if not any(dr in u for dr in domain_resmi)]
+
+    if tautan_asing or any(k in low for k in ["klik link", "klik tautan", "bit.ly", "tinyurl", "s.id", "cutt.ly", ".apk", "unduh aplikasi", "install aplikasi"]):
+        daftar_link = ", ".join(set(tautan_asing)) if tautan_asing else "tautan/file eksternal"
+        temuan.append(f"🔗 **Tautan Asing / Phishing / Malware (`.apk`):** Terdeteksi rujukan ke `{daftar_link}`. Jangan mengklik tautan acak atau memasang file `.apk` dari pesan singkat karena berisiko mencuri data m-banking dan SMS OTP.")
+        skor_risiko += 35
+
+    # 2. Modus Kurir Paket, Resi, Tilang, Pajak & Undangan Digital (Smishing)
+    if any(k in low for k in ["paket", "fedex", "jne", "j&t", "sicepat", "pos indonesia", "resi", "pelacakan", "pengiriman", "kurir", "undangan pernikahan", "surat tilang", "e-tilang", "tagihan pajak"]):
+        temuan.append("📦 **Modus Smishing Kurir / Dokumen Palsu:** Penipu sering menyamar sebagai jasa ekspedisi (FedEx, JNE, dll.) dengan kode pelacakan palsu atau mengirim berkas undangan/tilang agar korban mengklik tautan phishing.")
+        skor_risiko += 30
+
+    # 3. Pencurian Kredensial & Data Pribadi Sensitif
+    if any(k in low for k in ["otp", "pin", "password", "kata sandi", "cvv", "kode verifikasi", "nama ibu kandung", "nomor kartu", "token", "user id"]):
+        temuan.append("🔐 **Pencurian Kredensial Perbankan:** Meminta OTP, PIN, password, atau CVV adalah ciri mutlak kejahatan siber. Bank maupun otoritas resmi tidak pernah memintanya.")
+        skor_risiko += 40
+
+    # 4. Rekayasa Sosial Darurat & Ancaman Pemblokiran Rekening
+    if any(k in low for k in ["blokir", "diblokir", "suspend", "ditangguhkan", "dalam 24 jam", "segera konfirmasi", "tarif transaksi", "biaya admin baru", "perubahan tarif", "akun anda dibatasi"]):
+        temuan.append("⏳ **Rekayasa Sosial Berbasis Kepanikan (Urgency):** Pelaku menciptakan tekanan waktu atau ancaman pemblokiran rekening/perubahan tarif bank agar korban panik dan mengisi formulir palsu.")
+        skor_risiko += 25
+
+    # 5. Iming-Iming Hadiah, Hibah, Undian, Bansos & Giveaway
+    if any(k in low for k in ["hibah", "hadiah", "undian", "bantuan", "bansos", "giveaway", "terpilih menerima", "pemenang", "dana cair", "gratis"]):
+        temuan.append("🎁 **Iming-Iming Hadiah / Hibah Fiktif:** Institusi resmi maupun Bank Indonesia tidak pernah menyalurkan dana hibah atau hadiah undian melalui pesan pribadi/tautan pendaftaran.")
+        skor_risiko += 25
+
+    # 6. Investasi Bodong, Titip Dana & Pinjol Ilegal
+    if any(k in low for k in ["profit pasti", "tanpa risiko", "cuan instan", "titip dana", "investasi bodong", "trading profit", "pinjaman tanpa syarat", "langsung cair", "bunga 0%", "slot", "gacor"]):
+        temuan.append("💸 **Indikasi Investasi Ilegal / Pinjol Bodong:** Janji keuntungan pasti dalam waktu singkat tanpa risiko atau penawaran pinjaman instan tanpa verifikasi resmi merupakan ciri skema penipuan finansial.")
+        skor_risiko += 30
+
+    # 7. Penipuan Lowongan Kerja Paruh Waktu / Misi Like & Subscribe
+    if any(k in low for k in ["kerja paruh waktu", "misi like", "subscribe dapat uang", "komisi harian", "deposit tugas", "freelance online"]):
+        temuan.append("💼 **Modus Lowongan Kerja / Misi Deposit:** Pelaku menjanjikan komisi mudah dari tugas sederhana, lalu meminta korban menyetor sejumlah uang (*top-up/deposit*) yang akhirnya dibawa kabur.")
+        skor_risiko += 25
+
+    # 8. Pencatutan Nama Bank Indonesia / Otoritas Negara
+    if any(k in low for k in ["bank indonesia", "atas nama bi", "petugas bi", "ojk", "kementerian"]) and any(k in low for k in ["transfer", "biaya", "klik", "pin", "otp", "hibah", "bekukan"]):
+        temuan.append("🏛️ **Pencatutan Nama Otoritas Resmi:** Mengatasnamakan Bank Indonesia atau regulator keuangan untuk memungut biaya atau meminta data nasabah.")
+        skor_risiko += 25
+
+    # 9. Disinformasi Kebijakan Moneter & Uang Rupiah
+    if any(k in low for k in ["dibekukan", "hangus", "ditarik besok", "tidak laku lagi", "redenominasi mendadak", "bi-rate naik menjadi 25%"]):
+        temuan.append("📢 **Disinformasi / Hoaks Kebanksentralan:** Kebijakan moneter dan masa edar Rupiah selalu diumumkan secara resmi melalui portal `bi.go.id` dengan masa transisi yang jelas.")
+        skor_risiko += 25
+
+    # 10. Sengketa QRIS & Rekayasa Bukti Transfer
+    if any(k in low for k in ["salah transfer", "membatalkan transaksi", "bukti transfer", "struk palsu", "qris palsu"]):
+        temuan.append("💳 **Risiko Transaksi Digital & QRIS:** Pengaduan transaksi diproses melalui Penyedia Jasa Pembayaran (PJP) penerbit aplikasi dengan bukti sah, bukan melalui perantara pribadi.")
+        skor_risiko += 20
+
+    skor_risiko = min(100, skor_risiko)
+    return temuan, skor_risiko
 
 # ==========================================
 # SIDEBAR NAVIGASI
@@ -344,52 +411,66 @@ elif menu == "🛡️ 3. Pelindungan Konsumen & Audit Hoaks AI":
     st.markdown("""
     <div class="hero-banner">
         <span class="badge-bi">PELINDUNGAN KONSUMEN & AI RISK GOVERNANCE</span>
-        <h1>Detektor Pola Hoaks Kebanksentralan & Audit Respons AI</h1>
-        <p>Pelindungan konsumen menjadi kunci ekonomi keuangan digital terpercaya. Uji pesan mencurigakan atau bandingkan perilaku AI tanpa tata kelola vs AI terverifikasi.</p>
+        <h1>Detektor Pola Penipuan Online & Audit Respons AI</h1>
+        <p>Pelindungan konsumen menjadi kunci ekonomi keuangan digital terpercaya. Uji berbagai modus pesan penipuan siber (smishing, phishing, investasi bodong, hoaks BI) atau audit perilaku AI.</p>
     </div>
     """, unsafe_allow_html=True)
 
     sub_tab1, sub_tab2 = st.tabs([
-        "🔍 Pemindai Indikator Hoaks & Penipuan",
+        "🔍 Pemindai Indikator Penipuan Online & Hoaks",
         "🤖 Sandbox Audit Halusinasi AI (AI Governance)"
     ])
 
     with sub_tab1:
         contoh_pesan = st.selectbox(
-            "Pilih contoh isu hoaks / penipuan untuk dianalisis:",
+            "Pilih contoh kasus penipuan online / hoaks (atau ketik pesan apa saja di bawah):",
             [
                 "-- Ketik Manual --",
-                "Selamat! Anda mendapat dana bantuan/hibah dari Bank Indonesia sebesar Rp25 juta. Klik link berikut dan masukkan kode OTP untuk pencairan.",
-                "Info darurat: Mulai besok BI-Rate naik menjadi 25% dan seluruh tabungan masyarakat di bank akan dibekukan sementara.",
-                "Saya salah transfer QRIS ke warung sebelah, katanya petugas BI bisa membatalkan transaksi kalau saya kasih PIN m-banking saya."
+                "Halo, paket FEDEX Anda dengan kode pelacakan DZ-8342-FY34 sedang menunggu Anda untuk mengatur preferensi pengiriman: c4lrs.info/Gm08s43zs1",
+                "PERINGATAN BANK: Rekening Anda akan diblokir dalam 24 jam karena perubahan tarif transaksi baru. Segera konfirmasi PIN dan kode OTP Anda di bit.ly/konfirmasi-akun",
+                "Selamat! Anda mendapat dana hibah resmi Bank Indonesia Rp25.000.000. Klik link berikut untuk pencairan dana.",
+                "Kerja paruh waktu online cukup misi like & subscribe dapat komisi harian Rp500.000! Deposit tugas awal Rp100.000 langsung cair.",
+                "Info darurat: Mulai besok uang Rupiah lama hangus dan seluruh tabungan masyarakat akan dibekukan sementara.",
+                "Saya salah transfer QRIS ke warung sebelah, petugas BI minta kode OTP untuk membatalkan transaksi saya."
             ]
         )
 
-        teks_uji = st.text_area("Masukkan teks informasi yang ingin diverifikasi:", value="" if contoh_pesan == "-- Ketik Manual --" else contoh_pesan, height=100)
+        teks_uji = st.text_area(
+            "Masukkan teks pesan, SMS, WhatsApp, email, atau informasi yang ingin diverifikasi:",
+            value="" if contoh_pesan == "-- Ketik Manual --" else contoh_pesan,
+            height=115,
+            placeholder="Tempelkan pesan mencurigakan di sini (contoh: link paket kurir, undangan .apk, tawaran investasi/pinjol, permintaan OTP, atau hoaks BI)..."
+        )
 
-        if st.button("🔎 Verifikasi Indikator Risiko", type="primary"):
+        if st.button("🔎 Analisis & Verifikasi Indikator Risiko", type="primary"):
             if not teks_uji.strip():
-                st.warning("Silakan masukkan teks informasi terlebih dahulu.")
+                st.warning("Silakan masukkan teks pesan atau informasi terlebih dahulu.")
             else:
-                with st.spinner("Menganalisis pola risiko perlindungan konsumen..."):
+                with st.spinner("Memindai pola phishing, smishing, rekayasa sosial, dan risiko perlindungan konsumen..."):
                     time.sleep(0.4)
-                low = teks_uji.lower()
-                temuan = []
-                if any(w in low for w in ["hibah", "hadiah", "undian", "bantuan", "cair"]):
-                    temuan.append("🏛️ **Pencatutan Nama BI:** Bank Indonesia tidak menyalurkan bantuan dana/hibah langsung kepada individu maupun meminta biaya administrasi.")
-                if any(w in low for w in ["otp", "pin", "password", "kata sandi"]):
-                    temuan.append("🔐 **Pelanggaran Keamanan Kredensial:** Petugas Bank Indonesia maupun bank umum tidak pernah meminta PIN, OTP, atau kata sandi nasabah.")
-                if any(w in low for w in ["dibekukan", "25%", "hangus", "ditarik besok"]):
-                    temuan.append("📢 **Disinformasi Kebijakan Moneter:** Keputusan RDG (seperti BI-Rate 6,00%) selalu diumumkan resmi melalui Siaran Pers di `bi.go.id`.")
-                if any(w in low for w in ["salah transfer", "membatalkan transaksi"]):
-                    temuan.append("💳 **Prosedur Sengketa Pembayaran:** Pengaduan transaksi ritel/QRIS ditangani oleh Penyedia Jasa Pembayaran (PJP) penerbit aplikasi dengan bukti transaksi resmi.")
+
+                temuan, skor_risiko = analisis_penipuan_komprehensif(teks_uji)
+
+                st.subheader("📊 Hasil Pemindaian Risiko Keamanan Digital:")
+                st.progress(skor_risiko / 100)
 
                 if temuan:
-                    st.error(f"🚨 **TERDETEKSI {len(temuan)} INDIKATOR RISIKO / HOAKS**")
+                    st.error(f"🚨 **TERDETEKSI {len(temuan)} INDIKATOR PENIPUAN / HOAKS (Tingkat Risiko: {skor_risiko}%)**")
                     for item in temuan:
                         st.markdown(f"- {item}")
                 else:
-                    st.success("✅ **TIDAK DITEMUKAN POLA PENIPUAN UMUM**")
+                    st.success("✅ **TIDAK DITEMUKAN POLA PENIPUAN UMUM (Tingkat Risiko: 0%)**")
+                    st.caption("Tetap waspada: jangan pernah membagikan data pribadi atau mengklik tautan dari pengirim yang tidak dikenal.")
+
+                with st.expander("📚 Panduan Mengenali 6 Ciri Utama Penipuan Online Modern (PeKA)"):
+                    st.markdown("""
+                    1. **Tautan Domain Aneh / Pemendek URL:** Menggunakan akhiran domain tidak resmi seperti `.info`, `.xyz`, `.top`, `.click`, atau tautan pendek (`bit.ly`) yang menyamarkan alamat asli.
+                    2. **Modus Kurir Paket & File `.apk`:** Mengaku dari ekspedisi (FedEx, JNE, J&T) atau mengirim file undangan/surat tilang berekstensi `.apk` untuk mencuri data ponsel.
+                    3. **Menciptakan Kepanikan (Urgency):** Mengancam rekening akan diblokir dalam 24 jam atau kenaikan biaya admin mendadak agar korban terburu-buru.
+                    4. **Meminta Kredensial Rahasia:** Meminta **OTP, PIN, Password, CVV, atau Nama Ibu Kandung**.
+                    5. **Janji Keuntungan Instan / Komisi Mudah:** Penawaran investasi profit pasti tanpa risiko, pinjol cair tanpa syarat, atau misi *like/subscribe* berbayar.
+                    6. **Pencatutan Nama Institusi Resmi:** Mengatasnamakan Bank Indonesia, OJK, atau bank tertentu untuk menawarkan hibah/hadiah langsung.
+                    """)
 
                 st.info("""
                 **Kanal Resmi Layanan & Pengaduan Bank Indonesia:**
