@@ -383,23 +383,45 @@ elif menu == "💳 2. Inovasi Sistem Pembayaran & Digital Rupiah":
     st.markdown("""
     <div class="hero-banner">
         <span class="badge-bi">BLUEPRINT SISTEM PEMBAYARAN INDONESIA (BSPI)</span>
-        <h1>Transformasi Digital: QRIS TAP, Kartu Kredit Indonesia & Proyek Garuda</h1>
-        <p>Mengenal inovasi sistem pembayaran domestik yang cepat, mudah, murah, aman, dan andal (CEMUMUAH) di era ekonomi digital.</p>
+        <h1>Transformasi Digital: BI-FAST, QRIS TAP, KKI, GPN & Proyek Garuda</h1>
+        <p>Mengenal infrastruktur dan inovasi sistem pembayaran domestik yang cepat, mudah, murah, aman, dan andal (CEMUMUAH) di era ekonomi digital.</p>
     </div>
     """, unsafe_allow_html=True)
 
-    tab1, tab2, tab3 = st.tabs([
+    tab_bifast, tab_qris, tab_kki, tab_infra, tab_garuda = st.tabs([
+        "⚡ BI-FAST",
         "📱 QRIS & QRIS TAP",
         "💳 Kartu Kredit Indonesia (KKI)",
+        "🏦 BI-RTGS, SKNBI, GPN & SNAP",
         "🦅 Proyek Garuda: Digital Rupiah"
     ])
 
-    with tab1:
+    with tab_bifast:
+        c_bf1, c_bf2 = st.columns([1.35, 1])
+        with c_bf1:
+            st.subheader("BI-FAST: Infrastruktur Pembayaran Ritel Real-Time 24/7")
+            st.markdown("""
+            **BI-FAST** adalah infrastruktur sistem pembayaran ritel nasional yang dikembangkan Bank Indonesia untuk memfasilitasi transaksi pembayaran ritel secara **seketika (*real-time*), aman, efisien, dan tersedia setiap saat (24 jam sehari, 7 hari seminggu)**.
+            
+            **Keunggulan Utama BI-FAST bagi Masyarakat & Pelaku Usaha:**
+            * **Real-Time 24/7:** Dana langsung diterima oleh penerima detik itu juga tanpa mengenal hari libur.
+            * **Biaya Transaksi Murah:** Tarif transfer antarbank ditetapkan maksimal **Rp2.500 per transaksi** (jauh lebih hemat dibanding transfer *online* konvensional Rp6.500).
+            * **Fitur Proxy Address:** Memungkinkan pengguna menerima dana cukup menggunakan **nomor ponsel atau alamat email** sebagai pengganti nomor rekening yang panjang.
+            * **Batas Nominal Tinggi:** Mendukung transaksi mulai dari Rp1 hingga maksimal **Rp250 juta per transaksi**.
+            """)
+        with c_bf2:
+            st.info("🚀 **Layanan BI-FAST Terkini:**\n\n1. **Individual Credit Transfer** (Transfer individu)\n2. **Bulk Credit** (Transfer massal/payroll)\n3. **Direct Debit** (Pendebitan otomatis tagihan)\n4. **Request for Payment** (Permintaan pembayaran)")
+            st.success("🔒 **Keamanan Berlapis:** Dilengkapi sistem *Fraud Detection System* (FDS) serta mekanisme *Anti Money Laundering / Countering Financing of Terrorism* (AML/CFT) terpusat.")
+
+    with tab_qris:
         c1, c2 = st.columns([1.3, 1])
         with c1:
-            st.subheader("Cara Kerja & Keamanan QRIS TAP")
+            st.subheader("QRIS, QRIS TAP & QRIS Antarnegara (Cross-Border)")
             st.markdown("""
-            **QRIS TAP** adalah inovasi pembayaran nirkontak (*contactless*) berbasis teknologi *Near Field Communication* (NFC) yang memungkinkan pengguna bertransaksi **cukup dengan menempelkan ponsel** ke mesin pemindai di gerbang transportasi umum atau kasir toko tanpa perlu memindai kamera secara manual.
+            **QRIS (*Quick Response Code Indonesian Standard*)** menyatukan berbagai macam QR dari berbagai Penyelenggara Jasa Pembayaran (PJP) sehingga cukup satu kode QR untuk semua aplikasi pembayaran.
+            
+            * **QRIS TAP:** Inovasi pembayaran nirkontak (*contactless*) berbasis teknologi *Near Field Communication* (NFC) yang memungkinkan pengguna bertransaksi **cukup dengan menempelkan ponsel** ke mesin pemindai di gerbang transportasi umum atau kasir toko tanpa memindai kamera secara manual.
+            * **QRIS Antarnegara (*Cross-Border*):** Memudahkan wisatawan maupun pelaku UMKM bertransaksi lintas negara (seperti Thailand, Malaysia, Singapura, dan negara mitra lainnya) menggunakan mata uang lokal masing-masing secara otomatis.
             
             **Prosedur Verifikasi Aman Saat Bertransaksi QRIS:**
             1. **Periksa Identitas Merchant:** Pastikan nama toko/merchant yang tampil di layar ponsel sesuai dengan tempat bertransaksi.
@@ -408,9 +430,9 @@ elif menu == "💳 2. Inovasi Sistem Pembayaran & Digital Rupiah":
             """)
         with c2:
             st.warning("🛡️ **Waspada Rekayasa QRIS & Struk Digital:** Jangan pernah hanya mengandalkan tangkapan layar (*screenshot*) bukti bayar dari pembeli. Gunakan notifikasi suara/aplikasi *merchant* resmi.")
-            st.info("🌐 **Standar Nasional Open API Pembayaran (SNAP):** Mendukung interkoneksi antar aplikasi pembayaran dan perbankan secara aman.")
+            st.info("📱 **QRIS Tuntas:** Mendukung fitur Tarik Tunai, Transfer, dan Setor Tunai melalui pemindaian kode QRIS untuk memperluas inklusi keuangan hingga ke wilayah 3T.")
 
-    with tab2:
+    with tab_kki:
         st.subheader("Kartu Kredit Indonesia (KKI)")
         st.markdown("""
         Sebagaimana dipublikasikan pada portal utama Bank Indonesia, **Kartu Kredit Indonesia (KKI)** merupakan instrumen pembayaran dengan skema penundaan pembayaran yang diproses sepenuhnya melalui **infrastruktur sistem pembayaran domestik** (Gerbang Pembayaran Nasional / GPN).
@@ -420,7 +442,41 @@ elif menu == "💳 2. Inovasi Sistem Pembayaran & Digital Rupiah":
         k2.info("🏢 **Dukungan Belanja Pemerintah & UMKM:** Mempermudah belanja barang/jasa pemerintah pusat maupun daerah secara transparan dan akuntabel.")
         k3.info("💸 **Efisiensi Biaya Transaksi:** Biaya pemrosesan (*Merchant Discount Rate*) lebih kompetitif untuk mendukung ekosistem keuangan digital nasional.")
 
-    with tab3:
+    with tab_infra:
+        st.subheader("Ekosistem Infrastruktur Sistem Pembayaran Bank Indonesia")
+        col_in1, col_in2 = st.columns(2)
+        with col_in1:
+            st.markdown("""
+            <div class="bi-card">
+                <div class="bi-title">🏛️ BI-RTGS & SKNBI</div>
+                <ul style="color:#334155; font-size:0.91rem; padding-left:18px;">
+                    <li><b>BI-RTGS (Real Time Gross Settlement):</b> Infrastruktur transfer dana elektronik untuk transaksi bernilai besar (<b>di atas Rp100 juta</b>) dan bersifat mendesak (*Systemically Important Payment System*).</li>
+                    <li><b>SKNBI (Sistem Kliring Nasional Bank Indonesia):</b> Infrastruktur pertukaran data keuangan elektronik untuk layanan kliring warkat debit (cek/bilyet giro) dan transfer dana reguler antarbank.</li>
+                </ul>
+            </div>
+            """, unsafe_allow_html=True)
+        with col_in2:
+            st.markdown("""
+            <div class="bi-card bi-card-teal">
+                <div class="bi-title">🌐 GPN & SNAP</div>
+                <ul style="color:#334155; font-size:0.91rem; padding-left:18px;">
+                    <li><b>GPN (Gerbang Pembayaran Nasional):</b> Sistem yang mengintegrasikan berbagai instrumen dan kanal pembayaran secara nasional (kartu ATM/Debit berlogo Garuda) agar saling terhubung (*interkoneksi & interoperabilitas*).</li>
+                    <li><b>SNAP (Standar Nasional Open API Pembayaran):</b> Standar teknis dan keamanan terbuka yang menghubungkan aplikasi perbankan dengan *fintech* maupun *e-commerce* secara aman.</li>
+                </ul>
+            </div>
+            """, unsafe_allow_html=True)
+
+        st.write("")
+        st.markdown("#### 📊 Perbandingan Singkat Kanal Transfer Dana Bank Indonesia")
+        df_kanal = pd.DataFrame({
+            "Kanal Pembayaran": ["BI-FAST", "BI-RTGS", "SKNBI (Kliring)", "QRIS / QRIS TAP"],
+            "Segmen Transaksi": ["Ritel & Korporasi", "Nilai Besar / Korporasi", "Ritel & Warkat Debit/Kredit", "Pembayaran Merchant & Mikro"],
+            "Waktu Penyelesaian": ["Real-Time (24/7)", "Real-Time (Jam Operasional BI)", "Berkala / Batch (Jam Kliring)", "Real-Time (24/7)"],
+            "Batas Nominal": ["s.d. Rp250 Juta / transaksi", "Di atas Rp100 Juta", "s.d. Rp1 Miliar / transaksi", "s.d. Rp10 Juta / transaksi"]
+        })
+        st.table(df_kanal)
+
+    with tab_garuda:
         st.subheader("Proyek Garuda: Eksplorasi Digital Rupiah (CBDC)")
         st.markdown("""
         **Proyek Garuda** adalah inisiatif Bank Indonesia dalam mengeksplorasi desain **Digital Rupiah** (*Central Bank Digital Currency* / CBDC) sebagai satu-satunya alat pembayaran digital yang sah dan diterbitkan langsung oleh Bank Sentral di masa depan.
@@ -742,8 +798,8 @@ elif menu == "🏆 6. Kuis Literasi Kebanksentralan":
     st.markdown("""
     <div class="hero-banner">
         <span class="badge-bi">EVALUASI PEMAHAMAN PUBLIK</span>
-        <h1>Kuis Literasi Bank Sentral, PeKA & CBP Rupiah</h1>
-        <p>Uji pemahaman Anda mengenai fungsi utama Bank Indonesia, prinsip PeKA (Peduli, Kenali, Adukan), pilar CBP Rupiah, serta prinsip 5 Jangan.</p>
+        <h1>Kuis Literasi Bank Sentral, BI-FAST, PeKA & CBP Rupiah</h1>
+        <p>Uji pemahaman Anda mengenai fungsi utama Bank Indonesia, layanan BI-FAST, prinsip PeKA (Peduli, Kenali, Adukan), serta prinsip 5 Jangan.</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -791,17 +847,17 @@ elif menu == "🏆 6. Kuis Literasi Kebanksentralan":
         skor += 20
 
     st.divider()
-    st.markdown("#### 4. Teknologi apa yang digunakan pada fitur QRIS TAP untuk melakukan pembayaran?")
+    st.markdown("#### 4. Berapa batas maksimal nominal per transaksi dan tarif maksimal transfer antarbank bagi nasabah pada layanan BI-FAST?")
     q4 = st.radio(
         "Pilih jawaban:",
         [
-            "Pembayaran nirkontak (contactless) cukup dengan menempelkan ponsel berbasis NFC ke mesin pemindai.",
-            "Pengiriman kode rahasia melalui pesan singkat SMS.",
-            "Penukaran uang logam di mesin kasir."
+            "Maksimal Rp250 juta per transaksi dengan tarif maksimal Rp2.500 per transaksi.",
+            "Maksimal Rp10 juta per transaksi dengan tarif Rp6.500 per transaksi.",
+            "Hanya berlaku pada hari kerja Senin–Jumat pukul 08.00–15.00 WIB."
         ],
         key="q_bi_4"
     )
-    if q4 == "Pembayaran nirkontak (contactless) cukup dengan menempelkan ponsel berbasis NFC ke mesin pemindai.":
+    if q4 == "Maksimal Rp250 juta per transaksi dengan tarif maksimal Rp2.500 per transaksi.":
         skor += 20
 
     st.divider()
@@ -823,8 +879,8 @@ elif menu == "🏆 6. Kuis Literasi Kebanksentralan":
         st.subheader(f"Skor Akhir Anda: {skor} / 100")
         if skor == 100:
             st.balloons()
-            st.success("🏅 **SEMPURNA (100/100)!** Anda memahami fungsi utama Bank Indonesia, prinsip PeKA, CBP Rupiah, serta inovasi sistem pembayaran.")
+            st.success("🏅 **SEMPURNA (100/100)!** Anda memahami fungsi utama Bank Indonesia, layanan BI-FAST, prinsip PeKA, serta CBP Rupiah.")
         elif skor >= 80:
-            st.info("🥈 **SANGAT BAIK!** Sebagian besar konsep kebanksentralan dan pelindungan konsumen telah Anda kuasai dengan tepat.")
+            st.info("🥈 **SANGAT BAIK!** Sebagian besar konsep kebanksentralan dan sistem pembayaran telah Anda kuasai dengan tepat.")
         else:
             st.warning("📘 **TERUS BELAJAR!** Silakan tinjau kembali ringkasan materi pada modul sebelumnya sebelum mengulang kuis.")
