@@ -494,4 +494,158 @@ elif menu == "❤️ 4. Cinta, Bangga, Paham Rupiah":
 elif menu == "✨ 5. Cara Merawat Rupiah (5 Jangan)":
     st.markdown("""
     <div class="hero-banner">
-        <span class="badge-bi">KOMUNIKASI MERAWAT RUPIAH •
+        <span class="badge-bi">KOMUNIKASI MERAWAT RUPIAH • BANK INDONESIA</span>
+        <h1>Jaga dan Rawat Uang Rupiah Kertas dalam Kondisi yang Baik</h1>
+        <p>Wujudkan gerakan <b>RUPIAH KEREN</b> dengan memperlakukan uang Rupiah secara tepat melalui prinsip <b>5 Jangan</b> agar tetap layak edar.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    col_left, col_right = st.columns([1, 1.6])
+
+    with col_left:
+        st.markdown("""
+        <div class="rupiah-keren-badge">
+            <span class="cbp-pill">GERAKAN PEDULI FISIK RUPIAH</span>
+            <h1 style="color:#FFFFFF; font-size:2.4rem; font-weight:900; line-height:1.15; margin:14px 0;">
+                RUPIAH<br>KEREN
+            </h1>
+            <hr style="border-color:rgba(255,255,255,0.25);">
+            <p style="color:#E2E8F0; font-size:0.93rem; line-height:1.5;">
+                Uang Rupiah yang terawat dengan baik memudahkan masyarakat mengenali keasliannya (3D), memperlancar transaksi sehari-hari, serta menghemat biaya pencetakan uang baru.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col_right:
+        st.subheader("🚫 Terapkan Prinsip 5 Jangan dalam Keseharian:")
+
+        st.markdown("""
+        <div class="jangan-card">
+            <span class="jangan-num">1</span> <b>Jangan Dilipat</b>
+            <p style="margin:6px 0 0 0; color:#475569; font-size:0.9rem;">Simpan uang kertas dalam posisi memanjang/rapi di dalam dompet agar serat kertas tidak patah dan benang pengaman tidak rusak.</p>
+        </div>
+        <div class="jangan-card">
+            <span class="jangan-num">2</span> <b>Jangan Dicoret</b>
+            <p style="margin:6px 0 0 0; color:#475569; font-size:0.9rem;">Hindari menulis angka, catatan, atau coretan tinta pada permukaan uang karena dapat mengaburkan desain dan unsur pengaman.</p>
+        </div>
+        <div class="jangan-card">
+            <span class="jangan-num">3</span> <b>Jangan Distapler</b>
+            <p style="margin:6px 0 0 0; color:#475569; font-size:0.9rem;">Gunakan pita pengikat uang (*ban uang*) atau karet, bukan kawat stapler yang dapat melubangi dan merobek lembaran Rupiah.</p>
+        </div>
+        <div class="jangan-card">
+            <span class="jangan-num">4</span> <b>Jangan Diremas</b>
+            <p style="margin:6px 0 0 0; color:#475569; font-size:0.9rem;">Meremas uang membuat permukaan cetak intaglio menjadi kusut sehingga tekstur kasarnya sulit diraba saat pengecekan 3D.</p>
+        </div>
+        <div class="jangan-card">
+            <span class="jangan-num">5</span> <b>Jangan Dibasahi</b>
+            <p style="margin:6px 0 0 0; color:#475569; font-size:0.9rem;">Jauhkan uang dari air, cairan kimia, maupun kelembapan berlebih agar kertas tidak lapuk, luntur, atau berjamur.</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.divider()
+    st.subheader("✅ Cek Kebiasaan Merawat Rupiah Anda (Self-Check)")
+    chk1 = st.checkbox("Saya menyimpan uang kertas secara rapi di dompet tanpa melipatnya berlapis-lapis.")
+    chk2 = st.checkbox("Saya tidak pernah mencoret atau menandai uang kertas dengan pulpen/spidol.")
+    chk3 = st.checkbox("Saya tidak menggunakan stapler untuk menyatukan bundel uang kertas.")
+    chk4 = st.checkbox("Saya tidak meremas uang kertas saat memasukkan ke saku.")
+    chk5 = st.checkbox("Saya selalu menjaga uang tetap kering sebelum menyimpannya.")
+
+    total_5j = sum([chk1, chk2, chk3, chk4, chk5])
+    if total_5j == 5:
+        st.success("🌟 **Luar Biasa! (5/5 Terpenuhi)** Anda sudah menerapkan seluruh prinsip **5 Jangan** dan turut menjaga **Rupiah Keren** tetap layak edar!")
+    elif total_5j > 0:
+        st.info(f"👍 **{total_5j}/5 Prinsip Terpenuhi.** Yuk lengkapi kebiasaan merawat Rupiah lainnya agar uang kita selalu dalam kondisi baik.")
+
+# ==========================================
+# MODUL 6: KUIS LITERASI KEBANKSENTRALAN
+# ==========================================
+elif menu == "🏆 6. Kuis Literasi Kebanksentralan":
+    st.markdown("""
+    <div class="hero-banner">
+        <span class="badge-bi">EVALUASI PEMAHAMAN PUBLIK</span>
+        <h1>Kuis Literasi Bank Sentral, CBP Rupiah & Sistem Pembayaran</h1>
+        <p>Uji pemahaman Anda mengenai fungsi utama Bank Indonesia, pilar Cinta Bangga Paham Rupiah, prinsip 5 Jangan, serta inovasi QRIS TAP.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    skor = 0
+
+    st.markdown("#### 1. Apa tujuan tunggal Bank Indonesia sebagaimana tercantum dalam mandatnya?")
+    q1 = st.radio(
+        "Pilih jawaban:",
+        [
+            "Menghimpun simpanan masyarakat dan menyalurkan kredit komersial.",
+            "Mencapai dan memelihara kestabilan nilai Rupiah (terhadap barang/jasa dan mata uang asing).",
+            "Mengatur seluruh kegiatan perdagangan saham di bursa efek."
+        ],
+        key="q_bi_1"
+    )
+    if q1 == "Mencapai dan memelihara kestabilan nilai Rupiah (terhadap barang/jasa dan mata uang asing).":
+        skor += 20
+
+    st.divider()
+    st.markdown("#### 2. Dalam kampanye CBP Rupiah Bank Indonesia, pilar '3 Cinta' diwujudkan melalui tindakan...")
+    q2 = st.radio(
+        "Pilih jawaban:",
+        [
+            "Mengenali, Merawat, dan Menjaga Rupiah.",
+            "Bertransaksi, Berbelanja, dan Berhemat.",
+            "Simbol Kedaulatan, Pembayaran yang Sah, dan Pemersatu Bangsa."
+        ],
+        key="q_bi_2"
+    )
+    if q2 == "Mengenali, Merawat, dan Menjaga Rupiah.":
+        skor += 20
+
+    st.divider()
+    st.markdown("#### 3. Manakah urutan prinsip '5 Jangan' dalam kampanye Merawat Uang Rupiah Kertas (Rupiah Keren)?")
+    q3 = st.radio(
+        "Pilih jawaban:",
+        [
+            "Jangan Dilipat, Jangan Dicoret, Jangan Distapler, Jangan Diremas, Jangan Dibasahi.",
+            "Jangan Disimpan, Jangan Dibelanjakan, Jangan Ditukar, Jangan Dilihat, Jangan Diraba.",
+            "Jangan Diterawang, Jangan Ditransfer, Jangan Ditabung, Jangan Dihitung, Jangan Dibawa."
+        ],
+        key="q_bi_3"
+    )
+    if q3 == "Jangan Dilipat, Jangan Dicoret, Jangan Distapler, Jangan Diremas, Jangan Dibasahi.":
+        skor += 20
+
+    st.divider()
+    st.markdown("#### 4. Teknologi apa yang digunakan pada fitur QRIS TAP untuk melakukan pembayaran?")
+    q4 = st.radio(
+        "Pilih jawaban:",
+        [
+            "Pembayaran nirkontak (contactless) cukup dengan menempelkan ponsel berbasis NFC ke mesin pemindai.",
+            "Pengiriman kode rahasia melalui pesan singkat SMS.",
+            "Penukaran uang logam di mesin kasir."
+        ],
+        key="q_bi_4"
+    )
+    if q4 == "Pembayaran nirkontak (contactless) cukup dengan menempelkan ponsel berbasis NFC ke mesin pemindai.":
+        skor += 20
+
+    st.divider()
+    st.markdown("#### 5. Berapa nomor layanan resmi Contact Center Bank Indonesia (BICARA) untuk informasi dan pengaduan konsumen?")
+    q5 = st.radio(
+        "Pilih jawaban:",
+        [
+            "131",
+            "112",
+            "147"
+        ],
+        key="q_bi_5"
+    )
+    if q5 == "131":
+        skor += 20
+
+    st.write("")
+    if st.button("🎯 Periksa Skor Literasi Saya", type="primary"):
+        st.subheader(f"Skor Akhir Anda: {skor} / 100")
+        if skor == 100:
+            st.balloons()
+            st.success("🏅 **SEMPURNA (100/100)!** Anda memahami fungsi utama Bank Indonesia, pilar Cinta Bangga Paham Rupiah, prinsip 5 Jangan, serta inovasi sistem pembayaran.")
+        elif skor >= 80:
+            st.info("🥈 **SANGAT BAIK!** Sebagian besar konsep kebanksentralan dan CBP Rupiah telah Anda kuasai dengan tepat.")
+        else:
+            st.warning("📘 **TERUS BELAJAR!** Silakan tinjau kembali ringkasan materi pada modul sebelumnya sebelum mengulang kuis.")
