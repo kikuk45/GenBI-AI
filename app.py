@@ -154,7 +154,7 @@ def buat_visual_uang_bi(pecahan, mode_cahaya, c_lihat1, c_lihat2, c_raba1, c_rab
     # KALIBRASI PRESISI TITIK DETEKSI 3D UANG RUPIAH TE 2022
     # ==========================================================
 
-    # 1. Dilihat: Benang Pengaman (Garis vertikal anyaman di x=29..31.5)
+    # 1. Dilihat: Benang Pengaman (Garis vertikal anyaman di x=28.8..31.5)
     if c_lihat2:
         warna_b = "#38BDF8" if mode_cahaya == "🔦 Mode Sinar UV" else "#FACC15"
         fig.add_shape(
@@ -170,7 +170,7 @@ def buat_visual_uang_bi(pecahan, mode_cahaya, c_lihat1, c_lihat2, c_raba1, c_rab
     # 2. Diterawang: Watermark / Tanda Air (Area putih tengah-kiri, tepat di bawah angka nominal atas)
     if c_terawang1 or mode_cahaya == "☀️ Mode Diterawang":
         fig.add_shape(
-            type="ellipse", x0=8, y0=19, x1=23, y1=36,
+            type="circle", x0=8, y0=19, x1=23, y1=36,
             fillcolor="rgba(255, 255, 255, 0.22)",
             line=dict(color="#FDE047", width=2.5, dash="dash")
         )
@@ -179,10 +179,10 @@ def buat_visual_uang_bi(pecahan, mode_cahaya, c_lihat1, c_lihat2, c_raba1, c_rab
             bgcolor="rgba(0,45,114,0.88)", font=dict(color="#FDE047", size=8.5)
         )
 
-    # 3. Dilihat: Color Shifting Ink (Ornamen Bunga Anggrek / Perisai di kiri bawah x=7..18, y=10..18)
+    # 3. Dilihat: Color Shifting Ink (Ornamen Bunga Anggrek / Perisai di kiri bawah x=6.5..18.5, y=10..18.5)
     if c_lihat1:
         fig.add_shape(
-            type="ellipse", x0=6.5, y0=10, x1=18.5, y1=18.5,
+            type="circle", x0=6.5, y0=10, x1=18.5, y1=18.5,
             fillcolor="rgba(34, 197, 94, 0.25)",
             line=dict(color="#22C55E", width=2.5)
         )
@@ -191,7 +191,7 @@ def buat_visual_uang_bi(pecahan, mode_cahaya, c_lihat1, c_lihat2, c_raba1, c_rab
             bgcolor="#15803D", font=dict(color="white", size=8)
         )
 
-    # 4. Diterawang: Rectoverso Logo BI (Logo BI bertumpuk di atas bunga anggrek kiri bawah x=10..15.5, y=11.5..17)
+    # 4. Diterawang: Rectoverso Logo BI (Logo BI bertumpuk di atas bunga anggrek kiri bawah)
     if c_terawang2 or mode_cahaya == "☀️ Mode Diterawang":
         fig.add_shape(
             type="circle", x0=10.2, y0=11.5, x1=15.2, y1=16.8,
@@ -203,7 +203,7 @@ def buat_visual_uang_bi(pecahan, mode_cahaya, c_lihat1, c_lihat2, c_raba1, c_rab
             bgcolor="#002D72", font=dict(color="#38BDF8", size=8)
         )
 
-    # 5. Diraba: Cetak Intaglio (Area Gambar Utama Pahlawan di tengah-kanan x=33..70, y=5..36)
+    # 5. Diraba: Cetak Intaglio (Area Gambar Utama Pahlawan di tengah-kanan)
     if c_raba1:
         fig.add_shape(
             type="rect", x0=33, y0=5, x1=70, y1=36,
