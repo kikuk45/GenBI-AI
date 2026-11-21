@@ -4,7 +4,7 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
-from PIL import Image, ImageOps
+from PIL import Image
 
 # ==========================================
 # KONFIGURASI HALAMAN & TEMA VISUAL
@@ -115,8 +115,8 @@ def buat_visual_uang_bi(pecahan, mode_cahaya, c_lihat1, c_lihat2, c_raba1, c_rab
         opasitas_img = 0.45
         warna_lapis = "rgba(10, 15, 45, 0.62)"
     elif mode_cahaya == "☀️ Mode Diterawang":
-        opasitas_img = 0.68
-        warna_lapis = "rgba(255, 250, 210, 0.22)"
+        opasitas_img = 0.72
+        warna_lapis = "rgba(255, 250, 210, 0.18)"
     else:
         opasitas_img = 1.0
         warna_lapis = "rgba(0, 0, 0, 0)"
@@ -151,77 +151,77 @@ def buat_visual_uang_bi(pecahan, mode_cahaya, c_lihat1, c_lihat2, c_raba1, c_rab
         )
 
     # ==========================================================
-    # OVERLAY TITIK DETEKSI 3D DI ATAS FOTO UANG RUPIAH ASLI
+    # KALIBRASI PRESISI TITIK DETEKSI 3D UANG RUPIAH TE 2022
     # ==========================================================
 
-    # 1. Dilihat: Color Shifting Ink (Ornamen Bunga / Perisai Kanan Bawah)
-    if c_lihat1:
-        fig.add_shape(
-            type="circle", x0=74, y0=6, x1=86, y1=18,
-            fillcolor="rgba(34, 197, 94, 0.35)",
-            line=dict(color="#22C55E", width=3)
-        )
-        fig.add_annotation(
-            x=80, y=20, text="<b>Color Shifting</b>", showarrow=False,
-            bgcolor="#15803D", font=dict(color="white", size=9)
-        )
-
-    # 2. Dilihat: Benang Pengaman (Garis Vertikal Kiri-Tengah)
+    # 1. Dilihat: Benang Pengaman (Garis vertikal anyaman di x=29..31.5)
     if c_lihat2:
         warna_b = "#38BDF8" if mode_cahaya == "🔦 Mode Sinar UV" else "#FACC15"
         fig.add_shape(
-            type="rect", x0=35, y0=0, x1=37.5, y1=46,
-            fillcolor=warna_b, opacity=0.75,
-            line=dict(color="white", width=1.5)
+            type="rect", x0=28.8, y0=0, x1=31.5, y1=46,
+            fillcolor=warna_b, opacity=0.65,
+            line=dict(color="#FFFFFF", width=1.5)
         )
         fig.add_annotation(
-            x=36.2, y=42, text="<b>Benang Pengaman</b>", showarrow=False,
-            bgcolor="#002D72", font=dict(color="#FACC15", size=9)
+            x=30.2, y=43.5, text="<b>Benang Pengaman</b>", showarrow=False,
+            bgcolor="#002D72", font=dict(color="#FACC15", size=8.5)
         )
 
-    # 3. Diraba: Cetak Intaglio (Area Gambar Utama Pahlawan)
-    if c_raba1:
-        fig.add_shape(
-            type="rect", x0=42, y0=8, x1=68, y1=36,
-            fillcolor="rgba(250, 204, 21, 0.15)",
-            line=dict(color="#FACC15", width=3)
-        )
-        fig.add_annotation(
-            x=55, y=38, text="<b>Cetak Intaglio (Kasar)</b>", showarrow=False,
-            bgcolor="#B45309", font=dict(color="white", size=9)
-        )
-
-    # 4. Diraba: Blind Code (Tepi Kiri & Kanan Uang)
-    if c_raba2:
-        fig.add_shape(type="rect", x0=0.5, y0=12, x1=3, y1=34, fillcolor="rgba(250,204,21,0.5)", line=dict(color="#FACC15", width=2))
-        fig.add_shape(type="rect", x0=97, y0=12, x1=99.5, y1=34, fillcolor="rgba(250,204,21,0.5)", line=dict(color="#FACC15", width=2))
-        fig.add_annotation(
-            x=9, y=36, text="<b>Blind Code</b>", showarrow=False,
-            bgcolor="#002D72", font=dict(color="white", size=8.5)
-        )
-
-    # 5. Diterawang: Watermark (Area Kosong Sebelah Kiri)
+    # 2. Diterawang: Watermark / Tanda Air (Area putih tengah-kiri, tepat di bawah angka nominal atas)
     if c_terawang1 or mode_cahaya == "☀️ Mode Diterawang":
         fig.add_shape(
-            type="circle", x0=10, y0=10, x1=28, y1=32,
-            fillcolor="rgba(255, 255, 255, 0.35)",
-            line=dict(color="#FDE047", width=3, dash="dash")
+            type="ellipse", x0=8, y0=19, x1=23, y1=36,
+            fillcolor="rgba(255, 255, 255, 0.22)",
+            line=dict(color="#FDE047", width=2.5, dash="dash")
         )
         fig.add_annotation(
-            x=19, y=21, text="<b>WATERMARK</b>", showarrow=False,
-            bgcolor="rgba(0,45,114,0.85)", font=dict(color="#FDE047", size=9)
+            x=15.5, y=37.5, text="<b>WATERMARK</b>", showarrow=False,
+            bgcolor="rgba(0,45,114,0.88)", font=dict(color="#FDE047", size=8.5)
         )
 
-    # 6. Diterawang: Rectoverso Logo BI (Kiri Atas)
-    if c_terawang2 or mode_cahaya == "☀️ Mode Diterawang":
+    # 3. Dilihat: Color Shifting Ink (Ornamen Bunga Anggrek / Perisai di kiri bawah x=7..18, y=10..18)
+    if c_lihat1:
         fig.add_shape(
-            type="circle", x0=27, y0=32, x1=34, y1=40,
-            fillcolor="rgba(56, 189, 248, 0.35)",
-            line=dict(color="#38BDF8", width=3)
+            type="ellipse", x0=6.5, y0=10, x1=18.5, y1=18.5,
+            fillcolor="rgba(34, 197, 94, 0.25)",
+            line=dict(color="#22C55E", width=2.5)
         )
         fig.add_annotation(
-            x=30.5, y=42.5, text="<b>Rectoverso BI</b>", showarrow=False,
-            bgcolor="#002D72", font=dict(color="#38BDF8", size=8.5)
+            x=12.5, y=8.2, text="<b>Color Shifting</b>", showarrow=False,
+            bgcolor="#15803D", font=dict(color="white", size=8)
+        )
+
+    # 4. Diterawang: Rectoverso Logo BI (Logo BI bertumpuk di atas bunga anggrek kiri bawah x=10..15.5, y=11.5..17)
+    if c_terawang2 or mode_cahaya == "☀️ Mode Diterawang":
+        fig.add_shape(
+            type="circle", x0=10.2, y0=11.5, x1=15.2, y1=16.8,
+            fillcolor="rgba(56, 189, 248, 0.25)",
+            line=dict(color="#38BDF8", width=2.5)
+        )
+        fig.add_annotation(
+            x=21.5, y=14.2, text="<b>Rectoverso BI</b>", showarrow=False,
+            bgcolor="#002D72", font=dict(color="#38BDF8", size=8)
+        )
+
+    # 5. Diraba: Cetak Intaglio (Area Gambar Utama Pahlawan di tengah-kanan x=33..70, y=5..36)
+    if c_raba1:
+        fig.add_shape(
+            type="rect", x0=33, y0=5, x1=70, y1=36,
+            fillcolor="rgba(250, 204, 21, 0.12)",
+            line=dict(color="#FACC15", width=2.5)
+        )
+        fig.add_annotation(
+            x=51.5, y=38, text="<b>Cetak Intaglio (Terasa Kasar)</b>", showarrow=False,
+            bgcolor="#B45309", font=dict(color="white", size=8.5)
+        )
+
+    # 6. Diraba: Blind Code (Garis-garis tepi paling kiri & paling kanan uang)
+    if c_raba2:
+        fig.add_shape(type="rect", x0=0.2, y0=10, x1=2.2, y1=35, fillcolor="rgba(250,204,21,0.55)", line=dict(color="#FACC15", width=1.5))
+        fig.add_shape(type="rect", x0=97.8, y0=10, x1=99.8, y1=35, fillcolor="rgba(250,204,21,0.55)", line=dict(color="#FACC15", width=1.5))
+        fig.add_annotation(
+            x=92, y=13, text="<b>Blind Code</b>", showarrow=False,
+            bgcolor="#002D72", font=dict(color="white", size=8)
         )
 
     fig.update_xaxes(visible=False, range=[0, 100])
@@ -363,12 +363,12 @@ elif menu == "🔍 Asisten Cek Keaslian (3D) & AI":
         )
 
         st.markdown("**1. Dilihat (Perubahan Warna & Benang Pengaman)**")
-        c_lihat1 = st.checkbox("Warna tinta ornamen berubah saat dilihat dari sudut berbeda (Color Shifting).")
+        c_lihat1 = st.checkbox("Warna tinta bunga anggrek/perisai berubah saat dilihat dari sudut berbeda (Color Shifting).")
         c_lihat2 = st.checkbox("Terdapat benang pengaman seperti dianyam yang berubah warna.")
 
         st.markdown("**2. Diraba (Tekstur Cetak Intaglio)**")
         c_raba1 = st.checkbox("Terasa kasar saat diraba pada gambar utama pahlawan dan tulisan 'Bank Indonesia'.")
-        c_raba2 = st.checkbox("Terdapat kode tunanetra (Blind Code) berupa garis kasar di sisi kanan & kiri uang.")
+        c_raba2 = st.checkbox("Terdapat kode tunanetra (Blind Code) berupa garis kasar di tepi kanan & kiri uang.")
 
         st.markdown("**3. Diterawang (Watermark & Rectoverso)**")
         c_terawang1 = st.checkbox("Terlihat tanda air (Watermark) gambar pahlawan saat diterawang ke cahaya.")
