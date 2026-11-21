@@ -140,6 +140,17 @@ def build_theme_css(mode: str) -> str:
     .bi-list {{ color: var(--text-muted); font-size: 0.88rem; padding-left: 18px; margin-bottom: 0; }}
     .bi-list-lg {{ color: var(--text-secondary); font-size: 0.92rem; padding-left: 18px; margin-bottom: 0; }}
 
+    .impact-box {{
+        background-color: var(--bg-subtle);
+        border: 1px solid var(--border-subtle);
+        border-left: 5px solid #0284C7;
+        border-radius: 12px;
+        padding: 14px 16px;
+        margin-top: 10px;
+        color: var(--text-secondary);
+        font-size: 0.92rem;
+    }}
+
     .badge-bi {{
         background-color: #D4AF37;
         color: #002D72;
@@ -426,35 +437,70 @@ if menu == "📊 1. Tiga Fungsi Utama & Indikator BI":
         """, unsafe_allow_html=True)
 
     st.write("")
-    st.subheader("🧮 Simulasi Edukatif: Dampak Perubahan BI-Rate terhadap Ekonomi")
-    c_sim1, c_sim2 = st.columns([1.1, 1.3])
+    st.subheader("🛒 Apa Pengaruh Suku Bunga BI ke Dompet & Belanja Kita?")
+    c_sim1, c_sim2 = st.columns([1.15, 1.25])
+
     with c_sim1:
-        skenario_rate = st.select_slider(
-            "Pilih Skenario Arah Kebijakan BI-Rate:",
-            options=["Penurunan BI-Rate (-25 bps)", "Tetap (6,00%)", "Kenaikan BI-Rate (+25 bps / Aktual Nov 2026)"],
-            value="Kenaikan BI-Rate (+25 bps / Aktual Nov 2026)"
+        pilihan_warga = st.select_slider(
+            "Geser untuk melihat gambaran dampaknya sehari-hari:",
+            options=[
+                "Suku Bunga Turun (-0,25%)",
+                "Suku Bunga Tetap (6,00%)",
+                "Suku Bunga Naik (+0,25% / Aktual)"
+            ],
+            value="Suku Bunga Naik (+0,25% / Aktual)"
         )
-        if "Kenaikan" in skenario_rate:
-            st.info("**Tujuan Kebijakan (Pre-emptive & Forward Looking):** Memperkuat stabilitas nilai tukar Rupiah dari ketidakpastian global dan memastikan inflasi tetap terkendali dalam sasaran **2,5±1%**.")
-        elif "Tetap" in skenario_rate:
-            st.info("**Tujuan Kebijakan (Konsisten):** Menjaga keseimbangan antara stabilitas makroekonomi dan momentum pertumbuhan kredit perbankan.")
+
+        if "Turun" in pilihan_warga:
+            rate_val = 5.75
+            ringkasan_warga = (
+                "<b>Saat Suku Bunga Turun:</b> Cicilan/kredit cenderung lebih ringan sehingga UMKM dan warga lebih mudah "
+                "meminjam untuk usaha atau kebutuhan. Namun, bunga tabungan/deposito juga berpeluang ikut menyesuaikan."
+            )
+            dampak_tabungan = "Cenderung lebih rendah"
+            dampak_cicilan = "Cenderung lebih ringan"
+            dampak_harga = "Dorongan belanja naik"
+        elif "Tetap" in pilihan_warga:
+            rate_val = 6.00
+            ringkasan_warga = (
+                "<b>Saat Suku Bunga Tetap:</b> Kondisi bunga acuan berada di posisi seimbang agar biaya pinjaman, "
+                "imbal hasil simpanan, dan laju kenaikan harga barang tetap dapat diperkirakan."
+            )
+            dampak_tabungan = "Relatif stabil"
+            dampak_cicilan = "Relatif stabil"
+            dampak_harga = "Terjaga bertahap"
         else:
-            st.info("**Tujuan Kebijakan (Akomodatif):** Mendorong penurunan suku bunga kredit perbankan untuk menstimulasi pembiayaan dunia usaha dan konsumsi domestik.")
+            rate_val = 6.25
+            ringkasan_warga = (
+                "<b>Saat Suku Bunga Naik:</b> Langkah ini membantu menjaga nilai Rupiah tetap kuat dan menahan laju "
+                "kenaikan harga barang (inflasi). Menabung/deposito bisa lebih menarik, sementara cicilan baru perlu dihitung lebih cermat."
+            )
+            dampak_tabungan = "Lebih menarik"
+            dampak_cicilan = "Lebih selektif / ketat"
+            dampak_harga = "Diredam agar tidak melonjak"
+
+        st.markdown(f'<div class="impact-box">{ringkasan_warga}</div>', unsafe_allow_html=True)
+
+        k_w1, k_w2, k_w3 = st.columns(3)
+        k_w1.metric("💰 Tabungan / Deposito", dampak_tabungan)
+        k_w2.metric("🏠 Cicilan / Pinjaman", dampak_cicilan)
+        k_w3.metric("🛍️ Harga Barang", dampak_harga)
 
     with c_sim2:
         df_suku_bunga = pd.DataFrame({
-            "Instrumen Moneter BI": ["Deposit Facility", "BI-Rate (Acuan)", "Lending Facility"],
-            "Suku Bunga (%)": [5.25, 6.00, 6.75]
+            "Komponen": ["Bunga Simpanan BI", "BI-Rate (Simulasi)", "Bunga Pinjaman BI"],
+            "Persentase (%)": [round(rate_val - 0.75, 2), rate_val, round(rate_val + 0.75, 2)]
         })
         fig_rate = px.bar(
-            df_suku_bunga, x="Instrumen Moneter BI", y="Suku Bunga (%)",
-            text="Suku Bunga (%)", color="Instrumen Moneter BI",
-            color_discrete_sequence=["#0D9488", "#002D72", "#D4AF37"]
+            df_suku_bunga, x="Komponen", y="Persentase (%)",
+            text="Persentase (%)", color="Komponen",
+            color_discrete_sequence=["#0D9488", "#002D72", "#D4AF37"],
+            title="Ilustrasi Posisi Suku Bunga Acuan BI (%)"
         )
         fig_rate.update_traces(texttemplate="%{text:.2f}%", textposition="outside")
         fig_rate.update_layout(
-            yaxis_range=[0, 8], height=260, showlegend=False,
-            margin=dict(l=10, r=10, t=15, b=10),
+            yaxis_range=[0, 8.5], height=290, showlegend=False,
+            margin=dict(l=10, r=10, t=38, b=10),
             font=dict(color=chart_text_color),
             paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)"
         )
