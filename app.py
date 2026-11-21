@@ -191,15 +191,15 @@ def buat_visual_uang_bi(pecahan, mode_cahaya, c_lihat1, c_lihat2, c_raba1, c_rab
             bgcolor="#15803D", font=dict(color="white", size=8)
         )
 
-    # 4. Diterawang: Rectoverso Logo BI (Sisi Kanan, di bawah peta Indonesia & di atas nominal kanan bawah)
+    # 4. Diterawang: Rectoverso Logo BI (Tepat melingkari ornamen logo BI di sisi kanan bawah x=89.5..95.5, y=12.0..18.2)
     if c_terawang2 or mode_cahaya == "☀️ Mode Diterawang":
         fig.add_shape(
-            type="circle", x0=84.5, y0=14.5, x1=91.5, y1=22.5,
-            fillcolor="rgba(56, 189, 248, 0.28)",
-            line=dict(color="#38BDF8", width=2.5)
+            type="circle", x0=89.5, y0=12.0, x1=95.5, y1=18.2,
+            fillcolor="rgba(56, 189, 248, 0.22)",
+            line=dict(color="#0284C7", width=2.5)
         )
         fig.add_annotation(
-            x=88, y=24.8, text="<b>Rectoverso BI</b>", showarrow=False,
+            x=89.5, y=20.2, text="<b>Rectoverso BI</b>", showarrow=False,
             bgcolor="#002D72", font=dict(color="#38BDF8", size=8)
         )
 
