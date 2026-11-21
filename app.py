@@ -59,6 +59,9 @@ def build_theme_css(mode: str) -> str:
         --text-secondary: #334155;
         --text-muted: #475569;
         --heading-accent: #002D72;
+        --nav-active-bg: #E0E7FF;
+        --nav-active-border: #002D72;
+        --nav-hover-bg: #F1F5F9;
         --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.06);
         --shadow-elevated: 0 10px 26px rgba(0, 45, 114, 0.08);
         --jangan-svg-bg: #FFF5F5;
@@ -74,6 +77,9 @@ def build_theme_css(mode: str) -> str:
         --text-secondary: #E2E8F0;
         --text-muted: #CBD5E1;
         --heading-accent: #60A5FA;
+        --nav-active-bg: rgba(59, 130, 246, 0.18);
+        --nav-active-border: #60A5FA;
+        --nav-hover-bg: rgba(148, 163, 184, 0.10);
         --shadow-card: 0 6px 16px rgba(0, 0, 0, 0.35);
         --shadow-elevated: 0 12px 28px rgba(0, 0, 0, 0.45);
         --jangan-svg-bg: #2A1215;
@@ -112,6 +118,54 @@ def build_theme_css(mode: str) -> str:
 
     [data-testid="stSidebar"] h2 {{
         color: var(--heading-accent) !important;
+    }}
+
+    /* Kerapian Navigasi Radio di Sidebar */
+    [data-testid="stSidebar"] [data-testid="stRadio"] > label {{
+        font-weight: 700 !important;
+        font-size: 0.96rem !important;
+        color: var(--text-primary) !important;
+        margin-bottom: 10px !important;
+    }}
+
+    [data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] {{
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }}
+
+    [data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] > label {{
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+        padding: 10px 12px !important;
+        margin: 0 !important;
+        border-radius: 10px !important;
+        border-left: 3px solid transparent !important;
+        background-color: transparent !important;
+        transition: background-color 0.18s ease, border-color 0.18s ease !important;
+        cursor: pointer !important;
+    }}
+
+    [data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] > label:hover {{
+        background-color: var(--nav-hover-bg) !important;
+    }}
+
+    [data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] > label:has(input:checked) {{
+        background-color: var(--nav-active-bg) !important;
+        border-left: 3px solid var(--nav-active-border) !important;
+    }}
+
+    [data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] > label > div:last-child {{
+        line-height: 1.35 !important;
+        font-size: 0.91rem !important;
+        font-weight: 500 !important;
+        color: var(--text-secondary) !important;
+    }}
+
+    [data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] > label:has(input:checked) > div:last-child {{
+        font-weight: 700 !important;
+        color: var(--text-primary) !important;
     }}
 
     [data-testid="stMetricValue"] {{
