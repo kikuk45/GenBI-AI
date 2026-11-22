@@ -432,7 +432,7 @@ if menu == "📊 1. Tiga Fungsi Utama & Indikator BI":
     </div>
     """, unsafe_allow_html=True)
 
-    st.subheader("📈 Indikator Ekonomi & Moneter Terkini (Portal BI)")
+    st.subheader("📈 Indikator Ekonomi & Moneter Terkini")
     m1, m2, m3, m4, m5 = st.columns(5)
     m1.metric("BI-Rate (18 Nov 2026)", "6,00%", "+25 bps")
     m2.metric("Inflasi IHK (yoy)", "3,28%", "Target 2026: 2,5±1%")
